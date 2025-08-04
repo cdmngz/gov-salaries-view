@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="face" viewBox="0 0 100 100">
+    <circle cx="50" cy="40" r="30" fill="#f4d1b5" />
+    <rect x="35" y="60" width="30" height="20" rx="10" fill="#f4d1b5" />
+  </symbol>
+  <symbol id="hair1" viewBox="0 0 100 100">
+    <path d="M20,30 Q50,0 80,30 Q60,10 40,30 Q30,10 20,30" fill="#333" />
+  </symbol>
+  <symbol id="hair2" viewBox="0 0 100 100">
+    <path d="M20,20 Q50,-10 80,20 Q70,5 30,25 Q20,10 20,20" fill="#555" />
+  </symbol>
+  <symbol id="clothes-formal" viewBox="0 0 100 100">
+    <rect x="30" y="70" width="40" height="25" fill="#222" rx="5" />
+    <path d="M50,70 L45,80 L55,80 Z" fill="white" />
+  </symbol>
+</svg>

@@ -1,0 +1,18 @@
+export const CURRENCY_SYMBOLS: Record<string, string> = {
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+  JPY: "¥",
+  CHF: "Fr",
+  CNY: "¥",
+  CAD: "C$",
+  AUD: "A$",
+  INR: "₹",
+  BRL: "R$",
+  ZAR: "R",
+  KRW: "₩",
+  MXN: "MX$",
+  RUB: "₽",
+  BTC: "₿",
+  ETH: "Ξ",
+};

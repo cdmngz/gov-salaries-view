@@ -1,0 +1,16 @@
+{
+  "es": {
+    "flag": "🇪🇸",
+    "names": {
+      "es": "España",
+      "en": "Spain"
+    }
+  },
+  "ar": {
+    "flag": "🇦🇷",
+    "names": {
+      "es": "Argentina",
+      "en": "Argentina"
+    }
+  }
+}
