@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -12,10 +11,10 @@ import { LANGUAGE_NAMES } from "@/i18n";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
 import type { CountriesData, CountryCode, Rates } from "@/types";
 import { Language, LanguageSchema } from "@/validators/lang";
-import { useTheme } from "next-themes";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import countriesData from "../data/countries.json";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header({
   country,
@@ -36,7 +35,6 @@ export default function Header({
   semester: 1 | 2;
   lang: Language;
 }) {
-  const { resolvedTheme, setTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -76,7 +74,7 @@ export default function Header({
 
   return (
     <header className="w-full p-4 flex items-center justify-between bg-gray-100 dark:bg-gray-900 text-black dark:text-white shadow">
-      <div className="text-lg flex items-center gap-2">
+      <div className="text-lg flex items-center gap-2 font-medium">
         <span role="img">🏛️</span> Government viewer
       </div>
 
@@ -86,7 +84,7 @@ export default function Header({
           value={country}
           onValueChange={(val) => onChangeParams({ lang }, `/${val}`)}
         >
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="p-2 text-sm font-medium border-none ">
             <SelectValue placeholder="Country" />
           </SelectTrigger>
           <SelectContent>
@@ -103,7 +101,7 @@ export default function Header({
           value={lang}
           onValueChange={(val) => onChangeParams({ lang: val })}
         >
-          <SelectTrigger className="w-[100px]">
+          <SelectTrigger className="p-2 text-sm font-medium border-none ">
             <SelectValue placeholder="Lang" />
           </SelectTrigger>
           <SelectContent>
@@ -120,7 +118,7 @@ export default function Header({
           value={currency}
           onValueChange={(val) => onChangeParams({ currency: val, lang })}
         >
-          <SelectTrigger>
+          <SelectTrigger className="p-2 text-sm font-medium border-none ">
             <SelectValue placeholder="Currency">{currency}</SelectValue>
           </SelectTrigger>
 
@@ -141,7 +139,7 @@ export default function Header({
             onChangeParams({ year: y, semester: s, lang, currency });
           }}
         >
-          <SelectTrigger className="w-[140px]">
+          <SelectTrigger className="p-2 text-sm font-medium border-none ">
             <SelectValue placeholder="Period" />
           </SelectTrigger>
           <SelectContent>
@@ -154,11 +152,7 @@ export default function Header({
         </Select>
 
         {/* Theme Toggle */}
-        <Button
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-        >
-          {resolvedTheme === "dark" ? "🌞" : "🌙"}
-        </Button>
+        <ThemeToggle />
       </div>
     </header>
   );

@@ -65,8 +65,11 @@ export default function OfficialsList({
                 <p className="mt-2 text-center text-sm font-medium">
                   {official.name}
                 </p>
+
                 {official.district && (
-                  <p className="text-center text-xs ">{official.district}</p>
+                  <div className="text-xs text-gray-600 border rounded-md p-1 dark:text-white text-center max-w-48">
+                    <p className="text-center text-xs ">{official.district}</p>
+                  </div>
                 )}
 
                 {official.role && (
