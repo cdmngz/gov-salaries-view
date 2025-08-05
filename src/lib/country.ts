@@ -9,7 +9,6 @@ import {
   fetchCountryData,
 } from "./data";
 import countriesJson from "../data/countries.json";
-import { headers, cookies } from "next/headers";
 import { Language } from "@/validators/lang";
 import { DEFAULT_COUNTRY, DEFAULT_LANG } from "./constants";
 
@@ -35,8 +34,6 @@ export async function loadCountryData(ctx: {
     semester?: string;
     currency?: string;
   };
-  headers?: ReturnType<typeof headers>;
-  cookies?: ReturnType<typeof cookies>;
 }): Promise<LoadCountryDataResult> {
   const { params, searchParams } = ctx;
 
@@ -46,18 +43,8 @@ export async function loadCountryData(ctx: {
   const qSemester = searchParams.semester;
   const qCurrency = searchParams.currency;
 
-  const headersList = headers();
-  const cookiesList = cookies();
-
   const country: CountryCode =
-    (rawCountry?.toLowerCase().trim() as CountryCode) ||
-    ((await headersList)
-      .get("cloudfront-viewer-country")
-      ?.toLowerCase() as CountryCode) ||
-    ((await cookiesList)
-      .get("redirected-country")
-      ?.value.toLowerCase() as CountryCode) ||
-    DEFAULT_COUNTRY;
+    (rawCountry?.toLowerCase().trim() as CountryCode) || DEFAULT_COUNTRY;
 
   const periods = await fetchCountryPeriods(country);
   if (periods.length === 0) throw new Error("NO_PERIODS_FOUND");
@@ -95,14 +82,9 @@ export async function generateMetadata(ctx: {
   const { country } = await ctx.params;
   const { lang } = await ctx.searchParams;
 
-  const hdrs = headers();
-  const cks = cookies();
-
   const data = await loadCountryData({
     params: { country },
     searchParams: { lang },
-    headers: hdrs,
-    cookies: cks,
   });
 
   const prefix = TITLE_PREFIX[data.lang] ?? TITLE_PREFIX.en;

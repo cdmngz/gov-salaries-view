@@ -1,6 +1,7 @@
 // src/app/page.tsx
 
-import RenderCountryPage from "@/components/RenderCountryPage.server";
-export { generateMetadata } from "@/lib/country";
+import ClientRedirect from "@/components/ClientRedirect";
 
-export default RenderCountryPage;
+export default function HomePage() {
+  return <ClientRedirect />;
+}
