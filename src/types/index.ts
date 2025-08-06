@@ -73,4 +73,4 @@ export interface Salary {
   };
 }
 
-export type Translation = Record<Language | "fr" | "pt" | "de", string>;
+export type Translation = Record<Language, string>;

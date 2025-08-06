@@ -3,14 +3,20 @@
     "flag": "🇪🇸",
     "names": {
       "es": "España",
-      "en": "Spain"
+      "en": "Spain",
+      "fr": "Espagne",
+      "pt": "Espanha",
+      "de": "Spanien"
     }
   },
   "ar": {
     "flag": "🇦🇷",
     "names": {
       "es": "Argentina",
-      "en": "Argentina"
+      "en": "Argentina",
+      "fr": "Argentine",
+      "pt": "Argentina",
+      "de": "Argentinien"
     }
   }
 }

@@ -1,6 +1,14 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+export function compareSalaryRatio(
+  officialSalary: number,
+  userSalary: number | null | undefined
+): number | null {
+  if (!userSalary || userSalary <= 0) return null;
+  return Number((officialSalary / userSalary).toFixed(1));
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

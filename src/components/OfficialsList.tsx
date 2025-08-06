@@ -3,31 +3,34 @@
 "use client";
 
 import Portrait from "@/components/Portrait";
+import { TEXT_TRANSLATION } from "@/i18n";
 import { ROLE_TRANSLATIONS } from "@/i18n/roles";
 import { DEFAULT_LANG } from "@/lib/constants";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import { convert } from "@/lib/utils";
+import { compareSalaryRatio, convert } from "@/lib/utils";
 import type { Official, PartyMeta, Rates } from "@/types";
 import { Language } from "@/validators/lang";
 
 export default function OfficialsList({
-  title,
-  officials,
-  lang,
-  onSelect,
   baseCurrency,
-  selectedCurrency,
-  rates,
+  lang,
+  officials,
+  onSelect,
   parties,
+  rates,
+  selectedCurrency,
+  title,
+  userSalary,
 }: {
-  title: string;
-  officials: Official[];
-  lang: Language;
-  onSelect?: (official: Official) => void;
   baseCurrency: string;
-  selectedCurrency: string;
-  rates: Rates;
+  lang: Language;
+  officials: Official[];
+  onSelect?: (official: Official) => void;
   parties: Record<string, PartyMeta>;
+  rates: Rates;
+  selectedCurrency: string;
+  title: string;
+  userSalary: number | null;
 }) {
   return (
     <section className="flex flex-col p-4 rounded-2xl items-center gap-2  bg-white dark:bg-zinc-900 w-fit">
@@ -55,6 +58,7 @@ export default function OfficialsList({
             selectedCurrency,
             rates.rates
           );
+          const ratio = compareSalaryRatio(gross, userSalary);
 
           return (
             <li key={official.name} className="flex justify-center">
@@ -95,7 +99,7 @@ export default function OfficialsList({
 
                 {official.party && parties[official.party] && (
                   <p
-                    className="text-xs text-center w-48 font-medium"
+                    className="text-xs text-center w-48 font-semibold"
                     style={{ color: parties[official.party].color }}
                   >
                     {official.party} - {parties[official.party].name}
@@ -107,7 +111,7 @@ export default function OfficialsList({
                   parties[official.party].en &&
                   lang === DEFAULT_LANG && (
                     <p
-                      className="text-xs text-center w-48 font-medium"
+                      className="text-xs text-center w-48 font-semibold"
                       style={{ color: parties[official.party].color }}
                     >
                       ({parties[official.party][DEFAULT_LANG]})
@@ -141,6 +145,12 @@ export default function OfficialsList({
                   })}{" "}
                   {CURRENCY_SYMBOLS[selectedCurrency]}
                 </p>
+
+                {ratio && (
+                  <p className="text-xs font-semibold text-blue-600">
+                    x{ratio} {TEXT_TRANSLATION["your salary"][lang]}
+                  </p>
+                )}
               </div>
             </li>
           );

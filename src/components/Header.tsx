@@ -90,7 +90,7 @@ export default function Header({
           <SelectContent>
             {Object.entries(countries).map(([code, meta]) => (
               <SelectItem key={code} value={code}>
-                {meta.flag} {meta.names?.[lang] ?? code.toUpperCase()}
+                {meta.flag} {meta.names[lang] ?? code.toUpperCase()}
               </SelectItem>
             ))}
           </SelectContent>

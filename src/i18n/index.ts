@@ -19,10 +19,7 @@ export const DESCRIPTION_TEMPLATE: Translation = {
 };
 
 // HEADER
-export const LANGUAGE_NAMES: Record<
-  Language | "fr" | "pt" | "de",
-  Translation
-> = {
+export const LANGUAGE_NAMES: Record<Language, Translation> = {
   en: {
     en: "English",
     es: "Spanish",
@@ -119,5 +116,22 @@ export const SECTION_TITLES: Record<SectionKey, Translation> = {
     fr: "Fonctionnaires",
     pt: "Funcionários",
     de: "Beamte",
+  },
+};
+
+export const TEXT_TRANSLATION: Record<string, Translation> = {
+  "compare your salary": {
+    en: "Compare your annual gross salary",
+    es: "Compara tu sueldo anual bruto",
+    fr: "Compare ton salaire annuel brut",
+    pt: "Compare o seu salário anual bruto",
+    de: "Vergleiche dein jährliches Bruttogehalt",
+  },
+  "your salary": {
+    en: "your salary",
+    es: "tu sueldo",
+    fr: "ton salaire",
+    pt: "seu salário",
+    de: "dein Gehalt",
   },
 };
