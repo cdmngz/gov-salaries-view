@@ -1,12 +1,14 @@
 // src/app/api/data/[...path]/route.ts
 
+import { serverEnv } from "@/lib/env";
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const { path } = await params;
 
-  const externalBase = process.env.DATA_API_URL!;
+  const externalBase = serverEnv.DATA_API_URL!;
   const url = [externalBase, ...path].join("/");
 
   const res = await fetch(url, request);

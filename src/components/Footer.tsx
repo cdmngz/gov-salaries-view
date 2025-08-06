@@ -22,6 +22,7 @@ export default function Footer({ lang, version }: FooterProps) {
           href="https://github.com/cdmngz/gov-salaries-data"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="View the data repository on GitHub"
           className="underline hover:text-blue-600"
         >
           data

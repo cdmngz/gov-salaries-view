@@ -1,14 +1,29 @@
-// src/lib/env.ts
 import { z } from "zod";
 
-const EnvSchema = z.object({
+// ✅ Server-only variables
+const ServerEnvSchema = z.object({
   DATA_API_URL: z.url(),
-  NODE_ENV: z.enum(["development", "production", "test"]),
+  NODE_ENV: z.enum(["development", "production", "test"]).optional(),
 });
 
-const _env = EnvSchema.safeParse(process.env);
-if (!_env.success) {
-  throw new Error("Invalid environment variables");
-}
+// ✅ Public variables (client-safe)
+const PublicEnvSchema = z.object({
+  NEXT_PUBLIC_GIT_VERSION: z.string().default("dev"),
+});
 
-export const env = _env.data;
+export const serverEnv = (() => {
+  if (typeof window !== "undefined") return {} as never; // prevent loading on client
+  const parsed = ServerEnvSchema.safeParse(process.env);
+  if (!parsed.success) {
+    throw new Error("❌ Invalid server environment variables");
+  }
+  return parsed.data;
+})();
+
+export const publicEnv = (() => {
+  const parsed = PublicEnvSchema.safeParse(process.env);
+  if (!parsed.success) {
+    throw new Error("❌ Invalid public environment variables");
+  }
+  return parsed.data;
+})();

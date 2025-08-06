@@ -1,25 +1,16 @@
 // src/lib/data.ts
-import { z } from "zod";
+
 import type { CountryCode, CountryPeriod, Data, Rates } from "@/types";
+import { serverEnv } from "./env";
 
 const API_PREFIX = "/api/data";
-let DATA_API_URL = "";
-
-if (typeof window === "undefined") {
-  const EnvSchema = z.object({
-    DATA_API_URL: z.url(),
-  });
-  const { DATA_API_URL: raw } = EnvSchema.parse(process.env);
-  DATA_API_URL = raw.replace(/\/+$/, "");
-}
+const DATA_API_URL = serverEnv.DATA_API_URL?.replace(/\/+$/, "") || "";
 
 /** Build the URL or path to fetch: proxies on client, calls real API on server */
 function buildFetchPath(parts: string[]): string {
   if (typeof window !== "undefined") {
-    // client: hit our Next.js API route
     return [API_PREFIX, ...parts].join("/");
   }
-  // server: hit the real upstream
   return [DATA_API_URL, ...parts].join("/");
 }
 
@@ -85,6 +76,7 @@ export async function fetchCountryData(
       `Failed to load data.json from ${dataUrl} (status ${dataRes.status})`
     );
   }
+
   if (!ratesRes.ok) {
     throw new Error(
       `Failed to load rates.json from ${ratesUrl} (status ${ratesRes.status})`

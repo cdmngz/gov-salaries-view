@@ -1,9 +1,15 @@
 // /src/components/AppShell.tsx
+
 "use client";
 
 import countriesData from "@/data/countries.json";
 import { useOfficials } from "@/hooks/useOfficials";
-import { DEFAULT_COUNTRY, DEFAULT_CURRENCY } from "@/lib/constants";
+import {
+  DEFAULT_COUNTRY,
+  DEFAULT_CURRENCY,
+  DEFAULT_LANG,
+} from "@/lib/constants";
+import { publicEnv } from "@/lib/env"; // environment validated with zod
 import type { CountryCode } from "@/types";
 import { parseLang } from "@/validators/lang";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -14,7 +20,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [, pathCountry] = pathname.split("/");
+  const segments = pathname.split("/");
+  const pathCountry = segments[1] || DEFAULT_COUNTRY;
+
   const country: CountryCode =
     pathCountry in countriesData
       ? (pathCountry as CountryCode)
@@ -26,10 +34,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const currency =
     searchParams.get("currency") || rates?.baseCurrency || DEFAULT_CURRENCY;
 
-  const lang = parseLang(searchParams.get("lang"));
+  const lang = parseLang(searchParams.get("lang")) ?? DEFAULT_LANG;
+
+  const version = publicEnv.NEXT_PUBLIC_GIT_VERSION;
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header
         country={country}
         currency={currency}
@@ -42,7 +52,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       />
 
       <main className="flex-1">{children}</main>
-      <Footer lang={lang} />
-    </>
+
+      <Footer lang={lang} version={version} />
+    </div>
   );
 }

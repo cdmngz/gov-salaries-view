@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "cross-env NEXT_PUBLIC_GIT_VERSION=$(git describe --tags --abbrev=0) next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -38,6 +38,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.4",
     "tailwindcss": "^4",
