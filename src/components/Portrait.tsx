@@ -1,3 +1,5 @@
+// src/components/Portrait.tsx
+
 import React from "react";
 import { Official, PartyMeta } from "@/types";
 import { clothesVariants } from "./avatars/clothesVariants";
