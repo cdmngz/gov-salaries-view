@@ -29,6 +29,7 @@ export default function ThemeToggle() {
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+      className="shadow-xs"
     >
       {isDark ? (
         <SunIcon className="size-4" />

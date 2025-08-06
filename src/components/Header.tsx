@@ -73,18 +73,18 @@ export default function Header({
   };
 
   return (
-    <header className="w-full p-4 flex items-center justify-between bg-gray-100 dark:bg-gray-900 text-black dark:text-white shadow">
+    <header className="w-full p-4 flex flex-wrap items-center justify-between bg-gray-100 dark:bg-gray-900 text-black dark:text-white shadow">
       <div className="text-lg flex items-center gap-2 font-medium">
         <span role="img">🏛️</span> Government viewer
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center flex-wrap justify-center gap-4">
         {/* Country */}
         <Select
           value={country}
           onValueChange={(val) => onChangeParams({ lang }, `/${val}`)}
         >
-          <SelectTrigger className="p-2 text-sm font-medium border-none ">
+          <SelectTrigger className="p-2 text-sm font-medium border-none">
             <SelectValue placeholder="Country" />
           </SelectTrigger>
           <SelectContent>
@@ -101,7 +101,7 @@ export default function Header({
           value={lang}
           onValueChange={(val) => onChangeParams({ lang: val })}
         >
-          <SelectTrigger className="p-2 text-sm font-medium border-none ">
+          <SelectTrigger className="p-2 text-sm font-medium border-none">
             <SelectValue placeholder="Lang" />
           </SelectTrigger>
           <SelectContent>
@@ -118,7 +118,7 @@ export default function Header({
           value={currency}
           onValueChange={(val) => onChangeParams({ currency: val, lang })}
         >
-          <SelectTrigger className="p-2 text-sm font-medium border-none ">
+          <SelectTrigger className="p-2 text-sm font-medium border-none">
             <SelectValue placeholder="Currency">{currency}</SelectValue>
           </SelectTrigger>
 
@@ -139,7 +139,7 @@ export default function Header({
             onChangeParams({ year: y, semester: s, lang, currency });
           }}
         >
-          <SelectTrigger className="p-2 text-sm font-medium border-none ">
+          <SelectTrigger className="p-2 text-sm font-medium border-none">
             <SelectValue placeholder="Period" />
           </SelectTrigger>
           <SelectContent>

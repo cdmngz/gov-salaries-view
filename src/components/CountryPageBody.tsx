@@ -37,7 +37,7 @@ export default function CountryPageBody({
 
   return (
     <div className="p-6 flex flex-col items-center gap-8">
-      <h1 className="text-2xl font-bold flex items-center gap-2">
+      <h1 className="text-2xl font-semibold text-center flex items-center gap-2">
         {TITLE_PREFIX[lang] ?? TITLE_PREFIX[DEFAULT_LANG]}{" "}
         {countriesJson[country].names[lang] ??
           countriesJson[country].names[DEFAULT_LANG] ??

@@ -29,7 +29,7 @@ export default function OfficialsList({
 }) {
   return (
     <section className="flex flex-col p-4 rounded-2xl items-center gap-2  bg-white dark:bg-zinc-900 w-fit">
-      <h2 className="text-2xl font-semibold mb-2">
+      <h2 className="text-2xl font-medium mb-2">
         {title} {officials.length > 5 && `(${officials.length})`}
       </h2>
 
