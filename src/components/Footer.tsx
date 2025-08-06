@@ -1,5 +1,3 @@
-// /src/components/Footer.tsx
-
 "use client";
 
 import { FOOTER_MESSAGE } from "@/i18n";
@@ -8,23 +6,60 @@ import Link from "next/link";
 
 type FooterProps = {
   lang: Language;
+  version?: string;
 };
 
-export default function Footer({ lang }: FooterProps) {
+export default function Footer({ lang, version }: FooterProps) {
   const message = FOOTER_MESSAGE[lang];
   const [before = "", after = ""] = message.split("{{data}}");
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="py-4 text-center text-sm text-gray-600 dark:text-gray-300">
-      {before}
-      <Link
-        href="https://github.com/cdmngz/gov-salaries-data"
-        target="_blank"
-        className="text-blue-600 underline"
-      >
-        data
-      </Link>
-      {after}
+    <footer className="py-8 text-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 space-y-2">
+      <p>
+        {before}
+        <Link
+          href="https://github.com/cdmngz/gov-salaries-data"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-blue-600"
+        >
+          data
+        </Link>
+        {after}
+      </p>
+
+      {version && (
+        <p className="text-xs text-gray-400">
+          Release <span className="font-mono">{version}</span>
+        </p>
+      )}
+
+      <div className="text-xs text-gray-400 space-y-1 mt-4">
+        <p>&copy; {year} OfficialSalaries.org. All rights reserved.</p>
+        <p>
+          <Link
+            href="/docs/privacy-policy"
+            className="underline hover:text-blue-600"
+          >
+            Privacy Policy
+          </Link>{" "}
+          |{" "}
+          <Link
+            href="/docs/terms-of-use"
+            className="underline hover:text-blue-600"
+          >
+            Terms of Use
+          </Link>{" "}
+          |{" "}
+          <Link
+            href="/docs/data-sources"
+            className="underline hover:text-blue-600"
+          >
+            Data Sources & Attribution
+          </Link>
+        </p>
+      </div>
     </footer>
   );
 }
