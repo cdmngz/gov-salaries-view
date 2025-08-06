@@ -1,3 +1,5 @@
+// src/components/OfficialsList.tsx
+
 "use client";
 
 import Portrait from "@/components/Portrait";
