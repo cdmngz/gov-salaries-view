@@ -46,7 +46,7 @@ export default function CountryPageBody({
           country}
       </h1>
 
-      <div className="flex flex-col items-end w-full space-y-1">
+      {/* <div className="flex flex-col items-end w-full space-y-1">
         <label htmlFor="salaryInput" className="text-xs text-gray-600">
           {TEXT_TRANSLATION["compare your salary"][lang]}
         </label>
@@ -59,7 +59,7 @@ export default function CountryPageBody({
             setUserSalary(e.target.value ? Number(e.target.value) : null)
           }
         />
-      </div>
+      </div> */}
 
       {sectionGroups.map((group, i) => (
         <div key={i} className="flex flex-wrap justify-center gap-8">

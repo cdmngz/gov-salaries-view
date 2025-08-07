@@ -16,6 +16,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
+import { Info } from "lucide-react";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { GrossDisplay } from "./GrossDisplay";
 
 const ITEMS_LIMIT = 5;
 
@@ -135,14 +138,11 @@ export default function OfficialsList({
                         </p>
                       )}
 
-                    <p className="text-xs">
-                      Gross:{" "}
-                      {gross.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "}
-                      {CURRENCY_SYMBOLS[selectedCurrency]}
-                    </p>
+                    <GrossDisplay
+                      gross={gross}
+                      currency={selectedCurrency}
+                      details={official?.details}
+                    />
                     {/* {official.salary.detail && (
                   <ul className="text-xs dark:text-white text-gray-400 list-disc">
                     {Object.entries(official.salary.detail).map(
@@ -157,8 +157,7 @@ export default function OfficialsList({
                     <p className="text-xs">
                       Net: ~
                       {net.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
+                        maximumFractionDigits: 0,
                       })}{" "}
                       {CURRENCY_SYMBOLS[selectedCurrency]}
                     </p>

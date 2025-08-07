@@ -56,6 +56,7 @@ export interface Official {
   district?: string;
   party?: string;
   budget?: number;
+  details?: Record<string, string>;
 }
 
 export interface PartyMeta {
@@ -68,9 +69,6 @@ export interface PartyMeta {
 export interface Salary {
   gross: number;
   net: number;
-  detail?: {
-    [key: string]: number;
-  };
 }
 
 export type Translation = Record<Language, string>;
