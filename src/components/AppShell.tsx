@@ -1,5 +1,3 @@
-// /src/components/AppShell.tsx
-
 "use client";
 
 import countriesData from "@/data/countries.json";
@@ -9,7 +7,7 @@ import {
   DEFAULT_CURRENCY,
   DEFAULT_LANG,
 } from "@/lib/constants";
-import { publicEnv } from "@/lib/env"; // environment validated with zod
+import { publicEnv } from "@/lib/env";
 import type { CountryCode } from "@/types";
 import { parseLang } from "@/validators/lang";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -20,16 +18,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const segments = pathname.split("/");
-  const pathCountry = segments[1] || DEFAULT_COUNTRY;
+  const segments = pathname.split("/").filter(Boolean);
+  const rawCountry = segments[0] ?? DEFAULT_COUNTRY;
 
-  const country: CountryCode =
-    pathCountry in countriesData
-      ? (pathCountry as CountryCode)
-      : DEFAULT_COUNTRY;
+  const country = (
+    rawCountry in countriesData ? rawCountry : DEFAULT_COUNTRY
+  ) as CountryCode;
 
-  const { baseCurrency, rates, periods, year, semester } =
-    useOfficials(country);
+  const { baseCurrency, rates, periods, year } = useOfficials(country);
 
   const currency =
     searchParams.get("currency") || rates?.baseCurrency || DEFAULT_CURRENCY;
@@ -46,8 +42,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         baseCurrency={baseCurrency}
         rates={rates}
         periods={periods}
-        year={year}
-        semester={semester}
+        year={year ?? new Date().getFullYear()}
         lang={lang}
       />
 

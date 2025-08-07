@@ -10,15 +10,13 @@ import { CURRENCY_SYMBOLS } from "@/lib/currencies";
 import { compareSalaryRatio, convert } from "@/lib/utils";
 import type { Official, PartyMeta, Rates } from "@/types";
 import { Language } from "@/validators/lang";
+import { GrossDisplay } from "./GrossDisplay";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-import { Info } from "lucide-react";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { GrossDisplay } from "./GrossDisplay";
 
 const ITEMS_LIMIT = 5;
 
@@ -41,7 +39,7 @@ export default function OfficialsList({
   rates: Rates;
   selectedCurrency: string;
   title: string;
-  userSalary: number | null;
+  userSalary?: number | null;
 }) {
   return (
     <Accordion

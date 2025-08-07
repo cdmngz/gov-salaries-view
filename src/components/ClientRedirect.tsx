@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 const VALID_COUNTRIES = ["ar", "es"];
 const CACHE_KEY = "lastDetectedLocation";
-const CACHE_TTL_HOURS = 48;
+const CACHE_TTL_MS = 1000 * 60 * 60 * 48; // 48h
 
 type CachedLocation = {
   country: string;
@@ -17,11 +17,46 @@ type CachedLocation = {
   timestamp: number;
 };
 
+function getCache(): CachedLocation | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed?.country || !parsed?.timestamp) return null;
+    return parsed;
+  } catch {
+    localStorage.removeItem(CACHE_KEY);
+    return null;
+  }
+}
+
 function isCacheValid(entry: CachedLocation | null): boolean {
   if (!entry) return false;
   const age = Date.now() - entry.timestamp;
-  const ttl = CACHE_TTL_HOURS * 60 * 60 * 1000;
-  return age < ttl;
+  return age < CACHE_TTL_MS;
+}
+
+async function detectLocation(): Promise<CachedLocation> {
+  const browserLangRaw = navigator.language.split("-")[0];
+  const lang = parseLang(browserLangRaw);
+
+  try {
+    const res = await fetch("https://ipapi.co/json/");
+    const json = await res.json();
+    const country = json.country_code?.toLowerCase() || DEFAULT_COUNTRY;
+
+    return {
+      country,
+      lang,
+      timestamp: Date.now(),
+    };
+  } catch {
+    return {
+      country: DEFAULT_COUNTRY,
+      lang,
+      timestamp: Date.now(),
+    };
+  }
 }
 
 export default function ClientRedirect() {
@@ -34,58 +69,35 @@ export default function ClientRedirect() {
 
     if (VALID_COUNTRIES.includes(firstSegment)) return;
 
-    const rawCache = localStorage.getItem(CACHE_KEY);
-    let cached: CachedLocation | null = null;
+    const cached = getCache();
 
-    try {
-      if (rawCache) {
-        cached = JSON.parse(rawCache);
-      }
-    } catch {
-      localStorage.removeItem(CACHE_KEY);
-    }
-
-    if (cached && isCacheValid(cached)) {
-      router.replace(`/${cached.country}?lang=${cached.lang}`);
+    if (isCacheValid(cached) && VALID_COUNTRIES.includes(cached!.country)) {
+      router.replace(
+        `/${cached!.country}/${new Date().getFullYear()}?lang=${cached!.lang}`
+      );
       return;
     }
 
-    const detectAndRedirect = async () => {
+    const handleRedirect = async () => {
       setRedirecting(true);
+      const location = await detectLocation();
 
-      const browserLangRaw = navigator.language.split("-")[0];
-      const lang = parseLang(browserLangRaw);
+      const safeCountry = VALID_COUNTRIES.includes(location.country)
+        ? location.country
+        : DEFAULT_COUNTRY;
 
-      try {
-        const res = await fetch("https://ipapi.co/json/");
-        const json = await res.json();
-        const country = json.country_code?.toLowerCase() || DEFAULT_COUNTRY;
+      const cacheEntry: CachedLocation = {
+        country: safeCountry,
+        lang: location.lang,
+        timestamp: Date.now(),
+      };
 
-        const newCache: CachedLocation = {
-          country,
-          lang,
-          timestamp: Date.now(),
-        };
+      localStorage.setItem(CACHE_KEY, JSON.stringify(cacheEntry));
 
-        localStorage.setItem(CACHE_KEY, JSON.stringify(newCache));
-
-        router.replace(`/${country}?lang=${lang}`);
-      } catch (err) {
-        console.warn("Error detectando ubicación:", err);
-
-        const fallbackCache: CachedLocation = {
-          country: DEFAULT_COUNTRY,
-          lang,
-          timestamp: Date.now(),
-        };
-
-        localStorage.setItem(CACHE_KEY, JSON.stringify(fallbackCache));
-
-        router.replace(`/${DEFAULT_COUNTRY}?lang=${lang}`);
-      }
+      router.replace(`/${safeCountry}?lang=${location.lang}`);
     };
 
-    detectAndRedirect();
+    handleRedirect();
   }, [router]);
 
   return redirecting ? (

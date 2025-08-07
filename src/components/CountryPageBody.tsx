@@ -3,13 +3,11 @@
 "use client";
 
 import OfficialsList from "@/components/OfficialsList";
-import { SECTION_TITLES, TEXT_TRANSLATION, TITLE_PREFIX } from "@/i18n";
-import type { CountryCode, Data, Rates, Official, SectionKey } from "@/types";
+import { SECTION_TITLES, TITLE_PREFIX } from "@/i18n";
+import { DEFAULT_LANG } from "@/lib/constants";
+import type { CountryCode, Data, Official, Rates, SectionKey } from "@/types";
 import type { Language } from "@/validators/lang";
 import countriesJson from "../data/countries.json";
-import { DEFAULT_LANG } from "@/lib/constants";
-import { Input } from "./ui/input";
-import { useState } from "react";
 
 interface CountryPageBodyProps {
   country: CountryCode;
@@ -35,7 +33,7 @@ export default function CountryPageBody({
   rates,
   selectedCurrency,
 }: CountryPageBodyProps) {
-  const [userSalary, setUserSalary] = useState<number | null>(null);
+  // const [userSalary, setUserSalary] = useState<number | null>(null);
 
   return (
     <div className="p-6 flex flex-col items-center gap-8">
@@ -77,7 +75,7 @@ export default function CountryPageBody({
                 rates={rates}
                 selectedCurrency={selectedCurrency}
                 title={SECTION_TITLES[sectionKey][lang]}
-                userSalary={userSalary}
+                // userSalary={userSalary}
               />
             );
           })}

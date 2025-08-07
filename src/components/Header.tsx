@@ -11,7 +11,7 @@ import { LANGUAGE_NAMES } from "@/i18n";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
 import type { CountriesData, CountryCode, Rates } from "@/types";
 import { Language, LanguageSchema } from "@/validators/lang";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import countriesData from "../data/countries.json";
 import ThemeToggle from "./ThemeToggle";
@@ -23,24 +23,19 @@ export default function Header({
   rates,
   periods,
   year: defaultYear,
-  semester: defaultSemester,
   lang,
 }: {
   country: CountryCode;
   currency: string;
   baseCurrency: string;
   rates: Rates | null;
-  periods: { year: number; semester: 1 | 2 }[];
+  periods: { year: number }[];
   year: number;
-  semester: 1 | 2;
   lang: Language;
 }) {
-  const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const paramYear = Number(searchParams.get("year") ?? defaultYear);
-  const paramSem = Number(searchParams.get("semester") ?? defaultSemester);
   const countries: CountriesData = countriesData;
 
   const currencyCodes = useMemo(() => {
@@ -50,17 +45,10 @@ export default function Header({
     return Array.from(set);
   }, [baseCurrency, rates]);
 
-  const periodOptions = useMemo(() => {
-    return periods
-      .map((p) => ({
-        value: `${p.year}-${p.semester}` as const,
-        label: `${p.year} - S${p.semester}`,
-      }))
-      .sort((a, b) => {
-        const [ay, as] = a.value.split("-").map(Number);
-        const [by, bs] = b.value.split("-").map(Number);
-        return by !== ay ? by - ay : bs - as;
-      });
+  const years = useMemo(() => {
+    return Array.from(new Set(periods.map((p) => p.year))).sort(
+      (a, b) => b - a
+    );
   }, [periods]);
 
   const onChangeParams = (
@@ -69,7 +57,9 @@ export default function Header({
   ) => {
     const params = new URLSearchParams(searchParams.toString());
     for (const key in updates) params.set(key, updates[key]);
-    router.push(`${pathnameOverride ?? pathname}?${params.toString()}`);
+    router.push(
+      `${pathnameOverride ?? window.location.pathname}?${params.toString()}`
+    );
   };
 
   return (
@@ -82,7 +72,9 @@ export default function Header({
         {/* Country */}
         <Select
           value={country}
-          onValueChange={(val) => onChangeParams({ lang }, `/${val}`)}
+          onValueChange={(val) => {
+            router.push(`/${val}/${defaultYear}?${searchParams.toString()}`);
+          }}
         >
           <SelectTrigger className="p-2 text-sm font-medium border-none">
             <SelectValue placeholder="Country" />
@@ -116,7 +108,7 @@ export default function Header({
         {/* Currency */}
         <Select
           value={currency}
-          onValueChange={(val) => onChangeParams({ currency: val, lang })}
+          onValueChange={(val) => onChangeParams({ currency: val })}
         >
           <SelectTrigger className="p-2 text-sm font-medium border-none">
             <SelectValue placeholder="Currency">{currency}</SelectValue>
@@ -131,27 +123,25 @@ export default function Header({
           </SelectContent>
         </Select>
 
-        {/* Period */}
+        {/* Year */}
         <Select
-          value={`${paramYear}-${paramSem}`}
-          onValueChange={(val) => {
-            const [y, s] = val.split("-");
-            onChangeParams({ year: y, semester: s, lang, currency });
-          }}
+          value={defaultYear.toString()}
+          onValueChange={(val) =>
+            router.push(`/${country}/${val}?${searchParams.toString()}`)
+          }
         >
           <SelectTrigger className="p-2 text-sm font-medium border-none">
-            <SelectValue placeholder="Period" />
+            <SelectValue placeholder="Year" />
           </SelectTrigger>
           <SelectContent>
-            {periodOptions.map(({ value, label }) => (
-              <SelectItem key={value} value={value}>
-                {label}
+            {years.map((year) => (
+              <SelectItem key={year} value={year.toString()}>
+                {year}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
-        {/* Theme Toggle */}
         <ThemeToggle />
       </div>
     </header>

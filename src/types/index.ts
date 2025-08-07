@@ -8,7 +8,6 @@ export type CountryCode = keyof CountriesData;
 
 export interface CountryPeriod {
   year: number;
-  semester: 1 | 2;
 }
 
 export const sectionToBranchMap = {

@@ -1,20 +1,27 @@
-// src/lib/country.ts
-
 import { DESCRIPTION_TEMPLATE, TITLE_PREFIX } from "@/i18n";
-import type { CountryCode, CountryPeriod, Data, Rates } from "@/types";
+import type { CountryCode, Data, Rates } from "@/types";
+import { Language } from "@/validators/lang";
 import type { Metadata } from "next";
+import countriesJson from "../data/countries.json";
+import { DEFAULT_COUNTRY, DEFAULT_LANG } from "./constants";
 import {
   fetchAvailableCountries,
-  fetchCountryPeriods,
   fetchCountryData,
+  fetchCountryPeriods,
 } from "./data";
-import countriesJson from "../data/countries.json";
-import { Language } from "@/validators/lang";
-import { DEFAULT_COUNTRY, DEFAULT_LANG } from "./constants";
 
 export async function generateStaticParams() {
   const countries = await fetchAvailableCountries();
-  return countries.map((code) => ({ country: code }));
+
+  const allParams = await Promise.all(
+    countries.map(async (country) => {
+      const periods = await fetchCountryPeriods(country);
+      const years = Array.from(new Set(periods.map((p) => p.year)));
+      return years.map((year) => ({ country, year: year.toString() }));
+    })
+  );
+
+  return allParams.flat();
 }
 
 export type LoadCountryDataResult = {
@@ -27,20 +34,17 @@ export type LoadCountryDataResult = {
 };
 
 export async function loadCountryData(ctx: {
-  params: { country?: string };
+  params: { country?: string; year?: string };
   searchParams: {
     lang?: Language;
-    year?: string;
-    semester?: string;
     currency?: string;
   };
 }): Promise<LoadCountryDataResult> {
   const { params, searchParams } = ctx;
 
   const rawCountry = params.country;
+  const rawYear = params.year;
   const lang = searchParams.lang ?? DEFAULT_LANG;
-  const qYear = searchParams.year;
-  const qSemester = searchParams.semester;
   const qCurrency = searchParams.currency;
 
   const country: CountryCode =
@@ -49,12 +53,12 @@ export async function loadCountryData(ctx: {
   const periods = await fetchCountryPeriods(country);
   if (periods.length === 0) throw new Error("NO_PERIODS_FOUND");
 
-  const { year, semester }: CountryPeriod =
-    qYear && qSemester
-      ? { year: Number(qYear), semester: Number(qSemester) as 1 | 2 }
-      : periods[periods.length - 1];
+  const validYears = Array.from(new Set(periods.map((p) => p.year)));
+  const year = rawYear ? Number(rawYear) : validYears.at(-1);
 
-  const { data: json, rates } = await fetchCountryData(country, year, semester);
+  if (!validYears.includes(Number(year))) throw new Error("INVALID_YEAR");
+
+  const { data: json, rates } = await fetchCountryData(country, Number(year));
 
   const baseCurrency = json.baseCurrency;
   const selectedCurrency =
@@ -71,36 +75,49 @@ export async function loadCountryData(ctx: {
 }
 
 export async function generateMetadata(ctx: {
-  params: Promise<{ country?: string }>;
+  params: Promise<{ country?: string; year?: string }>;
   searchParams: Promise<{
     lang?: Language;
-    year?: string;
-    semester?: string;
     currency?: string;
   }>;
 }): Promise<Metadata> {
-  const { country } = await ctx.params;
+  const { country, year } = await ctx.params;
   const { lang } = await ctx.searchParams;
 
-  const data = await loadCountryData({
-    params: { country },
-    searchParams: { lang },
-  });
+  if (!country || !(country in countriesJson)) {
+    return {
+      title: "Not found",
+      description: "Country not found",
+    };
+  }
 
-  const prefix = TITLE_PREFIX[data.lang] ?? TITLE_PREFIX.en;
-  const countryName =
-    countriesJson[data.country].names[data.lang] ??
-    countriesJson[data.country].names.en ??
-    data.country;
-  const title = `${prefix} ${countryName}`;
-  const description =
-    DESCRIPTION_TEMPLATE[data.lang] ?? DESCRIPTION_TEMPLATE.en;
+  try {
+    const data = await loadCountryData({
+      params: { country, year },
+      searchParams: { lang },
+    });
 
-  return {
-    title,
-    description,
-    openGraph: { title, description },
-  };
+    const prefix = TITLE_PREFIX[data.lang] ?? TITLE_PREFIX.en;
+    const countryName =
+      countriesJson[data.country].names[data.lang] ??
+      countriesJson[data.country].names.en ??
+      data.country;
+
+    const title = `${prefix} ${countryName}`;
+    const description =
+      DESCRIPTION_TEMPLATE[data.lang] ?? DESCRIPTION_TEMPLATE.en;
+
+    return {
+      title,
+      description,
+      openGraph: { title, description },
+    };
+  } catch {
+    return {
+      title: "Unavailable",
+      description: "Data not available for this year.",
+    };
+  }
 }
 
 export type PageProps = Parameters<typeof loadCountryData>[0];
