@@ -1,3 +1,5 @@
+// src/components/AppShell.tsx
+
 "use client";
 
 import countriesData from "@/data/countries.json";
