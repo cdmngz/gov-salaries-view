@@ -1,3 +1,5 @@
+// src/components/Footer.tsx
+
 "use client";
 
 import { FOOTER_MESSAGE } from "@/i18n";
