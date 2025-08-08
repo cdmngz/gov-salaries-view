@@ -59,11 +59,11 @@ export const LANGUAGE_NAMES: Record<Language, Translation> = {
 
 // FOOTER
 export const FOOTER_MESSAGE: Translation = {
-  es: "Ayuda a mejorar la precisión - verifica y contribuye con la {{data}} pública",
-  en: "Help improve accuracy - verify and contribute to public {{data}}",
-  fr: "Aidez à améliorer la précision - vérifiez et contribuez au {{data}} public",
-  pt: "Ajude a melhorar a precisão - verifique e contribua para o {{data}} público",
-  de: "Helfen Sie die Genauigkeit zu verbessern - überprüfen und tragen Sie zur {{data}} bei",
+  es: "Ayuda a mejorar la precisión - verifica y contribuye con la data pública",
+  en: "Help improve accuracy - verify and contribute to public data",
+  fr: "Aidez à améliorer la précision - vérifiez et contribuez au data public",
+  pt: "Ajude a melhorar a precisão - verifique e contribua para o data público",
+  de: "Helfen Sie die Genauigkeit zu verbessern - überprüfen und tragen Sie zur data bei",
 };
 
 // OFFICIALS

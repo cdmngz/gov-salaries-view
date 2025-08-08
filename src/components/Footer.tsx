@@ -10,12 +10,10 @@ type FooterProps = {
 };
 
 export default function Footer({ lang, version }: FooterProps) {
-  const message = FOOTER_MESSAGE[lang];
-  const [before = "", after = ""] = message.split("{{data}}");
-  const year = new Date().getFullYear();
+  const [before = "", after = ""] = FOOTER_MESSAGE[lang].split("data");
 
   return (
-    <footer className="py-8 text-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 space-y-2">
+    <footer className="py-6 text-center text-sm text-muted-foreground border-t border-gray-200 dark:border-gray-700 space-y-2">
       <p>
         {before}
         <Link
@@ -31,13 +29,14 @@ export default function Footer({ lang, version }: FooterProps) {
       </p>
 
       {version && (
-        <p className="text-xs text-gray-400">
-          Release <span className="font-mono">{version}</span>
-        </p>
+        <p className="text-xs font-light m-0">Release version {version}</p>
       )}
 
-      <div className="text-xs text-gray-400 space-y-1 mt-4">
-        <p>&copy; {year} OfficialSalaries.org. All rights reserved.</p>
+      <div className="text-xs space-y-1 mt-4">
+        <p>
+          &copy; {new Date().getFullYear()} OfficialSalaries.org. All rights
+          reserved.
+        </p>
         <p>
           <Link
             href="/docs/privacy-policy"
