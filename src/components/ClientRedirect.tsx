@@ -88,7 +88,7 @@ export default function ClientRedirect() {
 
       const cacheEntry: CachedLocation = {
         country: safeCountry,
-        lang: location.lang,
+        lang: parseLang(location.lang),
         timestamp: Date.now(),
       };
 
@@ -101,8 +101,6 @@ export default function ClientRedirect() {
   }, [router]);
 
   return redirecting ? (
-    <p className="text-center mt-10 text-gray-500">
-      Detectando tu ubicación...
-    </p>
+    <p className="text-center mt-10 text-muted-foreground">Loading ubication</p>
   ) : null;
 }
