@@ -1,3 +1,5 @@
+// src/components/CountryPageBody.tsx
+
 "use client";
 
 import OfficialsList from "@/components/OfficialsList";
