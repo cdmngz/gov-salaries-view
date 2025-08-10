@@ -1,4 +1,14 @@
 {
+  "ar": {
+    "flag": "🇦🇷",
+    "names": {
+      "es": "Argentina",
+      "en": "Argentina",
+      "fr": "Argentine",
+      "pt": "Argentina",
+      "de": "Argentinien"
+    }
+  },
   "es": {
     "flag": "🇪🇸",
     "names": {
@@ -9,14 +19,24 @@
       "de": "Spanien"
     }
   },
-  "ar": {
-    "flag": "🇦🇷",
+  "fr": {
+    "flag": "🇫🇷",
     "names": {
-      "es": "Argentina",
-      "en": "Argentina",
-      "fr": "Argentine",
-      "pt": "Argentina",
-      "de": "Argentinien"
+      "es": "Francia",
+      "en": "France",
+      "fr": "France",
+      "pt": "França",
+      "de": "Frankreich"
+    }
+  },
+  "us": {
+    "flag": "🇺🇸",
+    "names": {
+      "es": "Estados Unidos",
+      "en": "United States",
+      "fr": "États-Unis",
+      "pt": "Estados Unidos",
+      "de": "Vereinigte Staaten"
     }
   }
 }
