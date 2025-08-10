@@ -3,11 +3,10 @@
 "use client";
 
 import Portrait from "@/components/Portrait";
-import { TEXT_TRANSLATION } from "@/i18n";
 import { ROLE_TRANSLATIONS } from "@/i18n/roles";
 import { DEFAULT_LANG } from "@/lib/constants";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import { compareSalaryRatio, convert } from "@/lib/utils";
+import { convert } from "@/lib/utils";
 import type { Official, PartyMeta, Rates } from "@/types";
 import { Language } from "@/validators/lang";
 import { GrossDisplay } from "./GrossDisplay";
@@ -18,7 +17,7 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 
-const ITEMS_LIMIT = 5;
+const MAX_OFFICIALS_LIMIT = 7;
 
 export default function OfficialsList({
   baseCurrency,
@@ -29,7 +28,6 @@ export default function OfficialsList({
   rates,
   selectedCurrency,
   title,
-  userSalary,
 }: {
   baseCurrency: string;
   lang: Language;
@@ -39,18 +37,18 @@ export default function OfficialsList({
   rates: Rates;
   selectedCurrency: string;
   title: string;
-  userSalary?: number | null;
 }) {
   return (
     <Accordion
       type="multiple"
-      defaultValue={officials.length <= ITEMS_LIMIT ? [title] : []}
-      className="flex flex-col p-4 rounded-2xl items-center gap-2  bg-white dark:bg-zinc-900 w-fit"
+      defaultValue={officials.length <= MAX_OFFICIALS_LIMIT ? [title] : []}
+      className="flex flex-col p-4 rounded-2xl items-center gap-2 bg-card w-fit"
     >
       <AccordionItem value={title} key={title}>
         <AccordionTrigger className="text-center hover:no-underline flex justify-center">
           <h2 className="text-2xl font-medium mb-2">
-            {title} {officials.length > ITEMS_LIMIT && `(${officials.length})`}
+            {title}{" "}
+            {officials.length > MAX_OFFICIALS_LIMIT && `(${officials.length})`}
           </h2>
         </AccordionTrigger>
         <AccordionContent>
@@ -74,7 +72,6 @@ export default function OfficialsList({
                 selectedCurrency,
                 rates.rates
               );
-              const ratio = compareSalaryRatio(gross, userSalary);
 
               return (
                 <li key={official.name} className="flex justify-center">
@@ -141,17 +138,6 @@ export default function OfficialsList({
                       currency={selectedCurrency}
                       details={official?.details}
                     />
-                    {/* {official.salary.detail && (
-                  <ul className="text-xs dark:text-white text-gray-400 list-disc">
-                    {Object.entries(official.salary.detail).map(
-                      ([detail, amount]) => (
-                        <li key={detail}>
-                          {detail} ({amount})
-                        </li>
-                      )
-                    )}
-                  </ul>
-                )} */}
                     <p className="text-xs">
                       Net: ~
                       {net.toLocaleString(undefined, {
@@ -159,12 +145,6 @@ export default function OfficialsList({
                       })}{" "}
                       {CURRENCY_SYMBOLS[selectedCurrency]}
                     </p>
-
-                    {ratio && (
-                      <p className="text-xs font-semibold text-blue-600">
-                        x{ratio} {TEXT_TRANSLATION["your salary"][lang]}
-                      </p>
-                    )}
                   </div>
                 </li>
               );

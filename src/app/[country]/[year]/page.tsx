@@ -38,7 +38,7 @@ export default async function Page({
   const baseCurrency = json.baseCurrency;
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <ServerHeader
         country={country}
         year={Number(year)}
@@ -51,6 +51,6 @@ export default async function Page({
         <ClientView json={json} rates={rates} baseCurrency={baseCurrency} />
       </main>
       <ServerFooter />
-    </>
+    </div>
   );
 }

@@ -38,7 +38,7 @@ export default function HeaderControlsClient({
 }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const countries: CountriesData = countriesData as CountriesData;
+  const countries = countriesData as CountriesData;
 
   const currencyCodes = useMemo(() => {
     const set = new Set<string>();

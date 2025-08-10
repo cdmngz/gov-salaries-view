@@ -59,23 +59,12 @@ export default function ClientView({
 
   const [before = "", after = ""] = FOOTER_MESSAGE[lang].split("data");
 
-  const sample = useMemo(() => {
-    try {
-      return new Intl.NumberFormat(lang, {
-        style: "currency",
-      }).format(1234.56);
-    } catch {
-      return `${currency} 1234.56`;
-    }
-  }, [lang, currency]);
-
   return (
     <div>
       <div className="p-6 flex flex-col items-center gap-2">
         <h2 className="text-2xl font-semibold">
           {TITLE_PREFIX[lang]} {countryName}
         </h2>
-
         <p className="text-muted-foreground text-xs">
           {before}
           <Link
@@ -90,9 +79,13 @@ export default function ClientView({
         </p>
 
         <p className="text-xs text-muted-foreground ">
-          Format -{" "}
+          Format ({currency}) -{" "}
           <strong>
-            {sample} {CURRENCY_SYMBOLS[currency] ?? ""}
+            {(12345.6789).toLocaleString(undefined, {
+              minimumFractionDigits: currency === "BTC" ? 4 : 0,
+              maximumFractionDigits: currency === "BTC" ? 4 : 0,
+            })}{" "}
+            {CURRENCY_SYMBOLS[currency]}
           </strong>
         </p>
       </div>
