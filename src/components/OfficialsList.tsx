@@ -19,6 +19,14 @@ import {
 
 const MAX_OFFICIALS_LIMIT = 7;
 
+const ranges: Record<number, string> = {
+  1: "←",
+  2: "↖",
+  3: "↑",
+  4: "➚",
+  5: "→",
+};
+
 export default function OfficialsList({
   baseCurrency,
   lang,
@@ -56,12 +64,6 @@ export default function OfficialsList({
             {officials.map((official) => {
               const gross = convert(
                 official.salary.gross,
-                baseCurrency,
-                selectedCurrency,
-                rates.rates
-              );
-              const net = convert(
-                official.salary.net,
                 baseCurrency,
                 selectedCurrency,
                 rates.rates
@@ -117,7 +119,8 @@ export default function OfficialsList({
                         className="text-xs text-center w-48 font-semibold"
                         style={{ color: parties[official.party].color }}
                       >
-                        {official.party} - {parties[official.party].name}
+                        {official.party} {ranges[parties[official.party].range]}{" "}
+                        {parties[official.party].name}{" "}
                       </p>
                     )}
 
@@ -138,13 +141,6 @@ export default function OfficialsList({
                       currency={selectedCurrency}
                       details={official?.details}
                     />
-                    <p className="text-xs">
-                      Net: ~
-                      {net.toLocaleString(undefined, {
-                        maximumFractionDigits: 0,
-                      })}{" "}
-                      {CURRENCY_SYMBOLS[selectedCurrency]}
-                    </p>
                   </div>
                 </li>
               );
