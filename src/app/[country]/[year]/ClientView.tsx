@@ -6,7 +6,6 @@ import OfficialsList from "@/components/OfficialsList";
 import countriesJson from "@/data/countries.json";
 import { FOOTER_MESSAGE, SECTION_TITLES, TITLE_PREFIX } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
-import { CURRENCY_SYMBOLS } from "@/lib/currencies";
 import type { CountryCode, Data, Official, Rates, SectionKey } from "@/types";
 import { parseLang, type Language } from "@/validators/lang";
 import Link from "next/link";
@@ -61,7 +60,7 @@ export default function ClientView({
 
   return (
     <div>
-      <div className="p-6 flex flex-col items-center gap-2">
+      <div className="my-4 pb-6 flex flex-col items-center gap-2">
         <h2 className="text-2xl font-semibold">
           {TITLE_PREFIX[lang]} {countryName}
         </h2>
@@ -76,17 +75,6 @@ export default function ClientView({
             data
           </Link>
           {after}
-        </p>
-
-        <p className="text-xs text-muted-foreground ">
-          Format ({currency}) -{" "}
-          <strong>
-            {(12345.6789).toLocaleString(undefined, {
-              minimumFractionDigits: currency === "BTC" ? 4 : 0,
-              maximumFractionDigits: currency === "BTC" ? 4 : 0,
-            })}{" "}
-            {CURRENCY_SYMBOLS[currency]}
-          </strong>
         </p>
       </div>
 
