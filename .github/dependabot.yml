@@ -3,4 +3,14 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+      time: "04:00"
+      timezone: "Europe/Madrid"
+    groups:
+      everything:
+        applies-to: version-updates
+        patterns: ["*"]
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps"
+      include: "scope"
