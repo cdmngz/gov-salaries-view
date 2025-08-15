@@ -29,6 +29,5 @@ export default async function CountryIndex({
     notFound();
   }
 
-  const latest = periods.map((p) => p.year).sort((a, b) => b - a)[0];
-  redirect(`/${country}/${latest}`);
+  redirect(`/${country}/${periods.sort()[0]}`);
 }

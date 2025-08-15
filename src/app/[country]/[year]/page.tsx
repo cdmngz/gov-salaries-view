@@ -1,6 +1,7 @@
 // src/app/[country]/[year]/page.tsx
 
 import ServerHeader from "@/components/ServerHeader";
+import countriesJson from "@/data/countries.json";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import {
   fetchAvailableCountries,
@@ -8,8 +9,9 @@ import {
   fetchCountryPeriods,
 } from "@/lib/data";
 import type { CountryCode } from "@/types";
+import { parseLang } from "@/validators/lang";
+import { Metadata } from "next";
 import ClientView from "./ClientView";
-import ServerFooter from "@/components/ServerFooter";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -18,12 +20,32 @@ export async function generateStaticParams() {
   const countries = await fetchAvailableCountries();
   const combos = await Promise.all(
     countries.map(async (country: CountryCode) => {
-      const periods = await fetchCountryPeriods(country);
-      const years = Array.from(new Set(periods.map((p) => p.year)));
+      const years = await fetchCountryPeriods(country);
       return years.map((y) => ({ country, year: String(y) }));
     })
   );
   return combos.flat();
+}
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ country: CountryCode; year: string }>;
+  searchParams: Promise<{ lang?: string; currency?: string }>;
+}): Promise<Metadata> {
+  const { country, year } = await params;
+  const { lang: langParam, currency: currencyParam } = await searchParams;
+
+  const lang = parseLang(langParam);
+  const currency = (currencyParam ?? DEFAULT_CURRENCY).toUpperCase();
+  const countryName = countriesJson[country].names[lang];
+
+  return {
+    title: `${countryName} — ${year} • ${currency}`,
+    openGraph: { title: `${countryName} ${year} — ${currency}` },
+    alternates: { canonical: `/${country}/${year}` },
+  };
 }
 
 export default async function Page({
@@ -50,7 +72,6 @@ export default async function Page({
       <main className="flex-1 p-6">
         <ClientView json={json} rates={rates} baseCurrency={baseCurrency} />
       </main>
-      <ServerFooter />
     </div>
   );
 }

@@ -1,4 +1,14 @@
 {
+  "world": {
+    "flag": "🌎",
+    "names": {
+      "es": "Mundo",
+      "en": "World",
+      "fr": "Monde",
+      "pt": "Mundo",
+      "de": "Welt"
+    }
+  },
   "ar": {
     "flag": "🇦🇷",
     "names": {

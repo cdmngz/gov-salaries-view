@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { DEFAULT_CURRENCY } from "./constants";
 
 export function compareSalaryRatio(
   officialSalary: number,
@@ -23,4 +24,17 @@ export function convert(
   const fromRate = rates[fromCurr] ?? 1;
   const toRate = rates[toCurr] ?? 1;
   return (amount / fromRate) * toRate;
+}
+
+export function formatCurrency(
+  amount: number | null | undefined,
+  currency: string
+): string {
+  if (!amount) return "";
+  const formatter = new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: currency ?? DEFAULT_CURRENCY,
+    maximumFractionDigits: 2,
+  });
+  return formatter.format(amount);
 }

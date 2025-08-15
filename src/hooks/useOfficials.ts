@@ -5,7 +5,7 @@
 import { fetchCountryData, fetchCountryPeriods } from "@/lib/data";
 import type {
   CountryCode,
-  CountryPeriod,
+  CountryYear,
   Official,
   Rates,
   Salary,
@@ -20,7 +20,7 @@ export function useOfficials(country: CountryCode) {
   const [baseCurrency, setBaseCurrency] = useState("");
   const [rates, setRates] = useState<Rates | null>(null);
 
-  const [periods, setPeriods] = useState<CountryPeriod[]>([]);
+  const [periods, setPeriods] = useState<CountryYear[]>([]);
   const [year, setYear] = useState<number | null>(null);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export function useOfficials(country: CountryCode) {
         setPeriods(fetchedPeriods);
 
         const lastYear =
-          fetchedPeriods.at(-1)?.year ?? new Date().getFullYear();
+          fetchedPeriods.sort().at(0) ?? new Date().getFullYear();
         setYear(lastYear);
 
         const { data, rates: fetchedRates } = await fetchCountryData(

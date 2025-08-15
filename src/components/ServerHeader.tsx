@@ -6,10 +6,10 @@ import HeaderControlsClient from "./HeaderControlsClient";
 type Props = {
   country: CountryCode;
   year: number;
-  currency: string; // initial value
-  baseCurrency: string; // from data.json
-  rates: Rates | null; // from rates.json (null in fallback)
-  periods: { year: number }[]; // available years
+  currency: string;
+  baseCurrency: string;
+  rates: Rates | null;
+  periods: number[];
 };
 
 export default function ServerHeader({
@@ -21,7 +21,7 @@ export default function ServerHeader({
   periods,
 }: Props) {
   return (
-    <header className="w-full p-4 bg-gray-100 dark:bg-gray-900 text-black dark:text-white shadow">
+    <header className="w-full p-4 bg-background shadow">
       <div className="mx-auto max-w-screen-2xl flex flex-wrap items-center justify-between gap-3">
         <div className="text-lg flex items-center gap-2 font-medium">
           <span aria-hidden>🏛️</span>

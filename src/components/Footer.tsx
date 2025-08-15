@@ -3,19 +3,23 @@
 "use client";
 
 import { FOOTER_MESSAGE } from "@/i18n";
-import { Language } from "@/validators/lang";
+import { Language, parseLang } from "@/validators/lang";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 
-type FooterProps = {
-  lang: Language;
-  version?: string;
-};
+export default function Footer({ version }: { version: string }) {
+  const searchParams = useSearchParams();
 
-export default function Footer({ lang, version }: FooterProps) {
+  const lang: Language = useMemo(
+    () => parseLang(searchParams.get("lang")),
+    [searchParams]
+  );
+
   const [before = "", after = ""] = FOOTER_MESSAGE[lang].split("data");
 
   return (
-    <footer className="py-6 text-center text-sm text-muted-foreground border-t border-gray-200 dark:border-gray-700 space-y-2">
+    <footer className="py-6 text-center text-muted-foreground text-xs  bg-card space-y-2">
       <p>
         {before}
         <Link

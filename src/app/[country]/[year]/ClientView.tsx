@@ -31,13 +31,11 @@ export default function ClientView({
   const { country } = useParams<{ country: CountryCode }>();
   const searchParams = useSearchParams();
 
-  // Lang from query (validated)
   const lang: Language = useMemo(
     () => parseLang(searchParams.get("lang")),
     [searchParams]
   );
 
-  // Build available currencies from API (rates + baseCurrency)
   const availableCurrencies = useMemo(() => {
     const set = new Set<string>();
     if (baseCurrency) set.add(baseCurrency);
@@ -45,7 +43,6 @@ export default function ClientView({
     return Array.from(set);
   }, [rates, baseCurrency]);
 
-  // Currency from query if present & available; else baseCurrency; else DEFAULT_CURRENCY
   const currency = useMemo(() => {
     const requested = (searchParams.get("currency") || "").toUpperCase();
     if (requested && availableCurrencies.includes(requested)) return requested;
@@ -54,7 +51,7 @@ export default function ClientView({
     return DEFAULT_CURRENCY;
   }, [searchParams, availableCurrencies, baseCurrency]);
 
-  const countryName = countriesJson[country]?.names?.[lang] ?? country;
+  const countryName = countriesJson[country].names[lang];
 
   const [before = "", after = ""] = FOOTER_MESSAGE[lang].split("data");
 
@@ -93,7 +90,7 @@ export default function ClientView({
                     parties={json.parties}
                     rates={rates}
                     baseCurrency={baseCurrency}
-                    selectedCurrency={currency}
+                    currency={currency}
                     lang={lang}
                   />
                 </section>

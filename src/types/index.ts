@@ -6,9 +6,7 @@ import type countriesJson from "../data/countries.json";
 export type CountriesData = typeof countriesJson;
 export type CountryCode = keyof CountriesData;
 
-export interface CountryPeriod {
-  year: number;
-}
+export type CountryYear = number;
 
 export const sectionToBranchMap = {
   royalty: "Royalty",
@@ -22,19 +20,19 @@ export const sectionToBranchMap = {
 
 export type SectionKey = keyof typeof sectionToBranchMap;
 export type Branch = (typeof sectionToBranchMap)[SectionKey];
-
 export const sections = Object.keys(sectionToBranchMap) as SectionKey[];
 export type DataSection = SectionKey;
+
+export interface Rates {
+  baseCurrency: string;
+  GDP?: number;
+  rates: Record<string, number>;
+  timestamp: string;
+}
 
 export type SectionData = {
   [K in SectionKey]: Official[];
 };
-
-export interface Rates {
-  baseCurrency: string;
-  timestamp: string;
-  rates: Record<string, number>;
-}
 
 export type Data = {
   baseCurrency: string;
@@ -71,3 +69,12 @@ export interface Salary {
 }
 
 export type Translation = Record<Language, string>;
+
+export type WorldCountryEntry = {
+  GDP: number;
+  ministers: { quantity: number; budget: number };
+  congress: { quantity: number };
+  senate: { quantity: number };
+};
+
+export type WorldYearData = Record<CountryCode, WorldCountryEntry>;

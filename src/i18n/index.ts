@@ -120,18 +120,25 @@ export const SECTION_TITLES: Record<SectionKey, Translation> = {
 };
 
 export const TEXT_TRANSLATION: Record<string, Translation> = {
-  "compare your salary": {
-    en: "Compare your annual gross salary",
-    es: "Compara tu sueldo anual bruto",
-    fr: "Compare ton salaire annuel brut",
-    pt: "Compare o seu salário anual bruto",
-    de: "Vergleiche dein jährliches Bruttogehalt",
+  budget: {
+    en: "Budget",
+    es: "Presupuesto",
+    fr: "Budget",
+    pt: "Orçamento",
+    de: "Haushalt",
   },
-  "your salary": {
-    en: "your salary",
-    es: "tu sueldo",
-    fr: "ton salaire",
-    pt: "seu salário",
-    de: "dein Gehalt",
+  GDP: {
+    en: "GDP",
+    es: "PIB",
+    fr: "PIB",
+    pt: "PIB",
+    de: "BIP",
+  },
+  ministries: {
+    en: "Ministries",
+    es: "Ministerios",
+    fr: "Ministères",
+    pt: "Ministérios",
+    de: "Ministerien",
   },
 };

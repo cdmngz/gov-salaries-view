@@ -5,11 +5,10 @@
 import Portrait from "@/components/Portrait";
 import { ROLE_TRANSLATIONS } from "@/i18n/roles";
 import { DEFAULT_LANG } from "@/lib/constants";
-import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import { convert } from "@/lib/utils";
+import { convert, formatCurrency } from "@/lib/utils";
 import type { Official, PartyMeta, Rates } from "@/types";
 import { Language } from "@/validators/lang";
-import { GrossDisplay } from "./GrossDisplay";
+import { SourcesButton } from "./SourcesButton";
 import {
   Accordion,
   AccordionContent,
@@ -34,7 +33,7 @@ export default function OfficialsList({
   onSelect,
   parties,
   rates,
-  selectedCurrency,
+  currency,
   title,
 }: {
   baseCurrency: string;
@@ -43,7 +42,7 @@ export default function OfficialsList({
   onSelect?: (official: Official) => void;
   parties: Record<string, PartyMeta>;
   rates: Rates;
-  selectedCurrency: string;
+  currency: string;
   title: string;
 }) {
   return (
@@ -65,13 +64,13 @@ export default function OfficialsList({
               const gross = convert(
                 official.salary.gross,
                 baseCurrency,
-                selectedCurrency,
+                currency,
                 rates.rates
               );
               const budget = convert(
                 official.budget,
                 baseCurrency,
-                selectedCurrency,
+                currency,
                 rates.rates
               );
 
@@ -83,9 +82,12 @@ export default function OfficialsList({
                   >
                     <Portrait official={official} parties={parties} />
 
-                    <p className="mt-2 text-center text-sm font-medium">
-                      {official.name}
-                    </p>
+                    <div className="flex items-center gap-1">
+                      <span className="text-sm font-medium">
+                        {official.name}
+                      </span>
+                      <SourcesButton sources={official.details} />
+                    </div>
 
                     {official.district && (
                       <div className="text-xs text-gray-600 border rounded-md p-1 dark:text-white text-center max-w-48">
@@ -102,14 +104,7 @@ export default function OfficialsList({
                             official.role}
                         </p>
                         {budget > 0 && (
-                          <p>
-                            Anual:{" "}
-                            {budget.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}{" "}
-                            {CURRENCY_SYMBOLS[selectedCurrency]}
-                          </p>
+                          <p>Anual: {formatCurrency(budget, currency)}</p>
                         )}
                       </div>
                     )}
@@ -124,23 +119,20 @@ export default function OfficialsList({
                       </p>
                     )}
 
-                    {official.party &&
-                      parties[official.party] &&
-                      parties[official.party].en &&
-                      lang === DEFAULT_LANG && (
-                        <p
-                          className="text-xs text-center w-48 font-semibold"
-                          style={{ color: parties[official.party].color }}
-                        >
-                          ({parties[official.party][DEFAULT_LANG]})
-                        </p>
-                      )}
+                    {official.party && parties[official.party]?.en && (
+                      <p
+                        className="text-xs text-center w-48 font-light"
+                        style={{ color: parties[official.party].color }}
+                      >
+                        ({parties[official.party][DEFAULT_LANG]})
+                      </p>
+                    )}
 
-                    <GrossDisplay
-                      gross={gross}
-                      currency={selectedCurrency}
-                      details={official?.details}
-                    />
+                    {official.salary.gross && (
+                      <p className="text-xs flex gap-1 items-center">
+                        Gross: {formatCurrency(gross, currency)}
+                      </p>
+                    )}
                   </div>
                 </li>
               );

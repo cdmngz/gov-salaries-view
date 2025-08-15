@@ -13,7 +13,7 @@ import countriesData from "@/data/countries.json";
 import { LANGUAGE_NAMES } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import type { CountriesData, CountryCode, CountryPeriod, Rates } from "@/types";
+import type { CountriesData, CountryCode, Rates } from "@/types";
 import { Language, LanguageSchema, parseLang } from "@/validators/lang";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
@@ -24,7 +24,7 @@ type Props = {
   currency: string;
   baseCurrency: string;
   rates: Rates | null;
-  periods: CountryPeriod[];
+  periods: number[];
   defaultYear: number;
 };
 
@@ -49,7 +49,7 @@ export default function HeaderControlsClient({
   }, [baseCurrency, rates]);
 
   const years = useMemo(
-    () => Array.from(new Set(periods.map((p) => p.year))).sort((a, b) => b - a),
+    () => Array.from(new Set(periods)).sort((a, b) => b - a),
     [periods]
   );
 
@@ -59,8 +59,9 @@ export default function HeaderControlsClient({
   ) => {
     const params = new URLSearchParams(searchParams?.toString() ?? "");
     for (const k in updates) params.set(k, updates[k]);
+    const qs = params.toString();
     router.push(
-      `${pathnameOverride ?? window.location.pathname}?${params.toString()}`
+      `${pathnameOverride ?? window.location.pathname}${qs ? `?${qs}` : ""}`
     );
   };
 
@@ -83,7 +84,8 @@ export default function HeaderControlsClient({
       <Select
         value={country}
         onValueChange={(val) => {
-          router.push(`/${val}/${defaultYear}?${searchParams.toString()}`);
+          const qs = searchParams?.toString() ?? "";
+          router.push(`/${val}/${defaultYear}${qs ? `?${qs}` : ""}`);
         }}
       >
         <SelectTrigger className="h-9 px-3 text-sm font-medium bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
@@ -132,9 +134,10 @@ export default function HeaderControlsClient({
 
       <Select
         value={defaultYear.toString()}
-        onValueChange={(val) =>
-          router.push(`/${country}/${val}?${searchParams.toString()}`)
-        }
+        onValueChange={(val) => {
+          const qs = searchParams?.toString() ?? "";
+          router.push(`/${country}/${val}${qs ? `?${qs}` : ""}`);
+        }}
       >
         <SelectTrigger className="h-9 px-3 text-sm font-medium bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <SelectValue placeholder="Year" />
