@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/select";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import type { Rates } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import ThemeToggle from "./ThemeToggle";
+import { components } from "@/types/openapi";
 
 export default function WorldHeaderClient({
   defaultYear,
@@ -21,7 +21,7 @@ export default function WorldHeaderClient({
 }: {
   defaultYear: number;
   years: number[];
-  rates: Rates | null;
+  rates?: components["schemas"]["Rates"];
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();

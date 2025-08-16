@@ -6,7 +6,8 @@ import OfficialsList from "@/components/OfficialsList";
 import countriesJson from "@/data/countries.json";
 import { FOOTER_MESSAGE, SECTION_TITLES, TITLE_PREFIX } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
-import type { CountryCode, Data, Official, Rates, SectionKey } from "@/types";
+import type { CountryCode, SectionKey } from "@/types";
+import { components } from "@/types/openapi";
 import { parseLang, type Language } from "@/validators/lang";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
@@ -24,8 +25,8 @@ export default function ClientView({
   rates,
   baseCurrency,
 }: {
-  json: Data;
-  rates: Rates;
+  json: components["schemas"]["CountryData"];
+  rates: components["schemas"]["Rates"];
   baseCurrency: string;
 }) {
   const { country } = useParams<{ country: CountryCode }>();
@@ -79,7 +80,9 @@ export default function ClientView({
         {sectionGroups.map((group, i) => (
           <div key={i} className="flex flex-wrap justify-center gap-8">
             {group.map((sectionKey) => {
-              const list = json[sectionKey] as Official[] | undefined;
+              const list = json[sectionKey] as
+                | components["schemas"]["Official"][]
+                | undefined;
               if (!list?.length) return null;
 
               return (

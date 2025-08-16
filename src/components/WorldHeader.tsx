@@ -1,4 +1,4 @@
-import type { Rates } from "@/types";
+import { components } from "@/types/openapi";
 import WorldHeaderClient from "./WorldHeaderClient";
 
 export default function WorldHeader({
@@ -8,7 +8,7 @@ export default function WorldHeader({
 }: {
   year: number;
   years: number[];
-  rates: Rates | null;
+  rates?: components["schemas"]["Rates"];
 }) {
   return (
     <header className="w-full p-4 bg-gray-100 dark:bg-gray-900 text-black dark:text-white shadow">

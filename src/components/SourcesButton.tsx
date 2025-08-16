@@ -5,73 +5,93 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { components } from "@/types/openapi";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { z } from "zod";
 
-const sourcesSchema = z.record(z.string(), z.union([z.string(), z.number()]));
+const sourceEntrySchema = z
+  .record(z.string(), z.union([z.number(), z.url(), z.string()]))
+  .refine((obj) => Object.keys(obj).length === 1, {
+    message: "Each source entry must have exactly one key",
+  });
+
+const sourcesSchema = z.array(sourceEntrySchema).min(1);
+
+type SourceValue = string | number;
 
 function classifyValue(
-  value: string | number
+  value: SourceValue
 ): "url" | "email" | "number" | "string" {
   if (typeof value === "number") return "number";
-  if (z.url().safeParse(value).success) return "url";
-  if (z.email().safeParse(value).success) return "email";
+  const s = String(value);
+  if (z.url().safeParse(s).success) return "url";
+  if (z.email().safeParse(s).success) return "email";
   return "string";
 }
 
 export function SourcesButton({
   sources,
 }: {
-  sources?: Record<string, string | number>;
+  sources?: components["schemas"]["Sources"];
 }) {
+  if (!sources) return null;
+
   const parsed = sourcesSchema.safeParse(sources);
-  const hasSources = parsed.success && Object.keys(parsed.data).length > 0;
+  if (!parsed.success) return null;
+
+  const entries: Array<[string, SourceValue]> = parsed.data.map((obj) => {
+    const [label, value] = Object.entries(obj)[0];
+    return [label, value];
+  });
+
+  if (entries.length === 0) return null;
 
   return (
     <p>
-      {hasSources && (
-        <Tooltip>
-          <TooltipTrigger>
-            <InfoCircledIcon className="size-3 mt-1" />
-          </TooltipTrigger>
-          <TooltipContent
-            side="right"
-            sideOffset={6}
-            className="bg-card text-primary shadow-md py-4 px-6"
-          >
-            <div className="space-y-2 ">
-              {Object.entries(parsed.data).map(([label, value]) => {
-                const type = classifyValue(value);
+      <Tooltip>
+        <TooltipTrigger>
+          <InfoCircledIcon className="size-3 mt-1" />
+        </TooltipTrigger>
+        <TooltipContent className="bg-card text-primary shadow-md py-4 px-6">
+          <div className="space-y-2">
+            {entries.map(([label, value], i) => {
+              const type = classifyValue(value);
+              const key = `${label}-${i}`;
 
-                return (
-                  <div key={label} className="flex justify-between gap-2">
-                    <span className="font-medium">{label}:</span>
-                    {type === "url" ? (
-                      <a
-                        href={String(value)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 gap-1 underline inline-flex"
-                      >
-                        {value}
-                      </a>
-                    ) : type === "email" ? (
-                      <a
-                        href={`mailto:${value}`}
-                        className="text-blue-600 underline"
-                      >
-                        {value}
-                      </a>
-                    ) : (
-                      <span>{value}</span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </TooltipContent>
-        </Tooltip>
-      )}
+              return (
+                <div key={key} className="flex justify-between gap-2">
+                  <span className="font-medium">{label}:</span>
+
+                  {type === "url" ? (
+                    <Link
+                      href={String(value)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 gap-1 underline truncate"
+                      title={String(value)}
+                    >
+                      {String(value)}
+                    </Link>
+                  ) : type === "email" ? (
+                    <Link
+                      href={`mailto:${value}`}
+                      className="text-blue-600 underline truncate"
+                      title={String(value)}
+                    >
+                      {String(value)}
+                    </Link>
+                  ) : (
+                    <span className="truncate" title={String(value)}>
+                      {String(value)}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </TooltipContent>
+      </Tooltip>
     </p>
   );
 }

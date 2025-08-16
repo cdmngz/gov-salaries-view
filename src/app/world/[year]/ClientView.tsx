@@ -5,19 +5,13 @@
 import { useMemo, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
-import { CountryCode, Rates } from "@/types";
+import { CountryCode } from "@/types";
 import { convert, formatCurrency } from "@/lib/utils";
 import countriesJson from "@/data/countries.json";
 import { parseLang } from "@/validators/lang";
 import { Button } from "@/components/ui/button";
 import { TEXT_TRANSLATION } from "@/i18n";
-
-type Entry = {
-  GDP: number;
-  ministers: { quantity: number; budget: number };
-  congress: { quantity: number };
-  senate: { quantity: number };
-};
+import { components } from "@/types/openapi";
 
 type SortOrder = "asc" | "desc";
 type MinistersSortField = "quantity" | "budget" | "gdp" | "percent";
@@ -36,8 +30,8 @@ export default function ClientView({
   data,
   rates,
 }: {
-  data: Record<string, Entry>;
-  rates: Rates;
+  data: components["schemas"]["WorldData"];
+  rates: components["schemas"]["Rates"];
 }) {
   const searchParams = useSearchParams();
   const currency = (
@@ -52,10 +46,10 @@ export default function ClientView({
   const [senateOrder, setSenateOrder] = useState<SortOrder>("desc");
 
   const rows: Row[] = useMemo(() => {
-    return Object.entries(data).map(([code, entry]) => {
-      const gdp = convert(entry.GDP, DEFAULT_CURRENCY, currency, rates.rates);
+    return Object.entries(data).map(([code, stats]) => {
+      const gdp = convert(stats.GDP, DEFAULT_CURRENCY, currency, rates.rates);
       const budget = convert(
-        entry.ministers.budget,
+        stats.ministers.budget,
         DEFAULT_CURRENCY,
         currency,
         rates.rates
@@ -63,12 +57,12 @@ export default function ClientView({
       const gdpPercent = gdp ? (budget * 100) / gdp : 0;
       return {
         code: code as CountryCode,
-        ministersQty: entry.ministers.quantity,
+        ministersQty: stats.ministers.quantity,
         budget,
         gdp,
         gdpPercent,
-        congressQty: entry.congress.quantity,
-        senateQty: entry.senate.quantity,
+        congressQty: stats.congress.quantity,
+        senateQty: stats.senate.quantity,
       };
     });
   }, [data, currency, rates]);
@@ -125,11 +119,13 @@ export default function ClientView({
   return (
     <div className="p-4 space-y-8">
       <h1 className="text-xl text-center font-semibold">
-        {countriesJson["world"].flag} {countriesJson["world"].names[lang]} 📊
+        {countriesJson["world"].flag} {countriesJson["world"].names[lang]}
+        {" - "}
+        {TEXT_TRANSLATION["stats"][lang]} 📊
       </h1>
       {/* Ministers */}
       <section>
-        <div className="mb-2 flex items-center gap-2 justify-center">
+        <div className="mb-2 flex items-center flex-wrap gap-2 justify-center">
           <h3 className="font-semibold mr-2">Ministers</h3>
 
           <div className="flex items-center gap-1">
@@ -173,32 +169,36 @@ export default function ClientView({
           </Button>
         </div>
 
-        <div className="flex gap-4 overflow-x-auto justify-center">
-          {ministersRows.map((r) => (
-            <div
-              key={`min-${r.code}`}
-              className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
-            >
-              <div className="text-base font-semibold">
-                {countriesJson[r.code].flag} {countriesJson[r.code].names[lang]}
+        <div className="flex justify-center">
+          <div className="flex gap-4 max-w-10/12 overflow-x-auto">
+            {ministersRows.map((r) => (
+              <div
+                key={`min-${r.code}`}
+                className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
+              >
+                <div className="text-base font-semibold">
+                  {countriesJson[r.code].flag}{" "}
+                  {countriesJson[r.code].names[lang]}
+                </div>
+                <div className="text-sm">
+                  {TEXT_TRANSLATION.ministries[lang]}:{" "}
+                  <strong>{r.ministersQty}</strong>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {TEXT_TRANSLATION.budget[lang]}:{" "}
+                  {formatCurrency(r.budget, currency)}
+                </div>
+                <br />
+                <div className="text-xs text-muted-foreground">
+                  {TEXT_TRANSLATION.GDP[lang]}:{" "}
+                  {formatCurrency(r.gdp, currency)}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {r.gdpPercent.toFixed(2)}% of GDP
+                </div>
               </div>
-              <div className="text-sm">
-                {TEXT_TRANSLATION.ministries[lang]}:{" "}
-                <strong>{r.ministersQty}</strong>
-              </div>
-              <div className="text-xs text-muted-foreground">
-                {TEXT_TRANSLATION.budget[lang]}:{" "}
-                {formatCurrency(r.budget, currency)}
-              </div>
-              <br />
-              <div className="text-xs text-muted-foreground">
-                {TEXT_TRANSLATION.GDP[lang]}: {formatCurrency(r.gdp, currency)}
-              </div>
-              <div className="text-xs text-muted-foreground">
-                {r.gdpPercent.toFixed(2)}% of GDP
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -217,20 +217,24 @@ export default function ClientView({
           </Button>
         </div>
 
-        <div className="flex gap-4 overflow-x-auto justify-center">
-          {congressRows.map((r) => (
-            <div
-              key={`con-${r.code}`}
-              className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
-            >
-              <div className="text-base font-semibold">
-                {countriesJson[r.code].flag} {countriesJson[r.code].names[lang]}
+        <div className="flex justify-center">
+          <div className="flex gap-4 max-w-10/12 overflow-x-auto">
+            {" "}
+            {congressRows.map((r) => (
+              <div
+                key={`con-${r.code}`}
+                className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
+              >
+                <div className="text-base font-semibold">
+                  {countriesJson[r.code].flag}{" "}
+                  {countriesJson[r.code].names[lang]}
+                </div>
+                <div className="text-sm">
+                  Members: <strong>{r.congressQty}</strong>
+                </div>
               </div>
-              <div className="text-sm">
-                Members: <strong>{r.congressQty}</strong>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -249,20 +253,24 @@ export default function ClientView({
           </Button>
         </div>
 
-        <div className="flex gap-4 overflow-x-auto justify-center">
-          {senateRows.map((r) => (
-            <div
-              key={`sen-${r.code}`}
-              className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
-            >
-              <div className="text-base font-semibold">
-                {countriesJson[r.code].flag} {countriesJson[r.code].names[lang]}
+        <div className="flex justify-center">
+          <div className="flex gap-4 max-w-10/12 overflow-x-auto">
+            {" "}
+            {senateRows.map((r) => (
+              <div
+                key={`sen-${r.code}`}
+                className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
+              >
+                <div className="text-base font-semibold">
+                  {countriesJson[r.code].flag}{" "}
+                  {countriesJson[r.code].names[lang]}
+                </div>
+                <div className="text-sm">
+                  Members: <strong>{r.senateQty}</strong>
+                </div>
               </div>
-              <div className="text-sm">
-                Members: <strong>{r.senateQty}</strong>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
     </div>

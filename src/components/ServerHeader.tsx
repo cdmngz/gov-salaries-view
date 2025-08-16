@@ -1,14 +1,15 @@
 // src/components/ServerHeader.tsx
 
-import type { CountryCode, Rates } from "@/types";
-import HeaderControlsClient from "./HeaderControlsClient";
+import type { CountryCode } from "@/types";
+import HeaderControlsClient from "@/components/HeaderControlsClient";
+import { components } from "@/types/openapi";
 
 type Props = {
   country: CountryCode;
   year: number;
   currency: string;
   baseCurrency: string;
-  rates: Rates | null;
+  rates: components["schemas"]["Rates"] | null;
   periods: number[];
 };
 

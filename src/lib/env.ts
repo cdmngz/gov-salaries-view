@@ -3,6 +3,7 @@ import { z } from "zod";
 // ✅ Server-only variables
 const ServerEnvSchema = z.object({
   DATA_API_URL: z.url(),
+  OPENAPI_URL: z.url(),
   NODE_ENV: z.enum(["development", "production", "test"]).optional(),
 });
 

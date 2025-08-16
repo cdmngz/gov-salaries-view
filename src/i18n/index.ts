@@ -141,4 +141,11 @@ export const TEXT_TRANSLATION: Record<string, Translation> = {
     pt: "Ministérios",
     de: "Ministerien",
   },
+  stats: {
+    en: "Stats",
+    es: "Estadísticas",
+    fr: "Statistiques",
+    pt: "Estatísticas",
+    de: "Statistiken",
+  },
 };

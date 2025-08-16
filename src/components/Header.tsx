@@ -11,12 +11,13 @@ import {
 } from "@/components/ui/select";
 import { LANGUAGE_NAMES } from "@/i18n";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import type { CountriesData, CountryCode, Rates } from "@/types";
+import type { CountriesData, CountryCode } from "@/types";
 import { Language, LanguageSchema } from "@/validators/lang";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import countriesData from "../data/countries.json";
 import ThemeToggle from "./ThemeToggle";
+import { components } from "@/types/openapi";
 
 export default function Header({
   country,
@@ -30,7 +31,7 @@ export default function Header({
   country: CountryCode;
   currency: string;
   baseCurrency: string;
-  rates: Rates | null;
+  rates: components["schemas"]["Rates"] | null;
   periods: { year: number }[];
   year: number;
   lang: Language;

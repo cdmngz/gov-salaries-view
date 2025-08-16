@@ -13,17 +13,18 @@ import countriesData from "@/data/countries.json";
 import { LANGUAGE_NAMES } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import type { CountriesData, CountryCode, Rates } from "@/types";
+import type { CountriesData, CountryCode } from "@/types";
 import { Language, LanguageSchema, parseLang } from "@/validators/lang";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import ThemeToggle from "./ThemeToggle";
+import { components } from "@/types/openapi";
 
 type Props = {
   country: CountryCode;
   currency: string;
   baseCurrency: string;
-  rates: Rates | null;
+  rates: components["schemas"]["Rates"] | null;
   periods: number[];
   defaultYear: number;
 };

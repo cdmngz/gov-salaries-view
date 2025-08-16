@@ -3,24 +3,24 @@
 "use client";
 
 import { fetchCountryData, fetchCountryPeriods } from "@/lib/data";
-import type {
-  CountryCode,
-  CountryYear,
-  Official,
-  Rates,
-  Salary,
-  SectionKey,
-} from "@/types";
+import type { CountryCode, SectionKey } from "@/types";
 import { sections, sectionToBranchMap } from "@/types";
+import { components } from "@/types/openapi";
 import { useEffect, useState } from "react";
 
 export function useOfficials(country: CountryCode) {
-  const [officials, setOfficials] = useState<Official[]>([]);
+  const [officials, setOfficials] = useState<
+    components["schemas"]["Official"][]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [baseCurrency, setBaseCurrency] = useState("");
-  const [rates, setRates] = useState<Rates | null>(null);
+  const [rates, setRates] = useState<components["schemas"]["Rates"] | null>(
+    null
+  );
 
-  const [periods, setPeriods] = useState<CountryYear[]>([]);
+  const [periods, setPeriods] = useState<
+    components["schemas"]["CountryYears"] | null
+  >(null);
   const [year, setYear] = useState<number | null>(null);
 
   useEffect(() => {
@@ -48,20 +48,22 @@ export function useOfficials(country: CountryCode) {
         setBaseCurrency(data.baseCurrency ?? "USD");
         setRates(fetchedRates);
 
-        const list: Official[] = sections.flatMap((section: SectionKey) => {
-          const raw = data[section];
-          if (!raw) return [];
-          const items = Array.isArray(raw) ? raw : [raw];
-          return items.map((item) => ({
-            branch: sectionToBranchMap[section],
-            name: item.name,
-            gender: item.gender,
-            role: item.role,
-            party: item.party,
-            salary: item.salary as Salary,
-            district: item.district,
-          }));
-        });
+        const list: components["schemas"]["Official"][] = sections.flatMap(
+          (section: SectionKey) => {
+            const raw = data[section];
+            if (!raw) return [];
+            const items = Array.isArray(raw) ? raw : [raw];
+            return items.map((item) => ({
+              branch: sectionToBranchMap[section],
+              name: item.name,
+              gender: item.gender,
+              role: item.role,
+              party: item.party,
+              salary: item.salary,
+              district: item.district,
+            }));
+          }
+        );
 
         setOfficials(list);
       } catch (err) {

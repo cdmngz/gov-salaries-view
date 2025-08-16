@@ -1,23 +1,16 @@
 // src/components/Portrait.tsx
 
-import React from "react";
-import { Official, PartyMeta } from "@/types";
+import React, { ReactNode } from "react";
 import { clothesVariants } from "./avatars/clothesVariants";
 import { hairVariants } from "./avatars/hairVariants";
-
-type ClothesProps = {
-  fill?: string;
-  accentColor?: string;
-};
+import { components } from "@/types/openapi";
 
 const generateAvatar = (
-  official: Official,
+  official: components["schemas"]["Official"],
   color = "#333"
 ): {
-  hair: React.FC<{
-    fill?: string;
-  }>;
-  clothes: React.FC<ClothesProps>;
+  hair: (props: { fill?: string }) => ReactNode;
+  clothes: (props: { fill?: string; accentColor?: string }) => ReactNode;
 } => {
   if (official.name === "Javier Milei" && official.party === "LLA") {
     return {
@@ -50,14 +43,14 @@ export default function Portrait({
   official,
   parties,
 }: {
-  official: Official;
-  parties: Record<string, PartyMeta>;
+  official: components["schemas"]["Official"];
+  parties?: components["schemas"]["Parties"];
 }) {
   const size = 28;
 
   const { hair: Hair, clothes: Clothes } = generateAvatar(
     official,
-    parties[official.party ?? ""]?.color
+    parties?.[official.party ?? ""]?.color
   );
 
   return (
