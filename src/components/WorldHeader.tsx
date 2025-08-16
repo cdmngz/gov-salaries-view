@@ -1,3 +1,5 @@
+// src/components/WorldHeader.tsx
+
 import { components } from "@/types/openapi";
 import WorldHeaderClient from "./WorldHeaderClient";
 
