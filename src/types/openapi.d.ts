@@ -353,10 +353,9 @@ export interface components {
              */
             baseCurrency: string;
             royalty?: components["schemas"]["Official"][];
-            president?: components["schemas"]["Official"][];
-            vicePresident?: components["schemas"]["Official"][];
+            executive?: components["schemas"]["Official"][];
             ministers?: components["schemas"]["Official"][];
-            congress?: components["schemas"]["Official"][];
+            deputies?: components["schemas"]["Official"][];
             senate?: components["schemas"]["Official"][];
             officials?: components["schemas"]["Official"][];
             parties?: components["schemas"]["Parties"];
@@ -429,7 +428,7 @@ export interface components {
             /** @description Nominal GDP (units per your data source, e.g., USD). */
             GDP: number;
             ministers: components["schemas"]["MinistersBlock"];
-            congress: components["schemas"]["ChamberBlock"];
+            deputies: components["schemas"]["ChamberBlock"];
             senate: components["schemas"]["ChamberBlock"];
         };
         MinistersBlock: {
@@ -499,7 +498,8 @@ export interface components {
          *         {
          *           "notes": "Declared in 2024 official report"
          *         }
-         *       ]
+         *       ],
+         *       "budget": 12000000
          *     } */
         Official: {
             /** @example Ariel Doe */
@@ -597,7 +597,7 @@ export interface components {
          *           "quantity": 7,
          *           "budget": 22561000000
          *         },
-         *         "congress": {
+         *         "deputies": {
          *           "quantity": 257
          *         },
          *         "senate": {
@@ -610,7 +610,7 @@ export interface components {
          *           "quantity": 22,
          *           "budget": 190880197802
          *         },
-         *         "congress": {
+         *         "deputies": {
          *           "quantity": 348
          *         },
          *         "senate": {
@@ -623,7 +623,7 @@ export interface components {
          *           "quantity": 15,
          *           "budget": 0
          *         },
-         *         "congress": {
+         *         "deputies": {
          *           "quantity": 0
          *         },
          *         "senate": {
@@ -636,7 +636,7 @@ export interface components {
          *           "quantity": 15,
          *           "budget": 1615600000000
          *         },
-         *         "congress": {
+         *         "deputies": {
          *           "quantity": 330
          *         },
          *         "senate": {

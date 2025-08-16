@@ -22,7 +22,7 @@ type Row = {
   budget: number;
   gdp: number;
   gdpPercent: number;
-  congressQty: number;
+  deputiesQty: number;
   senateQty: number;
 };
 
@@ -42,7 +42,7 @@ export default function ClientView({
   const [ministersField, setMinistersField] =
     useState<MinistersSortField>("quantity");
   const [ministersOrder, setMinistersOrder] = useState<SortOrder>("desc");
-  const [congressOrder, setCongressOrder] = useState<SortOrder>("desc");
+  const [deputiesOrder, setDeputiesOrder] = useState<SortOrder>("desc");
   const [senateOrder, setSenateOrder] = useState<SortOrder>("desc");
 
   const rows: Row[] = useMemo(() => {
@@ -61,7 +61,7 @@ export default function ClientView({
         budget,
         gdp,
         gdpPercent,
-        congressQty: stats.congress.quantity,
+        deputiesQty: stats.deputies.quantity,
         senateQty: stats.senate.quantity,
       };
     });
@@ -102,10 +102,10 @@ export default function ClientView({
     return sortGeneric(rows, getter, ministersOrder);
   }, [rows, ministersField, ministersOrder, sortGeneric]);
 
-  // Congress sorting (quantity only)
-  const congressRows = useMemo(
-    () => sortGeneric(rows, (r: Row) => r.congressQty, congressOrder),
-    [rows, congressOrder, sortGeneric]
+  // Deputies sorting (quantity only)
+  const deputiesRows = useMemo(
+    () => sortGeneric(rows, (r: Row) => r.deputiesQty, deputiesOrder),
+    [rows, deputiesOrder, sortGeneric]
   );
 
   // Senate sorting (quantity only)
@@ -202,25 +202,25 @@ export default function ClientView({
         </div>
       </section>
 
-      {/* Congress */}
+      {/* Deputies */}
       <section>
         <div className="mb-2 flex items-center gap-2 justify-center">
-          <h3 className="font-semibold mr-2">Congress</h3>
+          <h3 className="font-semibold mr-2">Deputies</h3>
           <Button
             onClick={() =>
-              setCongressOrder((o) => (o === "asc" ? "desc" : "asc"))
+              setDeputiesOrder((o) => (o === "asc" ? "desc" : "asc"))
             }
             variant="outline"
-            aria-label="Toggle congress sort order"
+            aria-label="Toggle deputies sort order"
           >
-            {toggleText(congressOrder)}
+            {toggleText(deputiesOrder)}
           </Button>
         </div>
 
         <div className="flex justify-center">
           <div className="flex gap-4 max-w-10/12 overflow-x-auto">
             {" "}
-            {congressRows.map((r) => (
+            {deputiesRows.map((r) => (
               <div
                 key={`con-${r.code}`}
                 className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
@@ -230,7 +230,7 @@ export default function ClientView({
                   {countriesJson[r.code].names[lang]}
                 </div>
                 <div className="text-sm">
-                  Members: <strong>{r.congressQty}</strong>
+                  Members: <strong>{r.deputiesQty}</strong>
                 </div>
               </div>
             ))}

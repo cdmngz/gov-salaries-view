@@ -68,12 +68,12 @@ export const FOOTER_MESSAGE: Translation = {
 
 // OFFICIALS
 export const SECTION_TITLES: Record<SectionKey, Translation> = {
-  president: {
-    es: "Presidencia",
-    en: "Presidency",
-    fr: "Présidence",
-    pt: "Presidência",
-    de: "Präsidentschaft",
+  executive: {
+    es: "Ejecutivo",
+    en: "Executive",
+    fr: "Exécutif",
+    pt: "Executivo",
+    de: "Exekutive",
   },
   royalty: {
     es: "Casa Real",
@@ -82,13 +82,6 @@ export const SECTION_TITLES: Record<SectionKey, Translation> = {
     pt: "Família Real",
     de: "Königshaus",
   },
-  vicePresident: {
-    es: "Vicepresidencia",
-    en: "Vice Presidency",
-    fr: "Vice-présidence",
-    pt: "Vice-presidência",
-    de: "Vizepräsidentschaft",
-  },
   ministers: {
     es: "Ministros",
     en: "Ministers",
@@ -96,12 +89,12 @@ export const SECTION_TITLES: Record<SectionKey, Translation> = {
     pt: "Ministros",
     de: "Minister",
   },
-  congress: {
-    es: "Congreso",
-    en: "Congress",
-    fr: "Congrès",
-    pt: "Congresso",
-    de: "Kongress",
+  deputies: {
+    es: "Diputados",
+    en: "Deputies",
+    fr: "Députés",
+    pt: "Deputados",
+    de: "Abgeordnete",
   },
   senate: {
     es: "Senado",

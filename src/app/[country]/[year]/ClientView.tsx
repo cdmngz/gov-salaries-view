@@ -14,9 +14,9 @@ import { useParams, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
 const sectionGroups: SectionKey[][] = [
-  ["president", "vicePresident", "royalty"],
+  ["executive", "royalty"],
   ["ministers"],
-  ["senate", "congress"],
+  ["senate", "deputies"],
   ["officials"],
 ];
 

@@ -8,10 +8,9 @@ export type CountryCode = keyof CountriesData;
 
 export const sectionToBranchMap = {
   royalty: "Royalty",
-  president: "Executive",
-  vicePresident: "Executive",
+  executive: "Executive",
   ministers: "Ministers",
-  congress: "Congress",
+  deputies: "Deputies",
   senate: "Senate",
   officials: "Officials",
 } as const;
