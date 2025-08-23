@@ -39,6 +39,26 @@
       "de": "Frankreich"
     }
   },
+  "no": {
+    "flag": "🇳🇴",
+    "names": {
+      "es": "Noruega",
+      "en": "Norway",
+      "fr": "Norvège",
+      "pt": "Noruega",
+      "de": "Norwegen"
+    }
+  },
+  "gb": {
+    "flag": "🇬🇧",
+    "names": {
+      "es": "Reino Unido",
+      "en": "United Kingdom",
+      "fr": "Royaume-Uni",
+      "pt": "Reino Unido",
+      "de": "Vereinigtes Königreich"
+    }
+  },
   "us": {
     "flag": "🇺🇸",
     "names": {
