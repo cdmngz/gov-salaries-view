@@ -38,3 +38,18 @@ export function formatCurrency(
   });
   return formatter.format(amount);
 }
+
+export function sortBy<T>(array: T[], key: keyof T, locale = "en"): T[] {
+  return [...array].sort((a, b) => {
+    const valA = a[key];
+    const valB = b[key];
+
+    if (typeof valA === "string" && typeof valB === "string") {
+      return valA.localeCompare(valB, locale, { sensitivity: "base" });
+    }
+
+    if (valA! < valB!) return -1;
+    if (valA! > valB!) return 1;
+    return 0;
+  });
+}

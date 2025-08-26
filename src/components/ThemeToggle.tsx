@@ -27,11 +27,11 @@ export default function ThemeToggle() {
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
-      className="shadow-xs"
+      className="bg-card"
     >
       {isDark ? (
         <SunIcon className="size-4" />

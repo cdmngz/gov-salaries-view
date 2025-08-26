@@ -19,6 +19,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import ThemeToggle from "./ThemeToggle";
 import { components } from "@/types/openapi";
+import { sortBy } from "@/lib/utils";
 
 type Props = {
   country: CountryCode;
@@ -89,13 +90,21 @@ export default function HeaderControlsClient({
           router.push(`/${val}/${defaultYear}${qs ? `?${qs}` : ""}`);
         }}
       >
-        <SelectTrigger className="h-9 px-3 text-sm font-medium bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <SelectTrigger className="text-sm bg-card">
           <SelectValue placeholder="Country" />
         </SelectTrigger>
         <SelectContent>
-          {Object.entries(countries).map(([code, meta]) => (
+          {sortBy(
+            Object.entries(countries).map(([code, meta]) => ({
+              code,
+              flag: meta.flag,
+              name: meta.names[currentLang] ?? code.toUpperCase(),
+            })),
+            "name",
+            currentLang
+          ).map(({ code, flag, name }) => (
             <SelectItem key={code} value={code}>
-              {meta.flag} {meta.names[currentLang] ?? code.toUpperCase()}
+              {flag} {name}
             </SelectItem>
           ))}
         </SelectContent>
@@ -105,7 +114,7 @@ export default function HeaderControlsClient({
         value={currentLang}
         onValueChange={(val) => updateQuery({ lang: val })}
       >
-        <SelectTrigger className="h-9 px-3 text-sm font-medium bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <SelectTrigger className="text-sm bg-card">
           <SelectValue placeholder="Lang" />
         </SelectTrigger>
         <SelectContent>
@@ -121,7 +130,7 @@ export default function HeaderControlsClient({
         value={currentCurrency}
         onValueChange={(val) => updateQuery({ currency: val })}
       >
-        <SelectTrigger className="h-9 px-3 text-sm font-medium bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <SelectTrigger className="text-sm bg-card">
           <SelectValue placeholder="Currency">{currentCurrency}</SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -140,7 +149,7 @@ export default function HeaderControlsClient({
           router.push(`/${country}/${val}${qs ? `?${qs}` : ""}`);
         }}
       >
-        <SelectTrigger className="h-9 px-3 text-sm font-medium bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <SelectTrigger className="text-sm bg-card">
           <SelectValue placeholder="Year" />
         </SelectTrigger>
         <SelectContent>

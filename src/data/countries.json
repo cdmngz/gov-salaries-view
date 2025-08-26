@@ -68,5 +68,35 @@
       "pt": "Estados Unidos",
       "de": "Vereinigte Staaten"
     }
+  },
+  "ru": {
+    "flag": "🇷🇺",
+    "names": {
+      "es": "Rusia",
+      "en": "Russia",
+      "fr": "Russie",
+      "pt": "Rússia",
+      "de": "Russland"
+    }
+  },
+  "se": {
+    "flag": "🇸🇪",
+    "names": {
+      "es": "Suecia",
+      "en": "Sweden",
+      "fr": "Suède",
+      "pt": "Suécia",
+      "de": "Schweden"
+    }
+  },
+  "de": {
+    "flag": "🇩🇪",
+    "names": {
+      "es": "Alemania",
+      "en": "Germany",
+      "fr": "Allemagne",
+      "pt": "Alemanha",
+      "de": "Deutschland"
+    }
   }
 }
