@@ -19,6 +19,16 @@
       "de": "Argentinien"
     }
   },
+  "de": {
+    "flag": "🇩🇪",
+    "names": {
+      "es": "Alemania",
+      "en": "Germany",
+      "fr": "Allemagne",
+      "pt": "Alemanha",
+      "de": "Deutschland"
+    }
+  },
   "es": {
     "flag": "🇪🇸",
     "names": {
@@ -39,16 +49,6 @@
       "de": "Frankreich"
     }
   },
-  "no": {
-    "flag": "🇳🇴",
-    "names": {
-      "es": "Noruega",
-      "en": "Norway",
-      "fr": "Norvège",
-      "pt": "Noruega",
-      "de": "Norwegen"
-    }
-  },
   "gb": {
     "flag": "🇬🇧",
     "names": {
@@ -59,14 +59,14 @@
       "de": "Vereinigtes Königreich"
     }
   },
-  "us": {
-    "flag": "🇺🇸",
+  "no": {
+    "flag": "🇳🇴",
     "names": {
-      "es": "Estados Unidos",
-      "en": "United States",
-      "fr": "États-Unis",
-      "pt": "Estados Unidos",
-      "de": "Vereinigte Staaten"
+      "es": "Noruega",
+      "en": "Norway",
+      "fr": "Norvège",
+      "pt": "Noruega",
+      "de": "Norwegen"
     }
   },
   "ru": {
@@ -89,14 +89,14 @@
       "de": "Schweden"
     }
   },
-  "de": {
-    "flag": "🇩🇪",
+  "us": {
+    "flag": "🇺🇸",
     "names": {
-      "es": "Alemania",
-      "en": "Germany",
-      "fr": "Allemagne",
-      "pt": "Alemanha",
-      "de": "Deutschland"
+      "es": "Estados Unidos",
+      "en": "United States",
+      "fr": "États-Unis",
+      "pt": "Estados Unidos",
+      "de": "Vereinigte Staaten"
     }
   }
 }
