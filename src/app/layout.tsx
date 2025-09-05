@@ -4,8 +4,15 @@ import ServerFooter from "@/components/ServerFooter";
 import { ThemeProvider } from "@/components/theme-provider";
 import { DEFAULT_LANG } from "@/lib/constants";
 import type { Metadata } from "next";
+import { Open_Sans } from "next/font/google";
 import { type PropsWithChildren } from "react";
 import "./globals.css";
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "600", "700", "800"],
+  variable: "--font-open-sans",
+});
 
 export const metadata: Metadata = {
   icons: { icon: "/favicon.svg" },
@@ -17,7 +24,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang={DEFAULT_LANG} suppressHydrationWarning>
+    <html
+      className={openSans.variable}
+      lang={DEFAULT_LANG}
+      suppressHydrationWarning
+    >
       <head />
       <body className="flex flex-col min-h-screen">
         <ThemeProvider

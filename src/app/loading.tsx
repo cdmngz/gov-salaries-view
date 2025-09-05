@@ -11,22 +11,14 @@ export default function Loading() {
           <span className="truncate">Government viewer</span>
         </div>
       </header>
-      <div className="p-8 flex flex-col gap-8">
+      <div className="p-14 rounded-none flex flex-col gap-14">
         <div className="flex justify-center">
-          <Skeleton className="animate-pulse h-20 bg-card w-1/2" />
+          <Skeleton className="rounded-none h-24 bg-card w-1/3" />
         </div>
-        <div className="flex justify-center gap-4">
-          <Skeleton className="animate-pulse h-44 bg-card w-1/4" />
-          <Skeleton className="animate-pulse h-44 bg-card w-1/4" />
-          <Skeleton className="animate-pulse h-44 bg-card w-1/4" />
-        </div>
-        <div className="flex justify-center">
-          <Skeleton className="animate-pulse h-24 bg-card w-1/2" />
-        </div>
-        <div className="flex justify-center gap-4">
-          <Skeleton className="animate-pulse h-44 bg-card w-1/4" />
-          <Skeleton className="animate-pulse h-44 bg-card w-1/4" />
-          <Skeleton className="animate-pulse h-44 bg-card w-1/4" />
+        <div className="flex justify-center gap-8">
+          <Skeleton className="rounded-none h-44 bg-card w-1/3" />
+          <Skeleton className="rounded-none h-44 bg-card w-1/3" />
+          <Skeleton className="rounded-none h-44 bg-card w-1/3" />
         </div>
       </div>
     </>

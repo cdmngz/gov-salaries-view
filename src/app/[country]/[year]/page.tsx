@@ -35,15 +35,14 @@ export async function generateMetadata({
   searchParams: Promise<{ lang?: string; currency?: string }>;
 }): Promise<Metadata> {
   const { country, year } = await params;
-  const { lang: langParam, currency: currencyParam } = await searchParams;
+  const { lang: langParam } = await searchParams;
 
   const lang = parseLang(langParam);
-  const currency = (currencyParam ?? DEFAULT_CURRENCY).toUpperCase();
   const countryName = countriesJson[country].names[lang];
 
   return {
-    title: `${countryName} — ${year} • ${currency}`,
-    openGraph: { title: `${countryName} ${year} — ${currency}` },
+    title: `${countryName} — ${year}`,
+    openGraph: { title: `${countryName} ${year}` },
     alternates: { canonical: `/${country}/${year}` },
   };
 }

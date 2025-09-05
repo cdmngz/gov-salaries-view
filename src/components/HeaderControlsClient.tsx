@@ -2,6 +2,10 @@
 
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
+
+import ThemeToggle from "@/components/ThemeToggle";
 import {
   Select,
   SelectContent,
@@ -13,13 +17,10 @@ import countriesData from "@/data/countries.json";
 import { LANGUAGE_NAMES } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import type { CountriesData, CountryCode } from "@/types";
-import { Language, LanguageSchema, parseLang } from "@/validators/lang";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
-import ThemeToggle from "./ThemeToggle";
-import { components } from "@/types/openapi";
 import { sortBy } from "@/lib/utils";
+import type { CountriesData, CountryCode } from "@/types";
+import { components } from "@/types/openapi";
+import { Language, LanguageSchema, parseLang } from "@/validators/lang";
 
 type Props = {
   country: CountryCode;
@@ -29,6 +30,35 @@ type Props = {
   periods: number[];
   defaultYear: number;
 };
+
+type Option = { value: string; label: React.ReactNode };
+
+function ControlSelect({
+  value,
+  onChange,
+  placeholder,
+  options,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  placeholder: string;
+  options: Option[];
+}) {
+  return (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="text-sm bg-card rounded-none border-none shadow-none">
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((opt) => (
+          <SelectItem key={opt.value} value={opt.value}>
+            {opt.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
 
 export default function HeaderControlsClient({
   country,
@@ -67,9 +97,10 @@ export default function HeaderControlsClient({
     );
   };
 
-  const currentLang: Language = useMemo(() => {
-    return parseLang(searchParams.get("lang"));
-  }, [searchParams]);
+  const currentLang: Language = useMemo(
+    () => parseLang(searchParams.get("lang")),
+    [searchParams]
+  );
 
   const currentCurrency: string = useMemo(() => {
     const q = (searchParams.get("currency") || "").toUpperCase();
@@ -81,85 +112,82 @@ export default function HeaderControlsClient({
     return DEFAULT_CURRENCY;
   }, [searchParams, currencyCodes, currency, baseCurrency]);
 
+  const countryOptions = useMemo<Option[]>(() => {
+    const withNames = Object.entries(countries).map(([code, meta]) => ({
+      code,
+      name: meta.names[currentLang] ?? code.toUpperCase(),
+      label: (
+        <>
+          {meta.flag} {meta.names[currentLang] ?? code.toUpperCase()}
+        </>
+      ),
+    }));
+    const sorted = sortBy(withNames, "name", currentLang);
+    return sorted.map(({ code, label }) => ({ value: code, label }));
+  }, [countries, currentLang]);
+
+  const languageOptions = useMemo<Option[]>(
+    () =>
+      LanguageSchema.options.map((code) => ({
+        value: code,
+        label: LANGUAGE_NAMES[currentLang]?.[code] ?? code,
+      })),
+    [currentLang]
+  );
+
+  const currencyOptions = useMemo<Option[]>(
+    () =>
+      currencyCodes.map((code) => ({
+        value: code,
+        label: (
+          <>
+            {code} {CURRENCY_SYMBOLS[code] ?? ""}
+          </>
+        ),
+      })),
+    [currencyCodes]
+  );
+
+  const yearOptions = useMemo<Option[]>(
+    () => years.map((y) => ({ value: String(y), label: y })),
+    [years]
+  );
+
   return (
     <div className="flex items-center flex-wrap justify-center gap-2 sm:gap-3">
-      <Select
+      <ControlSelect
         value={country}
-        onValueChange={(val) => {
+        onChange={(val) => {
           const qs = searchParams?.toString() ?? "";
           router.push(`/${val}/${defaultYear}${qs ? `?${qs}` : ""}`);
         }}
-      >
-        <SelectTrigger className="text-sm bg-card">
-          <SelectValue placeholder="Country" />
-        </SelectTrigger>
-        <SelectContent>
-          {sortBy(
-            Object.entries(countries).map(([code, meta]) => ({
-              code,
-              flag: meta.flag,
-              name: meta.names[currentLang] ?? code.toUpperCase(),
-            })),
-            "name",
-            currentLang
-          ).map(({ code, flag, name }) => (
-            <SelectItem key={code} value={code}>
-              {flag} {name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        placeholder="Country"
+        options={countryOptions}
+      />
 
-      <Select
+      <ControlSelect
         value={currentLang}
-        onValueChange={(val) => updateQuery({ lang: val })}
-      >
-        <SelectTrigger className="text-sm bg-card">
-          <SelectValue placeholder="Lang" />
-        </SelectTrigger>
-        <SelectContent>
-          {LanguageSchema.options.map((code) => (
-            <SelectItem key={code} value={code}>
-              {LANGUAGE_NAMES[currentLang]?.[code] ?? code}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        onChange={(val) => updateQuery({ lang: val })}
+        placeholder="Lang"
+        options={languageOptions}
+      />
 
-      <Select
+      <ControlSelect
         value={currentCurrency}
-        onValueChange={(val) => updateQuery({ currency: val })}
-      >
-        <SelectTrigger className="text-sm bg-card">
-          <SelectValue placeholder="Currency">{currentCurrency}</SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {currencyCodes.map((code) => (
-            <SelectItem key={code} value={code}>
-              {code} {CURRENCY_SYMBOLS[code] ?? ""}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        onChange={(val) => updateQuery({ currency: val })}
+        placeholder="Currency"
+        options={currencyOptions}
+      />
 
-      <Select
-        value={defaultYear.toString()}
-        onValueChange={(val) => {
+      <ControlSelect
+        value={String(defaultYear)}
+        onChange={(val) => {
           const qs = searchParams?.toString() ?? "";
           router.push(`/${country}/${val}${qs ? `?${qs}` : ""}`);
         }}
-      >
-        <SelectTrigger className="text-sm bg-card">
-          <SelectValue placeholder="Year" />
-        </SelectTrigger>
-        <SelectContent>
-          {years.map((y) => (
-            <SelectItem key={y} value={y.toString()}>
-              {y}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        placeholder="Year"
+        options={yearOptions}
+      />
 
       <ThemeToggle />
     </div>
