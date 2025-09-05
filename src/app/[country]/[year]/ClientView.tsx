@@ -2,6 +2,10 @@
 
 "use client";
 
+import Link from "next/link";
+import { useParams, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
+
 import OfficialsList from "@/components/OfficialsList";
 import countriesJson from "@/data/countries.json";
 import { FOOTER_MESSAGE, SECTION_TITLES, TITLE_PREFIX } from "@/i18n";
@@ -9,9 +13,6 @@ import { DEFAULT_CURRENCY } from "@/lib/constants";
 import type { CountryCode, SectionKey } from "@/types";
 import { components } from "@/types/openapi";
 import { parseLang, type Language } from "@/validators/lang";
-import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
 
 const sectionGroups: SectionKey[][] = [
   ["executive", "royalty"],
@@ -76,25 +77,25 @@ export default function ClientView({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-6 justify-center">
+      <div className="flex flex-col flex-wrap gap-12 justify-center">
         {sectionGroups.map((group, i) => (
-          <div key={i} className="flex flex-wrap justify-center gap-8">
+          <div key={i} className="flex flex-wrap justify-center gap-12">
             {group.map((sectionKey) => {
-              const list = json[sectionKey] as
-                | components["schemas"]["Official"][]
-                | undefined;
+              const list = json[sectionKey];
+
               if (!list?.length) return null;
 
               return (
                 <section key={sectionKey}>
                   <OfficialsList
-                    title={SECTION_TITLES[sectionKey][lang]}
-                    officials={list}
-                    parties={json.parties}
-                    rates={rates}
                     baseCurrency={baseCurrency}
                     currency={currency}
                     lang={lang}
+                    officials={list}
+                    parties={json.parties}
+                    rates={rates}
+                    sectionKey={sectionKey}
+                    title={SECTION_TITLES[sectionKey][lang]}
                   />
                 </section>
               );
