@@ -21,13 +21,14 @@ type Party = components["schemas"]["Official"]["party"];
 const NO_PARTY_KEY = "__NO_PARTY__";
 const NO_PARTY_LABEL = "No party";
 
-const rangeGlyphs: Record<number, string> = {
+const rangeIcons: Record<number, string> = {
   1: "←",
   2: "↖",
   3: "↑",
   4: "↗",
   5: "→",
 };
+
 const rangeGroups = [
   { id: "1-2", label: "1-2", inGroup: (r: number) => r >= 1 && r <= 2 },
   { id: "3", label: "3", inGroup: (r: number) => r === 3 },
@@ -85,7 +86,7 @@ function OfficialCard({
 }) {
   const partyMeta = official.party ? parties?.[official.party] : undefined;
   const r = getPartyRange(official.party, parties);
-  const glyph = typeof r === "number" ? rangeGlyphs[r] : undefined;
+  const rangeIcon = typeof r === "number" ? rangeIcons[r] : undefined;
 
   return (
     <li className="flex justify-center">
@@ -126,7 +127,7 @@ function OfficialCard({
               className="text-xs text-center w-48 font-semibold"
               style={{ color: partyMeta.color }}
             >
-              {official.party} {glyph} {partyMeta.name}
+              {official.party} {rangeIcon} {partyMeta.name}
             </p>
             {partyMeta[DEFAULT_LANG] && (
               <p
@@ -212,19 +213,23 @@ function PartyButtons({
       {partyList.map((partyKey) => {
         const label = partyKey === NO_PARTY_KEY ? NO_PARTY_LABEL : partyKey;
         const isActive = selected.size > 0 && selected.has(partyKey);
-        const partyColor = parties?.[partyKey]?.color;
+        const party = parties?.[partyKey];
+        const rangeIcon =
+          typeof party?.range === "number"
+            ? rangeIcons[party?.range]
+            : undefined;
         return (
           <button
             onClick={() => onToggle(partyKey)}
             key={partyKey}
-            className="px-3 py-1 rounded-full shadow-none text-xs border-none bg-card"
+            className="px-3 py-1 rounded-full text-nowrap shadow-none text-xs border-none bg-card"
             style={
-              isActive && partyColor
-                ? { backgroundColor: partyColor, color: "white" }
-                : undefined
+              isActive && party?.color
+                ? { backgroundColor: party.color, color: "white" }
+                : { color: party?.color }
             }
           >
-            {label} ({counts[partyKey]})
+            {label} ({counts[partyKey]}) {rangeIcon}
           </button>
         );
       })}
@@ -305,7 +310,7 @@ export default function OfficialsList({
       {showInfo && (
         <>
           {showFilters && showFilterButton && (
-            <div className="flex gap-4 w-full">
+            <div className="flex gap-4 w-full flex-wrap">
               <div className="min-h-18 flex-1 flex flex-col gap-2 p-2 items-start bg-red-100">
                 <p className="text-sm dark:text-primary-foreground">
                   Left (
