@@ -6,7 +6,7 @@ import { useMemo, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { CountryCode } from "@/types";
-import { convert, formatCurrency } from "@/lib/utils";
+import { cn, convert, formatCurrency } from "@/lib/utils";
 import countriesJson from "@/data/countries.json";
 import { parseLang } from "@/validators/lang";
 import { Button } from "@/components/ui/button";
@@ -114,7 +114,7 @@ export default function ClientView({
     [rows, senateOrder, sortGeneric]
   );
 
-  const toggleText = (o: SortOrder) => (o === "asc" ? "⬆️ Asc" : "⬇️ Desc");
+  const toggleText = (o: SortOrder) => (o === "asc" ? "⬆ Asc" : "⬇ Desc");
 
   return (
     <div className="p-4 space-y-8">
@@ -128,38 +128,51 @@ export default function ClientView({
         <div className="mb-2 flex items-center flex-wrap gap-2 justify-center">
           <h3 className="font-semibold mr-2">Ministers</h3>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <Button
-              variant={ministersField === "quantity" ? "outline" : "link"}
+              className={cn("border-none shadow-none rounded-none", {
+                "bg-card": ministersField !== "quantity",
+              })}
               onClick={() => setMinistersField("quantity")}
-              aria-pressed={ministersField === "quantity"}
+              size="sm"
+              variant={ministersField === "quantity" ? "default" : "ghost"}
             >
               Number
             </Button>
             <Button
-              variant={ministersField === "budget" ? "outline" : "link"}
+              className={cn("border-none shadow-none rounded-none", {
+                "bg-card": ministersField !== "budget",
+              })}
               onClick={() => setMinistersField("budget")}
-              aria-pressed={ministersField === "budget"}
+              size="sm"
+              variant={ministersField === "budget" ? "default" : "ghost"}
             >
               Budget
             </Button>
             <Button
-              variant={ministersField === "gdp" ? "outline" : "link"}
+              className={cn("border-none shadow-none rounded-none", {
+                "bg-card": ministersField !== "gdp",
+              })}
               onClick={() => setMinistersField("gdp")}
-              aria-pressed={ministersField === "gdp"}
+              size="sm"
+              variant={ministersField === "gdp" ? "default" : "ghost"}
             >
               GDP
             </Button>
             <Button
-              variant={ministersField === "percent" ? "outline" : "link"}
+              className={cn("border-none shadow-none rounded-none", {
+                "bg-card": ministersField !== "percent",
+              })}
               onClick={() => setMinistersField("percent")}
-              aria-pressed={ministersField === "percent"}
+              size="sm"
+              variant={ministersField === "percent" ? "default" : "ghost"}
             >
               % GDP
             </Button>
           </div>
           <Button
             variant="outline"
+            className="bg-card border-none shadow-none rounded-none"
             onClick={() =>
               setMinistersOrder((o) => (o === "asc" ? "desc" : "asc"))
             }
@@ -174,7 +187,7 @@ export default function ClientView({
             {ministersRows.map((r) => (
               <div
                 key={`min-${r.code}`}
-                className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
+                className="flex-shrink-0 w-56 p-4 border-none rounded-none shadow-none bg-card"
               >
                 <div className="text-base font-semibold">
                   {countriesJson[r.code].flag}{" "}
@@ -207,11 +220,13 @@ export default function ClientView({
         <div className="mb-2 flex items-center gap-2 justify-center">
           <h3 className="font-semibold mr-2">Deputies</h3>
           <Button
+            aria-label="Toggle deputies sort order"
+            className="bg-card border-none shadow-none rounded-none"
             onClick={() =>
               setDeputiesOrder((o) => (o === "asc" ? "desc" : "asc"))
             }
+            size="sm"
             variant="outline"
-            aria-label="Toggle deputies sort order"
           >
             {toggleText(deputiesOrder)}
           </Button>
@@ -219,11 +234,10 @@ export default function ClientView({
 
         <div className="flex justify-center">
           <div className="flex gap-4 max-w-10/12 overflow-x-auto">
-            {" "}
             {deputiesRows.map((r) => (
               <div
                 key={`con-${r.code}`}
-                className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
+                className="flex-shrink-0 w-56 p-4 border-none shadow-none rounded-none bg-card"
               >
                 <div className="text-base font-semibold">
                   {countriesJson[r.code].flag}{" "}
@@ -243,11 +257,13 @@ export default function ClientView({
         <div className="mb-2 flex items-center gap-2 justify-center">
           <h3 className="font-semibold mr-2">Senate</h3>
           <Button
+            aria-label="Toggle senate sort order"
+            className="bg-card border-none shadow-none rounded-none"
             onClick={() =>
               setSenateOrder((o) => (o === "asc" ? "desc" : "asc"))
             }
+            size="sm"
             variant="outline"
-            aria-label="Toggle senate sort order"
           >
             {toggleText(senateOrder)}
           </Button>
@@ -255,11 +271,10 @@ export default function ClientView({
 
         <div className="flex justify-center">
           <div className="flex gap-4 max-w-10/12 overflow-x-auto">
-            {" "}
             {senateRows.map((r) => (
               <div
                 key={`sen-${r.code}`}
-                className="flex-shrink-0 w-56 p-4 border rounded-xl bg-white dark:bg-gray-900"
+                className="flex-shrink-0 w-56 p-4 border-none shadow-none rounded-none bg-card"
               >
                 <div className="text-base font-semibold">
                   {countriesJson[r.code].flag}{" "}
