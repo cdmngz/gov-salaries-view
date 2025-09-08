@@ -17,7 +17,6 @@ import countriesData from "@/data/countries.json";
 import { LANGUAGE_NAMES } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import { sortBy } from "@/lib/utils";
 import type { CountriesData, CountryCode } from "@/types";
 import { components } from "@/types/openapi";
 import { Language, LanguageSchema, parseLang } from "@/validators/lang";
@@ -122,8 +121,21 @@ export default function HeaderControlsClient({
         </>
       ),
     }));
-    const sorted = sortBy(withNames, "name", currentLang);
-    return sorted.map(({ code, label }) => ({ value: code, label }));
+
+    const pinnedOrder = ["world", "europe"];
+
+    const pinned = pinnedOrder
+      .map((p) => withNames.find((c) => c.code === p))
+      .filter(Boolean) as typeof withNames;
+
+    const rest = withNames
+      .filter((c) => !pinnedOrder.includes(c.code))
+      .sort((a, b) => a.name.localeCompare(b.name, currentLang));
+
+    return [
+      ...pinned.map(({ code, label }) => ({ value: code, label })),
+      ...rest.map(({ code, label }) => ({ value: code, label })),
+    ];
   }, [countries, currentLang]);
 
   const languageOptions = useMemo<Option[]>(
