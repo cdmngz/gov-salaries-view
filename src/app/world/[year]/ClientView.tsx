@@ -2,29 +2,234 @@
 
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { ChevronDown } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { DEFAULT_CURRENCY } from "@/lib/constants";
-import { CountryCode } from "@/types";
-import { cn, convert, formatCurrency } from "@/lib/utils";
-import countriesJson from "@/data/countries.json";
-import { parseLang } from "@/validators/lang";
-import { Button } from "@/components/ui/button";
-import { TEXT_TRANSLATION } from "@/i18n";
-import { components } from "@/types/openapi";
+import { useMemo, useState } from "react";
 
-type SortOrder = "asc" | "desc";
-type MinistersSortField = "quantity" | "budget" | "gdp" | "percent";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import countriesJson from "@/data/countries.json";
+import { TEXT_TRANSLATION } from "@/i18n";
+import { DEFAULT_CURRENCY } from "@/lib/constants";
+import { cn, convert, formatCurrency } from "@/lib/utils";
+import { CountryCode } from "@/types";
+import { components } from "@/types/openapi";
+import { parseLang } from "@/validators/lang";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
 type Row = {
   code: CountryCode;
   ministersQty: number;
   budget: number;
   gdp: number;
+  gdpPerCapita: number;
   gdpPercent: number;
   deputiesQty: number;
   senateQty: number;
+  countryName: string;
+  total: number;
 };
+
+function DataTable({
+  columns,
+  data,
+}: {
+  columns: ColumnDef<Row>[];
+  data: Row[];
+}) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+    },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    initialState: {
+      pagination: { pageSize: 10 },
+      sorting: [{ id: "total", desc: true }],
+    },
+  });
+
+  return (
+    <div className="space-y-2 bg-card p-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+        <Input
+          className="w-full sm:max-w-xs"
+          placeholder="Filter countries"
+          value={
+            (table.getColumn("countryName")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(e) =>
+            table.getColumn("countryName")?.setFilterValue(e.target.value)
+          }
+        />
+
+        <div className="ml-auto flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-none bg-card shadow-none"
+              >
+                Columns <ChevronDown className="ml-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllLeafColumns()
+                .filter((col) => col.getCanHide())
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(v) => column.toggleVisibility(!!v)}
+                  >
+                    {column.columnDef.header as string}
+                  </DropdownMenuCheckboxItem>
+                ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Pagination controls */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-none rounded-none"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Prev
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-none rounded-none"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="whitespace-nowrap">
+                    {header.isPlaceholder ? null : (
+                      <div
+                        className={cn(
+                          header.column.getCanSort()
+                            ? "cursor-pointer select-none"
+                            : ""
+                        )}
+                        onClick={header.column.getToggleSortingHandler()}
+                        aria-label={
+                          header.column.getCanSort()
+                            ? `Sort by ${String(
+                                header.column.columnDef.header
+                              )}`
+                            : undefined
+                        }
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {header.column.getIsSorted() === "asc" ? " ↑" : ""}
+                        {header.column.getIsSorted() === "desc" ? " ↓" : ""}
+                      </div>
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="whitespace-nowrap">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="text-xs text-muted-foreground">
+        Page {table.getState().pagination.pageIndex + 1} of{" "}
+        {table.getPageCount() || 1} • {table.getFilteredRowModel().rows.length}{" "}
+        rows
+      </div>
+    </div>
+  );
+}
 
 export default function ClientView({
   data,
@@ -39,15 +244,15 @@ export default function ClientView({
   ).toUpperCase();
   const lang = parseLang(searchParams.get("lang"));
 
-  const [ministersField, setMinistersField] =
-    useState<MinistersSortField>("quantity");
-  const [ministersOrder, setMinistersOrder] = useState<SortOrder>("desc");
-  const [deputiesOrder, setDeputiesOrder] = useState<SortOrder>("desc");
-  const [senateOrder, setSenateOrder] = useState<SortOrder>("desc");
-
   const rows: Row[] = useMemo(() => {
     return Object.entries(data).map(([code, stats]) => {
       const gdp = convert(stats.GDP, DEFAULT_CURRENCY, currency, rates.rates);
+      const gdpPerCapita = convert(
+        stats.GDPPerCapita,
+        DEFAULT_CURRENCY,
+        currency,
+        rates.rates
+      );
       const budget = convert(
         stats.ministers.budget,
         DEFAULT_CURRENCY,
@@ -55,66 +260,97 @@ export default function ClientView({
         rates.rates
       );
       const gdpPercent = gdp ? (budget * 100) / gdp : 0;
+
+      const ministersQty = stats.ministers.quantity;
+      const deputiesQty = stats.deputies.quantity;
+      const senateQty = stats.senate.quantity;
+
       return {
         code: code as CountryCode,
-        ministersQty: stats.ministers.quantity,
+        ministersQty,
         budget,
         gdp,
+        gdpPerCapita,
         gdpPercent,
-        deputiesQty: stats.deputies.quantity,
-        senateQty: stats.senate.quantity,
+        deputiesQty,
+        senateQty,
+        countryName: `${
+          countriesJson[code as CountryCode].names[lang]
+        } ${code}`,
+        total: ministersQty + deputiesQty + senateQty,
       };
     });
-  }, [data, currency, rates]);
+  }, [data, currency, rates, lang]);
 
-  const sortGeneric = useCallback(
-    <T extends { code: string }>(
-      arr: T[],
-      getVal: (r: T) => number,
-      order: SortOrder
-    ): T[] => {
-      const out = [...arr];
-      out.sort((a: T, b: T) => {
-        const A = getVal(a);
-        const B = getVal(b);
-        if (A === B) return a.code.localeCompare(b.code);
-        return order === "asc" ? A - B : B - A;
-      });
-      return out;
-    },
-    []
-  );
-
-  // Ministers sorting
-  const ministersRows = useMemo(() => {
-    const getter = (r: Row) => {
-      switch (ministersField) {
-        case "quantity":
-          return r.ministersQty;
-        case "budget":
-          return r.budget;
-        case "gdp":
-          return r.gdp;
-        case "percent":
-          return r.gdpPercent;
-      }
-    };
-    return sortGeneric(rows, getter, ministersOrder);
-  }, [rows, ministersField, ministersOrder, sortGeneric]);
-
-  // Deputies sorting (quantity only)
-  const deputiesRows = useMemo(
-    () => sortGeneric(rows, (r: Row) => r.deputiesQty, deputiesOrder),
-    [rows, deputiesOrder, sortGeneric]
-  );
-
-  // Senate sorting (quantity only)
-  const senateRows = useMemo(
-    () => sortGeneric(rows, (r: Row) => r.senateQty, senateOrder),
-    [rows, senateOrder, sortGeneric]
-  );
-
-  const toggleText = (o: SortOrder) => (o === "asc" ? "⬆ Asc" : "⬇ Desc");
+  const columns: ColumnDef<Row>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: "countryName",
+        header: "Country",
+        enableHiding: false,
+        cell: ({ row }) => {
+          const code = row.original.code;
+          const info = countriesJson[code];
+          return (
+            <div className="flex items-center gap-2">
+              <span className="text-lg leading-none">{info.flag}</span>
+              <span>{info.names[lang]}</span>
+              <span className="text-muted-foreground text-xs">({code})</span>
+            </div>
+          );
+        },
+        sortingFn: "alphanumeric",
+      },
+      {
+        accessorKey: "total",
+        header: "Total",
+        enableHiding: false,
+        cell: ({ getValue }) => (
+          <span className="tabular-nums">{getValue<number>()}</span>
+        ),
+      },
+      {
+        accessorKey: "ministersQty",
+        header: "Ministries",
+        enableHiding: false,
+        cell: ({ getValue }) => (
+          <span className="tabular-nums">{getValue<number>()}</span>
+        ),
+      },
+      {
+        accessorKey: "deputiesQty",
+        header: "Deputies",
+        cell: ({ getValue }) => (
+          <span className="tabular-nums">{getValue<number>()}</span>
+        ),
+      },
+      {
+        accessorKey: "senateQty",
+        header: "Senate",
+        cell: ({ getValue }) => (
+          <span className="tabular-nums">{getValue<number>()}</span>
+        ),
+      },
+      {
+        accessorKey: "gdp",
+        header: "GDP",
+        cell: ({ getValue }) => (
+          <span className="tabular-nums">
+            {formatCurrency(getValue<number>(), currency)}
+          </span>
+        ),
+      },
+      {
+        accessorKey: "gdpPerCapita",
+        header: "GDP per Capita",
+        cell: ({ getValue }) => (
+          <span className="tabular-nums">
+            {formatCurrency(getValue<number>(), currency)}
+          </span>
+        ),
+      },
+    ];
+  }, [currency, lang]);
 
   return (
     <div className="p-4 space-y-8">
@@ -123,171 +359,8 @@ export default function ClientView({
         {" - "}
         {TEXT_TRANSLATION["stats"][lang]} 📊
       </h1>
-      {/* Ministers */}
-      <section>
-        <div className="mb-2 flex items-center flex-wrap gap-2 justify-center">
-          <h3 className="font-semibold mr-2">Ministers</h3>
 
-          <div className="flex items-center gap-2">
-            <Button
-              className={cn("border-none shadow-none rounded-none", {
-                "bg-card": ministersField !== "quantity",
-              })}
-              onClick={() => setMinistersField("quantity")}
-              size="sm"
-              variant={ministersField === "quantity" ? "default" : "ghost"}
-            >
-              Number
-            </Button>
-            <Button
-              className={cn("border-none shadow-none rounded-none", {
-                "bg-card": ministersField !== "budget",
-              })}
-              onClick={() => setMinistersField("budget")}
-              size="sm"
-              variant={ministersField === "budget" ? "default" : "ghost"}
-            >
-              Budget
-            </Button>
-            <Button
-              className={cn("border-none shadow-none rounded-none", {
-                "bg-card": ministersField !== "gdp",
-              })}
-              onClick={() => setMinistersField("gdp")}
-              size="sm"
-              variant={ministersField === "gdp" ? "default" : "ghost"}
-            >
-              GDP
-            </Button>
-            <Button
-              className={cn("border-none shadow-none rounded-none", {
-                "bg-card": ministersField !== "percent",
-              })}
-              onClick={() => setMinistersField("percent")}
-              size="sm"
-              variant={ministersField === "percent" ? "default" : "ghost"}
-            >
-              % GDP
-            </Button>
-          </div>
-          <Button
-            variant="outline"
-            className="bg-card border-none shadow-none rounded-none"
-            onClick={() =>
-              setMinistersOrder((o) => (o === "asc" ? "desc" : "asc"))
-            }
-            aria-label="Toggle ministers sort order"
-          >
-            {toggleText(ministersOrder)}
-          </Button>
-        </div>
-
-        <div className="flex justify-center">
-          <div className="flex gap-4 max-w-10/12 overflow-x-auto">
-            {ministersRows.map((r) => (
-              <div
-                key={`min-${r.code}`}
-                className="flex-shrink-0 w-56 p-4 border-none rounded-none shadow-none bg-card"
-              >
-                <div className="text-base font-semibold">
-                  {countriesJson[r.code].flag}{" "}
-                  {countriesJson[r.code].names[lang]}
-                </div>
-                <div className="text-sm">
-                  {TEXT_TRANSLATION.ministries[lang]}:{" "}
-                  <strong>{r.ministersQty}</strong>
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {TEXT_TRANSLATION.budget[lang]}:{" "}
-                  {formatCurrency(r.budget, currency)}
-                </div>
-                <br />
-                <div className="text-xs text-muted-foreground">
-                  {TEXT_TRANSLATION.GDP[lang]}:{" "}
-                  {formatCurrency(r.gdp, currency)}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {r.gdpPercent.toFixed(2)}% of GDP
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Deputies */}
-      <section>
-        <div className="mb-2 flex items-center gap-2 justify-center">
-          <h3 className="font-semibold mr-2">Deputies</h3>
-          <Button
-            aria-label="Toggle deputies sort order"
-            className="bg-card border-none shadow-none rounded-none"
-            onClick={() =>
-              setDeputiesOrder((o) => (o === "asc" ? "desc" : "asc"))
-            }
-            size="sm"
-            variant="outline"
-          >
-            {toggleText(deputiesOrder)}
-          </Button>
-        </div>
-
-        <div className="flex justify-center">
-          <div className="flex gap-4 max-w-10/12 overflow-x-auto">
-            {deputiesRows.map((r) => (
-              <div
-                key={`con-${r.code}`}
-                className="flex-shrink-0 w-56 p-4 border-none shadow-none rounded-none bg-card"
-              >
-                <div className="text-base font-semibold">
-                  {countriesJson[r.code].flag}{" "}
-                  {countriesJson[r.code].names[lang]}
-                </div>
-                <div className="text-sm">
-                  Members: <strong>{r.deputiesQty}</strong>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Senate */}
-      <section>
-        <div className="mb-2 flex items-center gap-2 justify-center">
-          <h3 className="font-semibold mr-2">Senate</h3>
-          <Button
-            aria-label="Toggle senate sort order"
-            className="bg-card border-none shadow-none rounded-none"
-            onClick={() =>
-              setSenateOrder((o) => (o === "asc" ? "desc" : "asc"))
-            }
-            size="sm"
-            variant="outline"
-          >
-            {toggleText(senateOrder)}
-          </Button>
-        </div>
-
-        <div className="flex justify-center">
-          <div className="flex gap-4 max-w-10/12 overflow-x-auto">
-            {senateRows.map((r) => (
-              <div
-                key={`sen-${r.code}`}
-                className="flex-shrink-0 w-56 p-4 border-none shadow-none rounded-none bg-card"
-              >
-                <div className="text-base font-semibold">
-                  {countriesJson[r.code].flag}{" "}
-                  {countriesJson[r.code].names[lang]}
-                </div>
-                <div className="text-sm">
-                  Members: <strong>{r.senateQty}</strong>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <DataTable columns={columns} data={rows} />
     </div>
   );
 }

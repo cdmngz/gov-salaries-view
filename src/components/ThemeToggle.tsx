@@ -10,20 +10,16 @@ import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
 
-  const isDark = resolvedTheme === "dark";
-
   return (
     <Button
       variant="outline"
       size="icon"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="bg-card border-none rounded-none shadow-none"
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      className="relative bg-card border-none rounded-none shadow-none"
+      aria-label="Toggle theme"
     >
-      {isDark ? (
-        <SunIcon className="size-4" />
-      ) : (
-        <MoonIcon className="size-4" />
-      )}
+      <SunIcon className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <MoonIcon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
     </Button>
   );
 }

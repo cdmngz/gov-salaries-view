@@ -364,7 +364,8 @@ export interface components {
          * @description Snapshot of currency exchange rates and GDP for a given base currency.
          * @example {
          *       "baseCurrency": "USD",
-         *       "GDP": 633270000000,
+         *       "GDP": 1370000000000,
+         *       "GDPPerCapita": 28562,
          *       "timestamp": "2025-07-31T00:00:00Z",
          *       "rates": {
          *         "AUD": 1.51,
@@ -392,10 +393,12 @@ export interface components {
              */
             baseCurrency: string;
             /**
-             * @description Nominal GDP of the base currency's economy.
-             * @example 633270000000
+             * @description Nominal GDP (last full year) of the base currency's economy.
+             * @example 1230000000000
              */
             GDP?: number;
+            /** @description Nominal GDP per capita (last full year) of the base currency's economy. */
+            GDPPerCapita?: number;
             /**
              * Format: date-time
              * @description ISO 8601 timestamp when the snapshot was recorded.
@@ -427,6 +430,8 @@ export interface components {
         CountryStats: {
             /** @description Nominal GDP (units per your data source, e.g., USD). */
             GDP: number;
+            /** @description Nominal GDP per capita (same currency convention as GDP). */
+            GDPPerCapita?: number;
             ministers: components["schemas"]["MinistersBlock"];
             deputies: components["schemas"]["ChamberBlock"];
             senate: components["schemas"]["ChamberBlock"];
@@ -593,6 +598,7 @@ export interface components {
          * @example {
          *       "ar": {
          *         "GDP": 633270000000,
+         *         "GDPPerCapita": 14235,
          *         "ministers": {
          *           "quantity": 7,
          *           "budget": 22561000000
@@ -606,6 +612,7 @@ export interface components {
          *       },
          *       "es": {
          *         "GDP": 1749040659341,
+         *         "GDPPerCapita": 37121,
          *         "ministers": {
          *           "quantity": 22,
          *           "budget": 190880197802
@@ -619,6 +626,7 @@ export interface components {
          *       },
          *       "fr": {
          *         "GDP": 1749040659341,
+         *         "GDPPerCapita": 38420,
          *         "ministers": {
          *           "quantity": 15,
          *           "budget": 0
@@ -632,6 +640,7 @@ export interface components {
          *       },
          *       "us": {
          *         "GDP": 30331117000000,
+         *         "GDPPerCapita": 68000,
          *         "ministers": {
          *           "quantity": 15,
          *           "budget": 1615600000000
