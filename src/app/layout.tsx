@@ -1,12 +1,14 @@
 // src/app/layout.tsx
 
-import ServerFooter from "@/components/ServerFooter";
-import { ThemeProvider } from "@/components/theme-provider";
-import { DEFAULT_LANG } from "@/lib/constants";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import { type PropsWithChildren } from "react";
 import "./globals.css";
+
+import ServerFooter from "@/components/ServerFooter";
+import { ThemeProvider } from "@/components/theme-provider";
+import { DEFAULT_LANG } from "@/lib/constants";
+import { serverEnv } from "@/lib/env";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -20,6 +22,7 @@ export const metadata: Metadata = {
     default: "OfficialSalaries",
     template: "%s | OfficialSalaries",
   },
+  metadataBase: new URL(serverEnv.WEB_URL),
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

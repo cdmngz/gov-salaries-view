@@ -1,5 +1,8 @@
 // src/app/[country]/[year]/page.tsx
 
+import { Metadata } from "next";
+
+import ClientView from "@/app/[country]/[year]/ClientView";
 import ServerHeader from "@/components/ServerHeader";
 import countriesJson from "@/data/countries.json";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
@@ -10,8 +13,7 @@ import {
 } from "@/lib/data";
 import type { CountryCode } from "@/types";
 import { parseLang } from "@/validators/lang";
-import { Metadata } from "next";
-import ClientView from "./ClientView";
+import { serverEnv } from "@/lib/env";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -40,10 +42,18 @@ export async function generateMetadata({
   const lang = parseLang(langParam);
   const countryName = countriesJson[country].names[lang];
 
+  const title = `${countryName} — ${year}`;
+  const description = `${countryName} gov salaries data for ${year}. Explore compensation details for officials and roles.`;
+
   return {
-    title: `${countryName} — ${year}`,
-    openGraph: { title: `${countryName} ${year}` },
-    alternates: { canonical: `/${country}/${year}` },
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${serverEnv.WEB_URL}/${country}/${year}`,
+    },
+    alternates: { canonical: `${serverEnv.WEB_URL}/${country}/${year}` },
   };
 }
 
