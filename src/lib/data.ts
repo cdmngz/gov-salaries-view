@@ -45,7 +45,13 @@ export function buildDataUrls(
   };
 }
 
-export async function fetchCountryData(country: CountryCode, year: number) {
+export async function fetchCountryData(
+  country: CountryCode,
+  year: number
+): Promise<{
+  data: components["schemas"]["CountryData"];
+  rates: components["schemas"]["Rates"];
+}> {
   const { dataUrl, ratesUrl } = buildDataUrls(country, year);
   const [dataRes, ratesRes] = await Promise.all([
     fetch(dataUrl),
@@ -80,7 +86,10 @@ export function buildWorldUrls(year: number): {
   };
 }
 
-export async function fetchWorldData(year: number) {
+export async function fetchWorldData(year: number): Promise<{
+  data: components["schemas"]["WorldData"];
+  rates: components["schemas"]["Rates"];
+}> {
   const { dataUrl, ratesUrl } = buildWorldUrls(year);
   const [dataRes, ratesRes] = await Promise.all([
     fetch(dataUrl),

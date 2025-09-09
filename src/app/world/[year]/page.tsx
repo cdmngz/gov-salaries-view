@@ -1,12 +1,14 @@
 // src/app/world/[year]/page.tsx
 
+import { Metadata } from "next";
+
+import ClientView from "@/app/world/[year]/ClientView";
 import ServerHeader from "@/components/ServerHeader";
 import countriesJson from "@/data/countries.json";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { fetchWorldData, fetchWorldYears } from "@/lib/data";
 import { parseLang } from "@/validators/lang";
-import { Metadata } from "next";
-import ClientView from "./ClientView";
+import { serverEnv } from "@/lib/env";
 
 export async function generateStaticParams() {
   const years = await fetchWorldYears();
@@ -27,10 +29,18 @@ export async function generateMetadata({
   const currency = (currencyParam ?? DEFAULT_CURRENCY).toUpperCase();
   const countryName = countriesJson["world"].names[lang];
 
+  const title = `${countryName} — ${year}`;
+  const description = `${countryName} gov salaries data for ${year} in ${currency}. Explore global officials compensation and trends.`;
+
   return {
-    title: `${countryName} — ${year} • ${currency}`,
-    openGraph: { title: `${countryName} ${year} — ${currency}` },
-    alternates: { canonical: `/world/${year}` },
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${serverEnv.WEB_URL}/world/${year}`,
+    },
+    alternates: { canonical: `${serverEnv.WEB_URL}/world/${year}` },
   };
 }
 
