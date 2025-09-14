@@ -29,6 +29,16 @@
       "de": "Deutschland"
     }
   },
+  "ee": {
+    "flag": "🇪🇪",
+    "names": {
+      "es": "Estonia",
+      "en": "Estonia",
+      "fr": "Estonie",
+      "pt": "Estónia",
+      "de": "Estland"
+    }
+  },
   "es": {
     "flag": "🇪🇸",
     "names": {
@@ -59,6 +69,16 @@
       "de": "Vereinigtes Königreich"
     }
   },
+  "mo": {
+    "flag": "🇲🇨",
+    "names": {
+      "es": "Mónaco",
+      "en": "Monaco",
+      "fr": "Monaco",
+      "pt": "Mónaco",
+      "de": "Monaco"
+    }
+  },
   "no": {
     "flag": "🇳🇴",
     "names": {
@@ -67,6 +87,26 @@
       "fr": "Norvège",
       "pt": "Noruega",
       "de": "Norwegen"
+    }
+  },
+  "li": {
+    "flag": "🇱🇮",
+    "names": {
+      "es": "Liechtenstein",
+      "en": "Liechtenstein",
+      "fr": "Liechtenstein",
+      "pt": "Liechtenstein",
+      "de": "Liechtenstein"
+    }
+  },
+  "lu": {
+    "flag": "🇱🇺",
+    "names": {
+      "es": "Luxemburgo",
+      "en": "Luxembourg",
+      "fr": "Luxembourg",
+      "pt": "Luxemburgo",
+      "de": "Luxemburg"
     }
   },
   "np": {
