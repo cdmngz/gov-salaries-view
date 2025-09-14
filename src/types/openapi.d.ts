@@ -111,7 +111,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get list of availables years */
+        /** Get list of available years for a country */
         get: {
             parameters: {
                 query?: never;
@@ -119,8 +119,6 @@ export interface paths {
                 path: {
                     /** @description ISO country code (alpha-2). */
                     code: string;
-                    /** @description Calendar year of the data. */
-                    year: number;
                 };
                 cookie?: never;
             };
@@ -159,17 +157,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get list of availables countries by years */
+        /** Get list of available countries by years */
         get: {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    /** @description ISO country code (alpha-2). */
-                    code: string;
-                    /** @description Calendar year of the data. */
-                    year: number;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: never;
@@ -207,15 +200,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get list of availables years */
+        /** Get list of available years (world) */
         get: {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    /** @description Calendar year of the data */
-                    year: number;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: never;
@@ -259,8 +249,6 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description ISO country code (alpha-2). */
-                    code: string;
                     /** @description Calendar year of the data. */
                     year: number;
                 };
@@ -307,8 +295,6 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description ISO country code (alpha-2). */
-                    code: string;
                     /** @description Calendar year of the data. */
                     year: number;
                 };
@@ -361,11 +347,12 @@ export interface components {
             parties?: components["schemas"]["Parties"];
         };
         /**
-         * @description Snapshot of currency exchange rates and GDP for a given base currency.
+         * @description Snapshot of currency exchange rates and macro figures for the base currency.
          * @example {
          *       "baseCurrency": "USD",
          *       "GDP": 1370000000000,
          *       "GDPPerCapita": 28562,
+         *       "minAnnualSalary": 15000,
          *       "timestamp": "2025-07-31T00:00:00Z",
          *       "rates": {
          *         "AUD": 1.51,
@@ -393,12 +380,17 @@ export interface components {
              */
             baseCurrency: string;
             /**
-             * @description Nominal GDP (last full year) of the base currency's economy.
+             * @description Nominal GDP (last full year) for the base economy.
              * @example 1230000000000
              */
             GDP?: number;
-            /** @description Nominal GDP per capita (last full year) of the base currency's economy. */
+            /** @description Nominal GDP per capita (last full year). */
             GDPPerCapita?: number;
+            /**
+             * @description Nominal gross minimum annual salary amount in the base currency's economy.
+             * @example 15080
+             */
+            minAnnualSalary?: number;
             /**
              * Format: date-time
              * @description ISO 8601 timestamp when the snapshot was recorded.
@@ -428,10 +420,35 @@ export interface components {
             rates: Record<string, never>;
         };
         CountryStats: {
-            /** @description Nominal GDP (units per your data source, e.g., USD). */
+            /** @description Nominal GDP converted to USD (per builder output). */
             GDP: number;
-            /** @description Nominal GDP per capita (same currency convention as GDP). */
-            GDPPerCapita?: number;
+            /** @description Nominal GDP per capita converted to USD. */
+            GDPPerCapita: number;
+            /**
+             * @description Year-over-year growth of GDP (percent).
+             * @example 2.34
+             */
+            GDPGrowthYoY?: number | null;
+            /**
+             * @description Year-over-year growth of GDP per capita (percent).
+             * @example 1.12
+             */
+            GDPPerCapitaGrowthYoY?: number | null;
+            /**
+             * @description Minimum annual salary converted to USD.
+             * @example 15000
+             */
+            minAnnualSalary?: number;
+            /**
+             * @description Year-over-year growth of minimum annual salary (percent).
+             * @example 3.2
+             */
+            minAnnualSalaryGrowthYoY?: number | null;
+            /**
+             * @description Ministerial budget as a percentage of GDP.
+             * @example 0.87
+             */
+            ministersBudgetPctOfGDP?: number | null;
             ministers: components["schemas"]["MinistersBlock"];
             deputies: components["schemas"]["ChamberBlock"];
             senate: components["schemas"]["ChamberBlock"];
@@ -439,7 +456,7 @@ export interface components {
         MinistersBlock: {
             /** @description Number of ministers. */
             quantity: number;
-            /** @description Annual ministerial budget. */
+            /** @description Annual ministerial budget converted to USD. */
             budget: number;
         };
         ChamberBlock: {
@@ -448,12 +465,12 @@ export interface components {
         };
         Salary: {
             /**
-             * @description Gross anual salary (same currency as net).
+             * @description Gross annual salary (same currency as net).
              * @example 67866
              */
             gross?: number;
             /**
-             * @description Net anual salary.
+             * @description Net annual salary.
              * @example 52928
              */
             net?: number;
@@ -599,6 +616,11 @@ export interface components {
          *       "ar": {
          *         "GDP": 633270000000,
          *         "GDPPerCapita": 14235,
+         *         "GDPGrowthYoY": 1.8,
+         *         "GDPPerCapitaGrowthYoY": 0.9,
+         *         "minAnnualSalary": 15000,
+         *         "minAnnualSalaryGrowthYoY": 2.1,
+         *         "ministersBudgetPctOfGDP": 0.85,
          *         "ministers": {
          *           "quantity": 7,
          *           "budget": 22561000000
@@ -613,6 +635,11 @@ export interface components {
          *       "es": {
          *         "GDP": 1749040659341,
          *         "GDPPerCapita": 37121,
+         *         "GDPGrowthYoY": 2.2,
+         *         "GDPPerCapitaGrowthYoY": 1,
+         *         "minAnnualSalary": 22000,
+         *         "minAnnualSalaryGrowthYoY": 3.5,
+         *         "ministersBudgetPctOfGDP": 1.12,
          *         "ministers": {
          *           "quantity": 22,
          *           "budget": 190880197802
@@ -622,34 +649,6 @@ export interface components {
          *         },
          *         "senate": {
          *           "quantity": 265
-         *         }
-         *       },
-         *       "fr": {
-         *         "GDP": 1749040659341,
-         *         "GDPPerCapita": 38420,
-         *         "ministers": {
-         *           "quantity": 15,
-         *           "budget": 0
-         *         },
-         *         "deputies": {
-         *           "quantity": 0
-         *         },
-         *         "senate": {
-         *           "quantity": 0
-         *         }
-         *       },
-         *       "us": {
-         *         "GDP": 30331117000000,
-         *         "GDPPerCapita": 68000,
-         *         "ministers": {
-         *           "quantity": 15,
-         *           "budget": 1615600000000
-         *         },
-         *         "deputies": {
-         *           "quantity": 330
-         *         },
-         *         "senate": {
-         *           "quantity": 98
          *         }
          *       }
          *     }

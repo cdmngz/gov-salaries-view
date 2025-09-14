@@ -15,14 +15,6 @@ export default function DataSourcesPage() {
 
       <ul className="list-disc list-inside mt-4 space-y-2">
         <li>
-          <strong>Argentina</strong>: Data sourced from national and provincial
-          government salary publications and transparency portals.
-        </li>
-        <li>
-          <strong>Spain</strong>: Data sourced from Boletines Oficiales and
-          state transparency platforms.
-        </li>
-        <li>
           <strong>GitHub Repository</strong>:{" "}
           <a
             href="https://github.com/cdmngz/gov-salaries-data"

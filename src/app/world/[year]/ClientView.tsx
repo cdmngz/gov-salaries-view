@@ -82,7 +82,7 @@ function DataTable({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     initialState: {
-      pagination: { pageSize: 10 },
+      pagination: { pageSize: 25 },
       sorting: [{ id: "total", desc: true }],
     },
   });
@@ -246,6 +246,12 @@ export default function ClientView({
 
   const rows: Row[] = useMemo(() => {
     return Object.entries(data).map(([code, stats]) => {
+      const minAnnualSalary = convert(
+        stats.minAnnualSalary,
+        DEFAULT_CURRENCY,
+        currency,
+        rates.rates
+      );
       const gdp = convert(stats.GDP, DEFAULT_CURRENCY, currency, rates.rates);
       const gdpPerCapita = convert(
         stats.GDPPerCapita,
@@ -260,7 +266,6 @@ export default function ClientView({
         rates.rates
       );
       const gdpPercent = gdp ? (budget * 100) / gdp : 0;
-
       const ministersQty = stats.ministers.quantity;
       const deputiesQty = stats.deputies.quantity;
       const senateQty = stats.senate.quantity;
@@ -269,6 +274,7 @@ export default function ClientView({
         code: code as CountryCode,
         ministersQty,
         budget,
+        minAnnualSalary,
         gdp,
         gdpPerCapita,
         gdpPercent,
@@ -332,6 +338,15 @@ export default function ClientView({
         ),
       },
       {
+        accessorKey: "minAnnualSalary",
+        header: "Annual min salary",
+        cell: ({ getValue }) => (
+          <span className="tabular-nums">
+            {formatCurrency(getValue<number>(), currency)}
+          </span>
+        ),
+      },
+      {
         accessorKey: "gdp",
         header: "GDP",
         cell: ({ getValue }) => (
@@ -359,7 +374,6 @@ export default function ClientView({
         {" - "}
         {TEXT_TRANSLATION["stats"][lang]} 📊
       </h1>
-
       <DataTable columns={columns} data={rows} />
     </div>
   );
