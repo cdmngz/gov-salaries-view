@@ -1,3 +1,5 @@
+// src/app/docs/data-sources/page.tsx
+
 export const metadata = {
   title: "Data Sources - OfficialSalaries.org",
   description: "Attribution for public salary datasets used on the platform.",
