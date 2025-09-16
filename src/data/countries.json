@@ -148,5 +148,15 @@
       "pt": "Estados Unidos",
       "de": "Vereinigte Staaten"
     }
+  },
+  "uy": {
+    "flag": "🇺🇾",
+    "names": {
+      "es": "Uruguay",
+      "en": "Uruguay",
+      "fr": "Uruguay",
+      "pt": "Uruguay",
+      "de": "Uruguay"
+    }
   }
 }

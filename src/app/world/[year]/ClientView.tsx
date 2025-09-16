@@ -44,6 +44,8 @@ import {
 
 type Row = {
   code: CountryCode;
+  executiveRange?: number[];
+  restRange?: number[];
   ministersQty: number;
   budget: number;
   gdp: number;
@@ -53,7 +55,53 @@ type Row = {
   senateQty: number;
   countryName: string;
   total: number;
+  minAnnualSalary: number;
 };
+
+const rangeColorByValue: Record<number, string> = {
+  1: "bg-red-400",
+  2: "bg-red-200",
+  3: "bg-gray-300",
+  4: "bg-blue-200",
+  5: "bg-blue-400",
+};
+
+function RangeDots({ ranges }: { ranges?: number[] }) {
+  if (!ranges?.length) return null;
+  return (
+    <div className="flex items-center gap-1">
+      {ranges.map((r, i) => (
+        <div
+          key={`${i}-${r}`}
+          className={cn(
+            "size-3 rounded-full",
+            rangeColorByValue[r] ?? "bg-gray-300"
+          )}
+          aria-label={`range-${r}`}
+          title={`range ${r}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+function RangeLegend() {
+  const items: Array<[number, string]> = [
+    [1, "Left"],
+    [3, "Center"],
+    [5, "Right"],
+  ];
+  return (
+    <div className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground">
+      {items.map(([val, label]) => (
+        <div key={val} className="flex items-center gap-1">
+          <div className={cn("size-3 rounded-full", rangeColorByValue[val])} />
+          <span>{label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function DataTable({
   columns,
@@ -99,9 +147,12 @@ function DataTable({
           onChange={(e) =>
             table.getColumn("countryName")?.setFilterValue(e.target.value)
           }
+          aria-label="Filter countries"
         />
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-3">
+          <RangeLegend />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -123,7 +174,7 @@ function DataTable({
                     checked={column.getIsVisible()}
                     onCheckedChange={(v) => column.toggleVisibility(!!v)}
                   >
-                    {column.columnDef.header as string}
+                    {String(column.columnDef.header ?? column.id)}
                   </DropdownMenuCheckboxItem>
                 ))}
             </DropdownMenuContent>
@@ -137,6 +188,7 @@ function DataTable({
               className="border-none rounded-none"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              aria-label="Previous page"
             >
               Prev
             </Button>
@@ -146,6 +198,7 @@ function DataTable({
               className="border-none rounded-none"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              aria-label="Next page"
             >
               Next
             </Button>
@@ -240,12 +293,17 @@ export default function ClientView({
 }) {
   const searchParams = useSearchParams();
   const currency = (
-    searchParams.get("currency") ?? DEFAULT_CURRENCY
+    (searchParams.get("currency") ?? DEFAULT_CURRENCY) as string
   ).toUpperCase();
   const lang = parseLang(searchParams.get("lang"));
 
   const rows: Row[] = useMemo(() => {
     return Object.entries(data).map(([code, stats]) => {
+      const executiveRange =
+        stats.partyRangeStatsSplit?.executive?.mostPopularRanges ?? [];
+      const restRange =
+        stats.partyRangeStatsSplit?.rest?.mostPopularRanges ?? [];
+
       const minAnnualSalary = convert(
         stats.minAnnualSalary,
         DEFAULT_CURRENCY,
@@ -272,6 +330,8 @@ export default function ClientView({
 
       return {
         code: code as CountryCode,
+        executiveRange,
+        restRange,
         ministersQty,
         budget,
         minAnnualSalary,
@@ -299,7 +359,9 @@ export default function ClientView({
           const info = countriesJson[code];
           return (
             <div className="flex items-center gap-2">
-              <span className="text-lg leading-none">{info.flag}</span>
+              <span className="text-lg leading-none" aria-hidden>
+                {info.flag}
+              </span>
               <span>{info.names[lang]}</span>
               <span className="text-muted-foreground text-xs">({code})</span>
             </div>
@@ -308,9 +370,20 @@ export default function ClientView({
         sortingFn: "alphanumeric",
       },
       {
+        accessorKey: "executiveRange",
+        header: "Wing (Exec)",
+        enableSorting: false,
+        cell: ({ row }) => <RangeDots ranges={row.original.executiveRange} />,
+      },
+      {
+        accessorKey: "restRange",
+        header: "Wing (Rest)",
+        enableSorting: false,
+        cell: ({ row }) => <RangeDots ranges={row.original.restRange} />,
+      },
+      {
         accessorKey: "total",
         header: "Total",
-        enableHiding: false,
         cell: ({ getValue }) => (
           <span className="tabular-nums">{getValue<number>()}</span>
         ),
@@ -318,7 +391,6 @@ export default function ClientView({
       {
         accessorKey: "ministersQty",
         header: "Ministries",
-        enableHiding: false,
         cell: ({ getValue }) => (
           <span className="tabular-nums">{getValue<number>()}</span>
         ),
@@ -364,6 +436,15 @@ export default function ClientView({
           </span>
         ),
       },
+      // {
+      //   accessorKey: "gdpPercent",
+      //   header: "% of GDP (budget)",
+      //   cell: ({ getValue }) => (
+      //     <span className="tabular-nums">
+      //       {getValue<number>().toFixed(2)}%
+      //     </span>
+      //   ),
+      // },
     ];
   }, [currency, lang]);
 

@@ -452,6 +452,92 @@ export interface components {
             ministers: components["schemas"]["MinistersBlock"];
             deputies: components["schemas"]["ChamberBlock"];
             senate: components["schemas"]["ChamberBlock"];
+            partyRangeStatsSplit?: components["schemas"]["PartyRangeSplitStats"];
+        };
+        /** @description Popularity of party political ranges (1=left to 5=right) among officials with a mapped party. */
+        PartyRangeStats: {
+            /** @example {
+             *       "1": 3,
+             *       "2": 12,
+             *       "3": 7,
+             *       "4": 9,
+             *       "5": 4
+             *     } */
+            counts: {
+                1: number;
+                2: number;
+                3: number;
+                4: number;
+                5: number;
+            };
+            /**
+             * @description One or more range values if there is a tie.
+             * @example [
+             *       2
+             *     ]
+             */
+            mostPopularRanges: number[];
+            /**
+             * @description Count of officials in the winning range(s).
+             * @example 12
+             */
+            mostPopularCount: number;
+            /**
+             * @description Officials that contributed to the 1..5 tally (i.e., had a party mapped to a valid range).
+             * @example 35
+             */
+            totalCountedOfficials: number;
+            /**
+             * @description Officials without a party.
+             * @example 6
+             */
+            unaffiliatedCount: number;
+            /**
+             * @description Officials with a party that lacks a valid 1..5 range in the party map.
+             * @example 2
+             */
+            unmappedPartyCount: number;
+        };
+        /**
+         * @description Party-range popularity split into executive vs the rest (ministers, senate, deputies, officials).
+         * @example {
+         *       "executive": {
+         *         "counts": {
+         *           "1": 1,
+         *           "2": 4,
+         *           "3": 2,
+         *           "4": 0,
+         *           "5": 0
+         *         },
+         *         "mostPopularRanges": [
+         *           2
+         *         ],
+         *         "mostPopularCount": 4,
+         *         "totalCountedOfficials": 7,
+         *         "unaffiliatedCount": 0,
+         *         "unmappedPartyCount": 1
+         *       },
+         *       "rest": {
+         *         "counts": {
+         *           "1": 3,
+         *           "2": 12,
+         *           "3": 7,
+         *           "4": 2,
+         *           "5": 0
+         *         },
+         *         "mostPopularRanges": [
+         *           2
+         *         ],
+         *         "mostPopularCount": 12,
+         *         "totalCountedOfficials": 24,
+         *         "unaffiliatedCount": 2,
+         *         "unmappedPartyCount": 3
+         *       }
+         *     }
+         */
+        PartyRangeSplitStats: {
+            executive: components["schemas"]["PartyRangeStats"];
+            rest: components["schemas"]["PartyRangeStats"];
         };
         MinistersBlock: {
             /** @description Number of ministers. */
@@ -507,8 +593,7 @@ export interface components {
          *       "party": "RE",
          *       "salary": {
          *         "gross": 67866,
-         *         "net": 52928,
-         *         "currency": "EUR"
+         *         "net": 52928
          *       },
          *       "sources": [
          *         {
@@ -537,7 +622,10 @@ export interface components {
              * @example Central State
              */
             district?: string;
-            /** @example RE */
+            /**
+             * @description Optional party code; when present, it refers to an entry in `CountryData.parties`.
+             * @example RE
+             */
             party?: string;
             salary?: components["schemas"]["Salary"];
             sources?: components["schemas"]["Sources"];
@@ -630,6 +718,40 @@ export interface components {
          *         },
          *         "senate": {
          *           "quantity": 72
+         *         },
+         *         "partyRangeStatsSplit": {
+         *           "executive": {
+         *             "counts": {
+         *               "1": 0,
+         *               "2": 4,
+         *               "3": 1,
+         *               "4": 0,
+         *               "5": 0
+         *             },
+         *             "mostPopularRanges": [
+         *               2
+         *             ],
+         *             "mostPopularCount": 4,
+         *             "totalCountedOfficials": 5,
+         *             "unaffiliatedCount": 0,
+         *             "unmappedPartyCount": 0
+         *           },
+         *           "rest": {
+         *             "counts": {
+         *               "1": 3,
+         *               "2": 8,
+         *               "3": 6,
+         *               "4": 9,
+         *               "5": 4
+         *             },
+         *             "mostPopularRanges": [
+         *               4
+         *             ],
+         *             "mostPopularCount": 9,
+         *             "totalCountedOfficials": 30,
+         *             "unaffiliatedCount": 6,
+         *             "unmappedPartyCount": 2
+         *           }
          *         }
          *       },
          *       "es": {
@@ -649,6 +771,22 @@ export interface components {
          *         },
          *         "senate": {
          *           "quantity": 265
+         *         },
+         *         "partyRangeStats": {
+         *           "counts": {
+         *             "1": 5,
+         *             "2": 9,
+         *             "3": 11,
+         *             "4": 6,
+         *             "5": 3
+         *           },
+         *           "mostPopularRanges": [
+         *             3
+         *           ],
+         *           "mostPopularCount": 11,
+         *           "totalCountedOfficials": 34,
+         *           "unaffiliatedCount": 8,
+         *           "unmappedPartyCount": 1
          *         }
          *       }
          *     }

@@ -17,9 +17,16 @@ type Official = components["schemas"]["Official"];
 type Parties = components["schemas"]["Parties"];
 type Rates = components["schemas"]["Rates"];
 type Party = components["schemas"]["Official"]["party"];
+type RangeGroupId = (typeof rangeGroups)[number]["id"];
 
 const NO_PARTY_KEY = "__NO_PARTY__";
 const NO_PARTY_LABEL = "No party";
+
+const rangeGroups = [
+  { id: "1-2", label: "1-2", inGroup: (r: number) => r >= 1 && r <= 2 },
+  { id: "3", label: "3", inGroup: (r: number) => r === 3 },
+  { id: "4-5", label: "4-5", inGroup: (r: number) => r >= 4 && r <= 5 },
+] as const;
 
 const rangeIcons: Record<number, string> = {
   1: "←",
@@ -28,14 +35,6 @@ const rangeIcons: Record<number, string> = {
   4: "↗",
   5: "→",
 };
-
-const rangeGroups = [
-  { id: "1-2", label: "1-2", inGroup: (r: number) => r >= 1 && r <= 2 },
-  { id: "3", label: "3", inGroup: (r: number) => r === 3 },
-  { id: "4-5", label: "4-5", inGroup: (r: number) => r >= 4 && r <= 5 },
-] as const;
-
-type RangeGroupId = (typeof rangeGroups)[number]["id"];
 
 function getPartyRange(party: Party, parties?: Parties): number | null {
   if (!party) return null;
