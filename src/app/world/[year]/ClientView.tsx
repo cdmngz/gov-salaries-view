@@ -3,7 +3,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -41,6 +41,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Link from "next/link";
 
 type Row = {
   code: CountryCode;
@@ -292,6 +293,7 @@ export default function ClientView({
   rates: components["schemas"]["Rates"];
 }) {
   const searchParams = useSearchParams();
+  const { year } = useParams<{ year: string }>();
   const currency = (
     (searchParams.get("currency") ?? DEFAULT_CURRENCY) as string
   ).toUpperCase();
@@ -357,14 +359,21 @@ export default function ClientView({
         cell: ({ row }) => {
           const code = row.original.code;
           const info = countriesJson[code];
+          const qs = searchParams.toString();
+          const href = `/${code}/${year}${qs ? `?${qs}` : ""}`;
+
           return (
-            <div className="flex items-center gap-2">
+            <Link
+              href={href}
+              className="flex items-center gap-2"
+              aria-label={`Go to ${info.names[lang]} page`}
+            >
               <span className="text-lg leading-none" aria-hidden>
                 {info.flag}
               </span>
               <span>{info.names[lang]}</span>
               <span className="text-muted-foreground text-xs">({code})</span>
-            </div>
+            </Link>
           );
         },
         sortingFn: "alphanumeric",
@@ -446,7 +455,7 @@ export default function ClientView({
       //   ),
       // },
     ];
-  }, [currency, lang]);
+  }, [currency, lang, searchParams, year]);
 
   return (
     <div className="p-4 space-y-8">
