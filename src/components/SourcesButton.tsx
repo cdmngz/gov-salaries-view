@@ -60,7 +60,7 @@ export function SourcesButton({
               const key = `${label}-${i}`;
 
               return (
-                <div key={key} className="flex justify-between gap-2">
+                <div key={key} className="flex gap-2">
                   <span className="font-medium">{label}:</span>
 
                   {type === "url" ? (
