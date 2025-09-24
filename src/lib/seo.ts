@@ -14,3 +14,11 @@ export const SITE_KEYWORDS = [
 ] as const;
 
 export const SUPPORTED_LANGUAGES = ["en", "es", "fr", "pt", "de"] as const;
+
+export const OG_LOCALE_BY_LANG = {
+  en: "en_US",
+  es: "es_ES",
+  fr: "fr_FR",
+  pt: "pt_PT",
+  de: "de_DE",
+} as const;

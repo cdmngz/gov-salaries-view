@@ -3,12 +3,21 @@
 import { Metadata } from "next";
 
 import ClientView from "@/app/world/[year]/ClientView";
+import DatasetStructuredData from "@/components/DatasetStructuredData";
 import ServerHeader from "@/components/ServerHeader";
-import countriesJson from "@/data/countries.json";
-import { DEFAULT_CURRENCY } from "@/lib/constants";
-import { fetchWorldData, fetchWorldYears } from "@/lib/data";
+import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
+import {
+  buildWorldUrls,
+  fetchWorldData,
+  fetchWorldYears,
+} from "@/lib/data";
+import {
+  buildSocialImageAlt,
+  buildWorldSeo,
+  socialImageUrl,
+} from "@/lib/metadata";
+import { SITE_NAME } from "@/lib/seo";
 import { parseLang } from "@/validators/lang";
-import { serverEnv } from "@/lib/env";
 
 export async function generateStaticParams() {
   const years = await fetchWorldYears();
@@ -26,21 +35,45 @@ export async function generateMetadata({
   const { lang: langParam, currency: currencyParam } = await searchParams;
 
   const lang = parseLang(langParam);
-  const currency = (currencyParam ?? DEFAULT_CURRENCY).toUpperCase();
-  const countryName = countriesJson["world"].names[lang];
-
-  const title = `${countryName} — ${year}`;
-  const description = `${countryName} gov salaries data for ${year} in ${currency}. Explore global officials compensation and trends.`;
+  const seoDetails = buildWorldSeo({
+    year,
+    lang,
+    currency: currencyParam,
+  });
 
   return {
-    title,
-    description,
+    title: seoDetails.title,
+    description: seoDetails.description,
+    keywords: seoDetails.keywords,
     openGraph: {
-      title,
-      description,
-      url: `${serverEnv.WEB_URL}/world/${year}`,
+      type: "article",
+      title: seoDetails.title,
+      description: seoDetails.description,
+      url: seoDetails.pageUrl,
+      siteName: SITE_NAME,
+      locale: seoDetails.openGraphLocale,
+      alternateLocale: seoDetails.openGraphAlternateLocales,
+      images: [
+        {
+          url: socialImageUrl,
+          alt: buildSocialImageAlt(seoDetails.worldName),
+        },
+      ],
     },
-    alternates: { canonical: `${serverEnv.WEB_URL}/world/${year}` },
+    twitter: {
+      card: "summary_large_image",
+      title: seoDetails.title,
+      description: seoDetails.description,
+      images: [socialImageUrl],
+    },
+    alternates: {
+      canonical: seoDetails.pageUrl,
+      languages: seoDetails.languageAlternates,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
@@ -56,6 +89,12 @@ export default async function Page({
   const safeYear = years.includes(yearNum) ? yearNum : Math.max(...years);
 
   const { data, rates } = await fetchWorldData(safeYear);
+  const { dataUrl, ratesUrl } = buildWorldUrls(safeYear);
+  const structuredSeo = buildWorldSeo({
+    year: String(safeYear),
+    lang: DEFAULT_LANG,
+    currency: DEFAULT_CURRENCY,
+  });
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -70,6 +109,24 @@ export default async function Page({
       <main className="flex-1 p-6">
         <ClientView data={data} rates={rates} />
       </main>
+      <DatasetStructuredData
+        datasetName={structuredSeo.datasetName}
+        description={structuredSeo.description}
+        url={structuredSeo.pageUrl}
+        keywords={structuredSeo.keywords}
+        temporalCoverage={String(safeYear)}
+        spatialCoverageName={structuredSeo.worldName}
+        distributions={[
+          {
+            name: `${structuredSeo.worldName} ${safeYear} salaries (data.json)`,
+            contentUrl: dataUrl,
+          },
+          {
+            name: `${structuredSeo.worldName} ${safeYear} currency rates (rates.json)`,
+            contentUrl: ratesUrl,
+          },
+        ]}
+      />
     </div>
   );
 }
