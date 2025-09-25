@@ -3,9 +3,11 @@
 import { redirect, notFound } from "next/navigation";
 import type { CountryCode } from "@/types";
 import { fetchAvailableCountries, fetchCountryPeriods } from "@/lib/data";
+import { DATA_REVALIDATE_SECONDS } from "@/lib/constants";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
+export const revalidate = DATA_REVALIDATE_SECONDS;
 
 export async function generateStaticParams() {
   const countries = await fetchAvailableCountries();
