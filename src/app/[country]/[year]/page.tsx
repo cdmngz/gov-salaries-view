@@ -5,7 +5,11 @@ import { Metadata } from "next";
 import ClientView from "@/app/[country]/[year]/ClientView";
 import DatasetStructuredData from "@/components/DatasetStructuredData";
 import ServerHeader from "@/components/ServerHeader";
-import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
+import {
+  DATA_REVALIDATE_SECONDS,
+  DEFAULT_CURRENCY,
+  DEFAULT_LANG,
+} from "@/lib/constants";
 import {
   buildDataUrls,
   fetchAvailableCountries,
@@ -23,6 +27,7 @@ import { SITE_NAME } from "@/lib/seo";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
+export const revalidate = DATA_REVALIDATE_SECONDS;
 
 export async function generateStaticParams() {
   const countries = await fetchAvailableCountries();

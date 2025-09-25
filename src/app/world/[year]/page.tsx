@@ -5,7 +5,11 @@ import { Metadata } from "next";
 import ClientView from "@/app/world/[year]/ClientView";
 import DatasetStructuredData from "@/components/DatasetStructuredData";
 import ServerHeader from "@/components/ServerHeader";
-import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
+import {
+  DATA_REVALIDATE_SECONDS,
+  DEFAULT_CURRENCY,
+  DEFAULT_LANG,
+} from "@/lib/constants";
 import {
   buildWorldUrls,
   fetchWorldData,
@@ -18,6 +22,10 @@ import {
 } from "@/lib/metadata";
 import { SITE_NAME } from "@/lib/seo";
 import { parseLang } from "@/validators/lang";
+
+export const dynamic = "force-static";
+export const dynamicParams = false;
+export const revalidate = DATA_REVALIDATE_SECONDS;
 
 export async function generateStaticParams() {
   const years = await fetchWorldYears();
