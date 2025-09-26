@@ -2,10 +2,9 @@
 
 import { cache } from "react";
 
+import { serverEnv } from "@/lib/env";
 import type { CountryCode } from "@/types";
-import { serverEnv } from "./env";
 import { components } from "@/types/openapi";
-import { DATA_REVALIDATE_SECONDS } from "./constants";
 
 const API_PREFIX = "/api/data";
 const API_BASE_URL = serverEnv.DATA_API_URL?.replace(/\/+$/, "") || "";
@@ -19,17 +18,22 @@ export function buildFetchPath(parts: string[]): string {
   return [base, ...parts].join("/");
 }
 
-async function fetchJson<T>(
-  url: string,
-  errorContext: string
-): Promise<T> {
-  const res = await fetch(url, {
-    next: { revalidate: DATA_REVALIDATE_SECONDS },
-  });
-  if (!res.ok) {
-    throw new Error(`${errorContext} (${res.status})`);
-  }
+async function fetchJson<T>(url: string, errorContext: string): Promise<T> {
+  const res = await fetch(url, { cache: "force-cache" });
+  if (!res.ok) throw new Error(`${errorContext} (${res.status})`);
   return (await res.json()) as T;
+}
+
+function normalizeYears(input: unknown): number[] {
+  if (Array.isArray(input)) {
+    return input.map((v) => Number(v)).filter((v) => Number.isFinite(v));
+  }
+  if (input && typeof input === "object") {
+    return Object.keys(input as Record<string, unknown>)
+      .map((k) => Number(k))
+      .filter((v) => Number.isFinite(v));
+  }
+  return [];
 }
 
 const fetchAvailableCountriesInternal = cache(async () => {
@@ -44,15 +48,14 @@ export async function fetchAvailableCountries() {
   return fetchAvailableCountriesInternal();
 }
 
-const fetchCountryPeriodsInternal = cache(
-  async (country: CountryCode) => {
-    const url = buildFetchPath([country, "index.json"]);
-    return fetchJson<components["schemas"]["CountryYears"]>(
-      url,
-      `fetchCountryPeriods: ${country}`
-    );
-  }
-);
+const fetchCountryPeriodsInternal = cache(async (country: CountryCode) => {
+  const url = buildFetchPath([country, "index.json"]);
+  const raw = await fetchJson<components["schemas"]["CountryYears"]>(
+    url,
+    `fetchCountryPeriods: ${country}`
+  );
+  return normalizeYears(raw);
+});
 
 export async function fetchCountryPeriods(country: CountryCode) {
   return fetchCountryPeriodsInternal(country);
@@ -104,10 +107,11 @@ export async function fetchCountryData(
 
 const fetchWorldYearsInternal = cache(async () => {
   const url = buildFetchPath(["world", "index.json"]);
-  return fetchJson<components["schemas"]["WorldYears"]>(
+  const raw = await fetchJson<components["schemas"]["WorldYears"]>(
     url,
     "fetchWorldYears failed"
   );
+  return normalizeYears(raw);
 });
 
 export async function fetchWorldYears() {

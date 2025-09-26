@@ -5,16 +5,8 @@ import { Metadata } from "next";
 import ClientView from "@/app/world/[year]/ClientView";
 import DatasetStructuredData from "@/components/DatasetStructuredData";
 import ServerHeader from "@/components/ServerHeader";
-import {
-  DATA_REVALIDATE_SECONDS,
-  DEFAULT_CURRENCY,
-  DEFAULT_LANG,
-} from "@/lib/constants";
-import {
-  buildWorldUrls,
-  fetchWorldData,
-  fetchWorldYears,
-} from "@/lib/data";
+import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
+import { buildWorldUrls, fetchWorldData, fetchWorldYears } from "@/lib/data";
 import {
   buildSocialImageAlt,
   buildWorldSeo,
@@ -25,7 +17,7 @@ import { parseLang } from "@/validators/lang";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
-export const revalidate = DATA_REVALIDATE_SECONDS;
+export const revalidate = false;
 
 export async function generateStaticParams() {
   const years = await fetchWorldYears();
@@ -43,11 +35,7 @@ export async function generateMetadata({
   const { lang: langParam, currency: currencyParam } = await searchParams;
 
   const lang = parseLang(langParam);
-  const seoDetails = buildWorldSeo({
-    year,
-    lang,
-    currency: currencyParam,
-  });
+  const seoDetails = buildWorldSeo({ year, lang, currency: currencyParam });
 
   return {
     title: seoDetails.title,
@@ -62,10 +50,7 @@ export async function generateMetadata({
       locale: seoDetails.openGraphLocale,
       alternateLocale: seoDetails.openGraphAlternateLocales,
       images: [
-        {
-          url: socialImageUrl,
-          alt: buildSocialImageAlt(seoDetails.worldName),
-        },
+        { url: socialImageUrl, alt: buildSocialImageAlt(seoDetails.worldName) },
       ],
     },
     twitter: {
@@ -78,10 +63,7 @@ export async function generateMetadata({
       canonical: seoDetails.pageUrl,
       languages: seoDetails.languageAlternates,
     },
-    robots: {
-      index: true,
-      follow: true,
-    },
+    robots: { index: true, follow: true },
   };
 }
 

@@ -1,15 +1,10 @@
 // src/app/[country]/[year]/page.tsx
 
 import { Metadata } from "next";
-
 import ClientView from "@/app/[country]/[year]/ClientView";
 import DatasetStructuredData from "@/components/DatasetStructuredData";
 import ServerHeader from "@/components/ServerHeader";
-import {
-  DATA_REVALIDATE_SECONDS,
-  DEFAULT_CURRENCY,
-  DEFAULT_LANG,
-} from "@/lib/constants";
+import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
 import {
   buildDataUrls,
   fetchAvailableCountries,
@@ -27,7 +22,7 @@ import { SITE_NAME } from "@/lib/seo";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
-export const revalidate = DATA_REVALIDATE_SECONDS;
+export const revalidate = false;
 
 export async function generateStaticParams() {
   const countries = await fetchAvailableCountries();
@@ -87,10 +82,7 @@ export async function generateMetadata({
       canonical: seoDetails.pageUrl,
       languages: seoDetails.languageAlternates,
     },
-    robots: {
-      index: true,
-      follow: true,
-    },
+    robots: { index: true, follow: true },
   };
 }
 

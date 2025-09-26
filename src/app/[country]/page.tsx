@@ -1,13 +1,13 @@
 // src/app/[country]/page.tsx
 
-import { redirect, notFound } from "next/navigation";
-import type { CountryCode } from "@/types";
+import { notFound, redirect } from "next/navigation";
+
 import { fetchAvailableCountries, fetchCountryPeriods } from "@/lib/data";
-import { DATA_REVALIDATE_SECONDS } from "@/lib/constants";
+import type { CountryCode } from "@/types";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
-export const revalidate = DATA_REVALIDATE_SECONDS;
+export const revalidate = false;
 
 export async function generateStaticParams() {
   const countries = await fetchAvailableCountries();
@@ -31,5 +31,6 @@ export default async function CountryIndex({
     notFound();
   }
 
-  redirect(`/${country}/${periods.sort()[0]}`);
+  const first = [...periods].sort((a, b) => a - b)[0];
+  redirect(`/${country}/${first}`);
 }
