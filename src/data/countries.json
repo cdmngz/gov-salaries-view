@@ -79,6 +79,16 @@
       "de": "Monaco"
     }
   },
+  "mx": {
+    "flag": "🇲🇽",
+    "names": {
+      "es": "México",
+      "en": "Mexico",
+      "fr": "Mexique",
+      "pt": "México",
+      "de": "Mexiko"
+    }
+  },
   "no": {
     "flag": "🇳🇴",
     "names": {
