@@ -19,6 +19,16 @@
       "de": "Argentinien"
     }
   },
+  "co": {
+    "flag": "🇨🇴",
+    "names": {
+      "es": "Colombia",
+      "en": "Colombia",
+      "fr": "Colombie",
+      "pt": "Colômbia",
+      "de": "Kolumbien"
+    }
+  },
   "cu": {
     "flag": "🇨🇺",
     "names": {
