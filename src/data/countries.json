@@ -19,6 +19,16 @@
       "de": "Argentinien"
     }
   },
+  "cl": {
+    "flag": "🇨🇱",
+    "names": {
+      "es": "Chile",
+      "en": "Chile",
+      "fr": "Chili",
+      "pt": "Chile",
+      "de": "Chile"
+    }
+  },
   "co": {
     "flag": "🇨🇴",
     "names": {
@@ -139,6 +149,16 @@
       "de": "Luxemburg"
     }
   },
+  "ni": {
+    "flag": "🇳🇮",
+    "names": {
+      "es": "Nicaragua",
+      "en": "Nicaragua",
+      "fr": "Nicaragua",
+      "pt": "Nicarágua",
+      "de": "Nicaragua"
+    }
+  },
   "np": {
     "flag": "🇳🇵",
     "names": {
@@ -147,6 +167,16 @@
       "fr": "Népal",
       "pt": "Nepal",
       "de": "Nepal"
+    }
+  },
+  "sv": {
+    "flag": "🇸🇻",
+    "names": {
+      "es": "El Salvador",
+      "en": "El Salvador",
+      "fr": "Salvador",
+      "pt": "El Salvador",
+      "de": "El Salvador"
     }
   },
   "ru": {
