@@ -9,6 +9,16 @@
       "de": "Welt"
     }
   },
+  "ad": {
+    "flag": "🇦🇩",
+    "names": {
+      "es": "Andorra",
+      "en": "Andorra",
+      "fr": "Andorre",
+      "pt": "Andorra",
+      "de": "Andorra"
+    }
+  },
   "ar": {
     "flag": "🇦🇷",
     "names": {
@@ -27,6 +37,16 @@
       "fr": "Chili",
       "pt": "Chile",
       "de": "Chile"
+    }
+  },
+  "cn": {
+    "flag": "🇨🇳",
+    "names": {
+      "es": "China",
+      "en": "China",
+      "fr": "Chine",
+      "pt": "China",
+      "de": "China"
     }
   },
   "co": {
