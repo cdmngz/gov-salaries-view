@@ -3,7 +3,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import ThemeToggle from "@/components/ThemeToggle";
 import {
@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import countriesData from "@/data/countries.json";
 import { LANGUAGE_NAMES } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
@@ -30,30 +31,85 @@ type Props = {
   defaultYear: number;
 };
 
-type Option = { value: string; label: React.ReactNode };
+type SearchConfig = {
+  placeholder?: string;
+  emptyMessage?: string;
+};
+
+type Option = {
+  value: string;
+  label: React.ReactNode;
+  searchText?: string;
+};
 
 function ControlSelect({
   value,
   onChange,
   placeholder,
   options,
+  searchConfig,
 }: {
   value: string;
   onChange: (val: string) => void;
   placeholder: string;
   options: Option[];
+  searchConfig?: SearchConfig;
 }) {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredOptions = useMemo(() => {
+    if (!searchConfig) return options;
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) return options;
+    return options.filter((opt) => {
+      const searchTarget = (
+        opt.searchText ??
+        (typeof opt.label === "string" ? opt.label : opt.value)
+      )
+        .toString()
+        .toLowerCase();
+      return searchTarget.includes(term);
+    });
+  }, [options, searchConfig, searchTerm]);
+
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select
+      value={value}
+      onValueChange={onChange}
+      onOpenChange={(open) => {
+        if (!open) setSearchTerm("");
+      }}
+    >
       <SelectTrigger className="text-sm bg-card rounded-none border-none shadow-none">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent>
-        {options.map((opt) => (
-          <SelectItem key={opt.value} value={opt.value}>
-            {opt.label}
-          </SelectItem>
-        ))}
+      <SelectContent className={searchConfig ? "max-h-72" : undefined}>
+        {searchConfig ? (
+          <div className="sticky top-0 z-10 bg-popover p-2 pb-1">
+            <Input
+              autoFocus
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") return;
+                event.stopPropagation();
+              }}
+              placeholder={searchConfig.placeholder ?? "Search"}
+              className="h-8"
+            />
+          </div>
+        ) : null}
+        {filteredOptions.length ? (
+          filteredOptions.map((opt) => (
+            <SelectItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </SelectItem>
+          ))
+        ) : (
+          <div className="px-3 py-6 text-center text-sm text-muted-foreground">
+            {searchConfig?.emptyMessage ?? "No results"}
+          </div>
+        )}
       </SelectContent>
     </Select>
   );
@@ -115,6 +171,13 @@ export default function HeaderControlsClient({
     const withNames = Object.entries(countries).map(([code, meta]) => ({
       code,
       name: meta.names[currentLang] ?? code.toUpperCase(),
+      searchText: Array.from(
+        new Set([
+          code,
+          code.toUpperCase(),
+          ...(meta.names ? Object.values(meta.names) : []),
+        ])
+      ).join(" "),
       label: (
         <>
           {meta.flag} {meta.names[currentLang] ?? code.toUpperCase()}
@@ -132,10 +195,13 @@ export default function HeaderControlsClient({
       .filter((c) => !pinnedOrder.includes(c.code))
       .sort((a, b) => a.name.localeCompare(b.name, currentLang));
 
-    return [
-      ...pinned.map(({ code, label }) => ({ value: code, label })),
-      ...rest.map(({ code, label }) => ({ value: code, label })),
-    ];
+    const toOption = ({ code, label, searchText }: typeof withNames[number]) => ({
+      value: code,
+      label,
+      searchText,
+    });
+
+    return [...pinned.map(toOption), ...rest.map(toOption)];
   }, [countries, currentLang]);
 
   const languageOptions = useMemo<Option[]>(
@@ -175,6 +241,10 @@ export default function HeaderControlsClient({
         }}
         placeholder="Country"
         options={countryOptions}
+        searchConfig={{
+          placeholder: "Search countries",
+          emptyMessage: "No countries found",
+        }}
       />
 
       <ControlSelect
