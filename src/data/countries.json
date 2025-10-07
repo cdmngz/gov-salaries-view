@@ -79,6 +79,16 @@
       "de": "Deutschland"
     }
   },
+  "ae": {
+    "flag": "🇦🇪",
+    "names": {
+      "es": "Emiratos Árabes Unidos",
+      "en": "United Arab Emirates",
+      "fr": "Émirats arabes unis",
+      "pt": "Emirados Árabes Unidos",
+      "de": "Vereinigte Arabische Emirate"
+    }
+  },
   "ee": {
     "flag": "🇪🇪",
     "names": {
@@ -177,6 +187,16 @@
       "fr": "Nicaragua",
       "pt": "Nicarágua",
       "de": "Nicaragua"
+    }
+  },
+  "ng": {
+    "flag": "🇳🇬",
+    "names": {
+      "es": "Nigeria",
+      "en": "Nigeria",
+      "fr": "Nigéria",
+      "pt": "Nigéria",
+      "de": "Nigeria"
     }
   },
   "np": {
