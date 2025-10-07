@@ -11,6 +11,11 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -41,6 +46,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import type { Column } from "@tanstack/react-table";
 import Link from "next/link";
 
 type Row = {
@@ -67,6 +73,67 @@ const rangeColorByValue: Record<number, string> = {
   5: "bg-blue-400",
 };
 
+const WING_FILTER_VALUE_TO_RANGE = {
+  left: 1,
+  "left-center": 2,
+  center: 3,
+  "right-center": 4,
+  right: 5,
+} as const;
+
+type WingFilterValue = keyof typeof WING_FILTER_VALUE_TO_RANGE;
+type WingFilterOptionValue = WingFilterValue | "all";
+
+const WING_FILTER_OPTIONS: Array<{
+  value: WingFilterOptionValue;
+  label: string;
+  shortLabel: string;
+  description?: string;
+  colorClass?: string;
+}> = [
+  {
+    value: "all",
+    label: "All alignments",
+    shortLabel: "All alignments",
+    description: "Show every country",
+  },
+  {
+    value: "left",
+    label: "Left wing",
+    shortLabel: "Left",
+    description: "Socialist or progressive alliances",
+    colorClass: rangeColorByValue[1],
+  },
+  {
+    value: "left-center",
+    label: "Left-center",
+    shortLabel: "Left-center",
+    description: "Social-democratic / liberal coalitions",
+    colorClass: rangeColorByValue[2],
+  },
+  {
+    value: "center",
+    label: "Center",
+    shortLabel: "Center",
+    description: "Broad centrist or unity alliances",
+    colorClass: rangeColorByValue[3],
+  },
+  {
+    value: "right-center",
+    label: "Right-center",
+    shortLabel: "Right-center",
+    description: "Liberal-conservative coalitions",
+    colorClass: rangeColorByValue[4],
+  },
+  {
+    value: "right",
+    label: "Right wing",
+    shortLabel: "Right",
+    description: "Conservative or nationalist alliances",
+    colorClass: rangeColorByValue[5],
+  },
+];
+
 function RangeDots({ ranges }: { ranges?: number[] }) {
   if (!ranges?.length) return null;
   return (
@@ -89,7 +156,9 @@ function RangeDots({ ranges }: { ranges?: number[] }) {
 function RangeLegend() {
   const items: Array<[number, string]> = [
     [1, "Left"],
+    [2, "Left-center"],
     [3, "Center"],
+    [4, "Right-center"],
     [5, "Right"],
   ];
   return (
@@ -101,6 +170,107 @@ function RangeLegend() {
         </div>
       ))}
     </div>
+  );
+}
+
+function WingFilterDropdown({
+  column,
+  columnLabel,
+}: {
+  column: Column<Row, unknown> | undefined;
+  columnLabel: string;
+}) {
+  const currentValue =
+    (column?.getFilterValue() as WingFilterOptionValue | undefined) ?? "all";
+  const selectedOption =
+    WING_FILTER_OPTIONS.find((option) => option.value === currentValue) ??
+    WING_FILTER_OPTIONS[0];
+  const isFiltering = currentValue !== "all";
+  const indicatorClass =
+    isFiltering && selectedOption.colorClass
+      ? selectedOption.colorClass
+      : "bg-muted-foreground/40";
+
+  const handleFilterChange = (value: WingFilterOptionValue) => {
+    if (!column) return;
+    column.setFilterValue(value === "all" ? undefined : value);
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className={cn(
+            "h-auto min-h-10 flex-col items-start gap-1 rounded-md border border-border/60 bg-card px-3 py-2 text-left shadow-none transition hover:border-primary/50",
+            isFiltering && "border-primary/60"
+          )}
+        >
+          <span className="flex w-full items-center gap-2 text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground">
+            <span
+              className={cn(
+                "size-2.5 rounded-full border border-border",
+                indicatorClass
+              )}
+              aria-hidden
+            />
+            {columnLabel}
+          </span>
+          <span className="flex w-full items-center gap-2 text-sm font-semibold leading-none">
+            {selectedOption.shortLabel}
+            <ChevronDown className="ml-auto h-3.5 w-3.5 text-muted-foreground" />
+          </span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-60">
+        <DropdownMenuLabel className="text-xs text-muted-foreground">
+          Political alignment
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup
+          value={currentValue}
+          onValueChange={(value) =>
+            handleFilterChange(value as WingFilterOptionValue)
+          }
+        >
+          {WING_FILTER_OPTIONS.map(
+            ({ value, label, description, colorClass }) => (
+              <DropdownMenuRadioItem key={value} value={value}>
+                <div className="flex flex-col gap-1">
+                  <span className="flex items-center gap-2 text-sm font-medium">
+                    <span
+                      className={cn(
+                        "size-2.5 rounded-full border border-border",
+                        colorClass ?? "bg-muted-foreground/40"
+                      )}
+                      aria-hidden
+                    />
+                    {label}
+                  </span>
+                  {description ? (
+                    <span className="text-xs text-muted-foreground">
+                      {description}
+                    </span>
+                  ) : null}
+                </div>
+              </DropdownMenuRadioItem>
+            )
+          )}
+        </DropdownMenuRadioGroup>
+        {isFiltering ? (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onSelect={() => handleFilterChange("all")}
+              className="text-xs text-muted-foreground"
+            >
+              Clear filter
+            </DropdownMenuItem>
+          </>
+        ) : null}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
@@ -126,12 +296,26 @@ function DataTable({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    filterFns: {
+      wingRange: (row, columnId, filterValue: WingFilterOptionValue | undefined) => {
+        if (!filterValue || filterValue === "all") return true;
+
+        const expectedRange =
+          WING_FILTER_VALUE_TO_RANGE[filterValue as WingFilterValue];
+        if (!expectedRange) return false;
+
+        const ranges = row.getValue<number[] | undefined>(columnId);
+        if (!ranges?.length) return false;
+
+        return ranges.includes(expectedRange);
+      },
+    },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     initialState: {
-      pagination: { pageSize: 25 },
+      pagination: { pageSize: 50 },
       sorting: [{ id: "total", desc: true }],
     },
   });
@@ -153,6 +337,14 @@ function DataTable({
 
         <div className="ml-auto flex items-center gap-3">
           <RangeLegend />
+
+          {(["executiveRange", "restRange"] as const).map((columnId) => (
+            <WingFilterDropdown
+              key={columnId}
+              column={table.getColumn(columnId)}
+              columnLabel={columnId === "executiveRange" ? "Wing (Exec)" : "Wing (Rest)"}
+            />
+          ))}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -382,12 +574,14 @@ export default function ClientView({
         accessorKey: "executiveRange",
         header: "Wing (Exec)",
         enableSorting: false,
+        filterFn: "wingRange",
         cell: ({ row }) => <RangeDots ranges={row.original.executiveRange} />,
       },
       {
         accessorKey: "restRange",
         header: "Wing (Rest)",
         enableSorting: false,
+        filterFn: "wingRange",
         cell: ({ row }) => <RangeDots ranges={row.original.restRange} />,
       },
       {
