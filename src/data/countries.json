@@ -119,6 +119,16 @@
       "de": "Frankreich"
     }
   },
+  "jp": {
+    "flag": "🇯🇵",
+    "names": {
+      "es": "Japón",
+      "en": "Japan",
+      "fr": "Japon",
+      "pt": "Japão",
+      "de": "Japan"
+    }
+  },
   "gb": {
     "flag": "🇬🇧",
     "names": {
@@ -237,6 +247,16 @@
       "fr": "Russie",
       "pt": "Rússia",
       "de": "Russland"
+    }
+  },
+  "sn": {
+    "flag": "🇸🇳",
+    "names": {
+      "es": "Senegal",
+      "en": "Senegal",
+      "fr": "Sénégal",
+      "pt": "Senegal",
+      "de": "Senegal"
     }
   },
   "se": {
