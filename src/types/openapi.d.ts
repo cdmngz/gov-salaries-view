@@ -29,6 +29,10 @@ export interface paths {
                 /** @description OK */
                 200: {
                     headers: {
+                        /** @description Entity tag for caching. */
+                        ETag?: string;
+                        /** @description Cache hints from CDN. */
+                        "Cache-Control"?: string;
                         [name: string]: unknown;
                     };
                     content: {
@@ -79,7 +83,7 @@ export interface paths {
                     headers: {
                         /** @description Entity tag for caching. */
                         ETag?: string;
-                        /** @description Cache hints from Pages/CDN. */
+                        /** @description Cache hints from CDN. */
                         "Cache-Control"?: string;
                         [name: string]: unknown;
                     };
@@ -332,170 +336,23 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        CountryData: {
-            /**
-             * @description ISO 4217 currency code for salary figures.
-             * @example USD
-             */
-            baseCurrency: string;
-            royalty?: components["schemas"]["Official"][];
-            executive?: components["schemas"]["Official"][];
-            ministers?: components["schemas"]["Official"][];
-            deputies?: components["schemas"]["Official"][];
-            senate?: components["schemas"]["Official"][];
-            officials?: components["schemas"]["Official"][];
-            parties?: components["schemas"]["Parties"];
-        };
-        /**
-         * @description Snapshot of currency exchange rates and macro figures for the base currency.
-         * @example {
-         *       "baseCurrency": "USD",
-         *       "GDP": 1370000000000,
-         *       "GDPPerCapita": 28562,
-         *       "minAnnualSalary": 15000,
-         *       "timestamp": "2025-07-31T00:00:00Z",
-         *       "rates": {
-         *         "AUD": 1.51,
-         *         "BRL": 5.2,
-         *         "BTC": 0.000016,
-         *         "CAD": 1.34,
-         *         "CHF": 0.89,
-         *         "CNY": 7.25,
-         *         "ETH": 0.00025,
-         *         "EUR": 0.91,
-         *         "GBP": 0.78,
-         *         "INR": 83.1,
-         *         "JPY": 140.32,
-         *         "KRW": 1300.5,
-         *         "MXN": 17.1,
-         *         "RUB": 80,
-         *         "ZAR": 18.4
-         *       }
-         *     }
-         */
-        Rates: {
-            /**
-             * @description ISO 4217 code or ticker symbol of the base currency (e.g., USD, EUR, BTC).
-             * @example USD
-             */
-            baseCurrency: string;
-            /**
-             * @description Nominal GDP (last full year) for the base economy.
-             * @example 1230000000000
-             */
-            GDP?: number;
-            /** @description Nominal GDP per capita (last full year). */
-            GDPPerCapita?: number;
-            /**
-             * @description Nominal gross minimum annual salary amount in the base currency's economy.
-             * @example 15080
-             */
-            minAnnualSalary?: number;
-            /**
-             * Format: date-time
-             * @description ISO 8601 timestamp when the snapshot was recorded.
-             * @example 2025-07-31T00:00:00Z
-             */
-            timestamp: string;
-            /**
-             * @description Mapping of target currency code to its exchange rate per 1 unit of the base currency.
-             * @example {
-             *       "AUD": 1.51,
-             *       "BRL": 5.2,
-             *       "BTC": 0.000016,
-             *       "CAD": 1.34,
-             *       "CHF": 0.89,
-             *       "CNY": 7.25,
-             *       "ETH": 0.00025,
-             *       "EUR": 0.91,
-             *       "GBP": 0.78,
-             *       "INR": 83.1,
-             *       "JPY": 140.32,
-             *       "KRW": 1300.5,
-             *       "MXN": 17.1,
-             *       "RUB": 80,
-             *       "ZAR": 18.4
-             *     }
-             */
-            rates: Record<string, never>;
-        };
-        CountryStats: {
-            /** @description Nominal GDP converted to USD (per builder output). */
-            GDP: number;
-            /** @description Nominal GDP per capita converted to USD. */
-            GDPPerCapita: number;
-            /**
-             * @description Year-over-year growth of GDP (percent).
-             * @example 2.34
-             */
-            GDPGrowthYoY?: number | null;
-            /**
-             * @description Year-over-year growth of GDP per capita (percent).
-             * @example 1.12
-             */
-            GDPPerCapitaGrowthYoY?: number | null;
-            /**
-             * @description Minimum annual salary converted to USD.
-             * @example 15000
-             */
-            minAnnualSalary?: number;
-            /**
-             * @description Year-over-year growth of minimum annual salary (percent).
-             * @example 3.2
-             */
-            minAnnualSalaryGrowthYoY?: number | null;
-            /**
-             * @description Ministerial budget as a percentage of GDP.
-             * @example 0.87
-             */
-            ministersBudgetPctOfGDP?: number | null;
-            ministers: components["schemas"]["MinistersBlock"];
-            deputies: components["schemas"]["ChamberBlock"];
-            senate: components["schemas"]["ChamberBlock"];
-            partyRangeStatsSplit?: components["schemas"]["PartyRangeSplitStats"];
+        /** @enum {integer} */
+        PartyRange: 1 | 2 | 3 | 4 | 5;
+        PartyRangeCounts: {
+            1: number;
+            2: number;
+            3: number;
+            4: number;
+            5: number;
         };
         /** @description Popularity of party political ranges (1=left to 5=right) among officials with a mapped party. */
         PartyRangeStats: {
-            /** @example {
-             *       "1": 3,
-             *       "2": 12,
-             *       "3": 7,
-             *       "4": 9,
-             *       "5": 4
-             *     } */
-            counts: {
-                1: number;
-                2: number;
-                3: number;
-                4: number;
-                5: number;
-            };
-            /**
-             * @description One or more range values if there is a tie.
-             * @example [
-             *       2
-             *     ]
-             */
-            mostPopularRanges: number[];
-            /**
-             * @description Count of officials in the winning range(s).
-             * @example 12
-             */
+            counts: components["schemas"]["PartyRangeCounts"];
+            mostPopularRanges: components["schemas"]["PartyRange"][];
             mostPopularCount: number;
-            /**
-             * @description Officials that contributed to the 1..5 tally (i.e., had a party mapped to a valid range).
-             * @example 35
-             */
+            /** @description Officials that contributed to the 1..5 tally. */
             totalCountedOfficials: number;
-            /**
-             * @description Officials without a party.
-             * @example 6
-             */
             unaffiliatedCount: number;
-            /**
-             * @description Officials with a party that lacks a valid 1..5 range in the party map.
-             * @example 2
-             */
             unmappedPartyCount: number;
         };
         /**
@@ -550,15 +407,9 @@ export interface components {
             quantity: number;
         };
         Salary: {
-            /**
-             * @description Gross annual salary (same currency as net).
-             * @example 67866
-             */
+            /** @description Gross annual salary (same currency as net). */
             gross?: number;
-            /**
-             * @description Net annual salary.
-             * @example 52928
-             */
+            /** @description Net annual salary. */
             net?: number;
         };
         /**
@@ -570,9 +421,7 @@ export interface components {
         Source: {
             [key: string]: number | string;
         };
-        /**
-         * @description Array of source entries.
-         * @example [
+        /** @example [
          *       {
          *         "pdf": "https://example.com/salary.pdf"
          *       },
@@ -582,53 +431,127 @@ export interface components {
          *       {
          *         "notes": "Declared report"
          *       }
-         *     ]
-         */
+         *     ] */
         Sources: components["schemas"]["Source"][];
-        /** @example {
-         *       "name": "Ariel Doe",
-         *       "gender": "F",
-         *       "role": "Minister of Economy",
-         *       "district": "Central State",
-         *       "party": "RE",
-         *       "salary": {
-         *         "gross": 67866,
-         *         "net": 52928
-         *       },
-         *       "sources": [
-         *         {
-         *           "pdf": "https://example.com/salary.pdf"
-         *         },
-         *         {
-         *           "bonus": 1200
-         *         },
-         *         {
-         *           "notes": "Declared in 2024 official report"
-         *         }
-         *       ],
-         *       "budget": 12000000
-         *     } */
         Official: {
-            /** @example Ariel Doe */
             name: string;
             /** @enum {string} */
             gender?: "M" | "F" | "X";
-            /** @example Minister of Economy */
             role?: string;
             /** @description Annual ministerial budget. */
             budget?: number;
-            /**
-             * @description Localized/common district name.
-             * @example Central State
-             */
+            /** @description Localized/common district name. */
             district?: string;
-            /**
-             * @description Optional party code; when present, it refers to an entry in `CountryData.parties`.
-             * @example RE
-             */
+            /** @description Optional party code; refers to an entry in `CountryData.parties`. */
             party?: string;
             salary?: components["schemas"]["Salary"];
             sources?: components["schemas"]["Sources"];
+        };
+        /**
+         * @description Map of party code → metadata.
+         * @example {
+         *       "SPD": {
+         *         "name": "Sozialdemokratische Partei",
+         *         "en": "Social Democratic Party",
+         *         "range": 2,
+         *         "color": "#FF0000"
+         *       },
+         *       "CDU": {
+         *         "name": "Christlich Demokratische Union",
+         *         "en": "Christian Democratic Union",
+         *         "range": 4,
+         *         "color": "#000000"
+         *       }
+         *     }
+         */
+        Parties: {
+            [key: string]: components["schemas"]["Party"];
+        };
+        Party: {
+            /** @description Localized/common name. */
+            name: string;
+            /** @description English display name. */
+            en?: string;
+            /** @description Political wing level (1 → 5). 1 is the most left, 5 is the most right. */
+            range: components["schemas"]["PartyRange"];
+            /** @description Hex color code. */
+            color: string;
+        };
+        CountryData: {
+            /**
+             * @description ISO 4217 currency code for salary figures.
+             * @example USD
+             */
+            baseCurrency: string;
+            royalty?: components["schemas"]["Official"][];
+            executive?: components["schemas"]["Official"][];
+            ministers?: components["schemas"]["Official"][];
+            deputies?: components["schemas"]["Official"][];
+            senate?: components["schemas"]["Official"][];
+            officials?: components["schemas"]["Official"][];
+            parties?: components["schemas"]["Parties"];
+        };
+        /** @enum {string} */
+        CoreCurrencyCode: "USD" | "EUR" | "JPY" | "GBP" | "CHF" | "CNY" | "INR" | "BRL" | "MXN" | "AUD" | "BTC" | "ETH";
+        /** @description Snapshot of exchange rates for the 12-core currencies. */
+        Rates: {
+            /**
+             * @description ISO 4217 or ticker symbol of the base currency.
+             * @example USD
+             */
+            baseCurrency: string;
+            /**
+             * Format: date-time
+             * @example 2025-07-31T00:00:00Z
+             */
+            timestamp: string;
+            rates: {
+                /** @example 1 */
+                USD: number;
+                /** @example 0.91 */
+                EUR: number;
+                /** @example 140.3 */
+                JPY: number;
+                /** @example 0.78 */
+                GBP: number;
+                /** @example 0.89 */
+                CHF: number;
+                /** @example 7.25 */
+                CNY: number;
+                /** @example 83.1 */
+                INR: number;
+                /** @example 5.2 */
+                BRL: number;
+                /** @example 17.1 */
+                MXN: number;
+                /** @example 1.51 */
+                AUD: number;
+                /** @example 0.000016 */
+                BTC: number;
+                /** @example 0.00025 */
+                ETH: number;
+            };
+        };
+        CountryStats: {
+            /** @description Nominal GDP converted to USD (per builder output). */
+            GDP: number;
+            /** @description Nominal GDP per capita converted to USD. */
+            GDPPerCapita: number;
+            /** @description Year-over-year growth of GDP (percent). */
+            GDPGrowthYoY?: number | null;
+            /** @description Year-over-year growth of GDP per capita (percent). */
+            GDPPerCapitaGrowthYoY?: number | null;
+            /** @description Minimum annual salary converted to USD. */
+            minAnnualSalary?: number;
+            /** @description Year-over-year growth of minimum annual salary (percent). */
+            minAnnualSalaryGrowthYoY?: number | null;
+            /** @description Ministerial budget as a percentage of GDP. */
+            ministersBudgetPctOfGDP?: number | null;
+            ministers: components["schemas"]["MinistersBlock"];
+            deputies: components["schemas"]["ChamberBlock"];
+            senate: components["schemas"]["ChamberBlock"];
+            partyRangeStats?: components["schemas"]["PartyRangeStats"];
+            partyRangeStatsSplit?: components["schemas"]["PartyRangeSplitStats"];
         };
         /** @example {
          *       "ar": [
@@ -656,48 +579,6 @@ export interface components {
          *     ]
          */
         CountryYears: number[];
-        /**
-         * @description Map of party code → metadata.
-         * @example {
-         *       "SPD": {
-         *         "name": "Sozialdemokratische Partei",
-         *         "en": "Social Democratic Party",
-         *         "range": 2,
-         *         "color": "#FF0000"
-         *       },
-         *       "CDU": {
-         *         "name": "Christlich Demokratische Union",
-         *         "en": "Christian Democratic Union",
-         *         "range": 4,
-         *         "color": "#000000"
-         *       }
-         *     }
-         */
-        Parties: {
-            [key: string]: components["schemas"]["Party"];
-        };
-        Party: {
-            /**
-             * @description Localized/common name.
-             * @example Sozialdemokratische Partei
-             */
-            name: string;
-            /**
-             * @description English display name.
-             * @example Social Democratic Party
-             */
-            en?: string;
-            /**
-             * @description Political wing level (1 → 5). 1 is the most left, 5 is the most right.
-             * @example 2
-             */
-            range: number;
-            /**
-             * @description Hex color code.
-             * @example #FF0000
-             */
-            color: string;
-        };
         /**
          * @description Country-indexed snapshot of macro and government composition data.
          * @example {
