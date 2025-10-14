@@ -159,6 +159,16 @@
       "de": "Mexiko"
     }
   },
+  "mg": {
+    "flag": "🇲🇬",
+    "names": {
+      "es": "Madagascar",
+      "en": "Madagascar",
+      "fr": "Madagascar",
+      "pt": "Madagáscar",
+      "de": "Madagaskar"
+    }
+  },
   "no": {
     "flag": "🇳🇴",
     "names": {
@@ -307,6 +317,16 @@
       "fr": "Uruguay",
       "pt": "Uruguay",
       "de": "Uruguay"
+    }
+  },
+  "zw": {
+    "flag": "🇿🇼",
+    "names": {
+      "es": "Zimbabue",
+      "en": "Zimbabwe",
+      "fr": "Zimbabwe",
+      "pt": "Zimbábue",
+      "de": "Simbabwe"
     }
   }
 }
