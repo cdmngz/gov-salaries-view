@@ -41,33 +41,39 @@ describe("<ColumnsDropdown />", () => {
     expect(icon).toBeInTheDocument();
   });
 
-  it("opens dropdown menu when trigger is clicked", () => {
+  it("opens dropdown menu when trigger is clicked", async () => {
     render(<ColumnsDropdown table={mockTable} />);
 
-    fireEvent.click(screen.getByTestId("columns-dropdown-trigger"));
+    const trigger = screen.getByTestId("columns-dropdown-trigger");
+    fireEvent.pointerDown(trigger);
+    fireEvent.click(trigger);
 
-    const menu = screen.getByTestId("columns-dropdown-content");
-    const header = screen.getByTestId("columns-dropdown-header");
+    const menu = await screen.findByTestId("columns-dropdown-content");
+    const header = await screen.findByTestId("columns-dropdown-header");
 
     expect(menu).toBeInTheDocument();
     expect(header).toHaveTextContent("Toggle columns");
   });
 
-  it("renders a checkbox for each visible column", () => {
+  it("renders a checkbox for each visible column", async () => {
     render(<ColumnsDropdown table={mockTable} />);
 
-    fireEvent.click(screen.getByTestId("columns-dropdown-trigger"));
+    const trigger = screen.getByTestId("columns-dropdown-trigger");
+    fireEvent.pointerDown(trigger);
+    fireEvent.click(trigger);
 
-    const checkbox = screen.getByTestId("column-toggle-countryName");
+    const checkbox = await screen.findByTestId("column-toggle-countryName");
     expect(checkbox).toBeVisible();
     expect(checkbox).toHaveTextContent("Country");
   });
 
-  it("calls toggleVisibility when a checkbox is clicked", () => {
+  it("calls toggleVisibility when a checkbox is clicked", async () => {
     render(<ColumnsDropdown table={mockTable} />);
 
-    fireEvent.click(screen.getByTestId("columns-dropdown-trigger"));
-    const checkbox = screen.getByTestId("column-toggle-countryName");
+    const trigger = screen.getByTestId("columns-dropdown-trigger");
+    fireEvent.pointerDown(trigger);
+    fireEvent.click(trigger);
+    const checkbox = await screen.findByTestId("column-toggle-countryName");
     fireEvent.click(checkbox);
 
     const column = mockTable.getAllLeafColumns()[0];
