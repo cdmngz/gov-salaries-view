@@ -10,7 +10,7 @@
     "build": "cross-env NEXT_PUBLIC_GIT_VERSION=$(git describe --tags --abbrev=0) next build",
     "generate:types": "openapi-typescript https://raw.githubusercontent.com/cdmngz/gov-salaries-data/main/openapi/openapi.yaml -o src/types/openapi.d.ts",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
