@@ -8,7 +8,7 @@ export default function Loading() {
       <header className="w-full p-4 bg-background shadow">
         <div className="text-lg flex items-center gap-2 font-medium">
           <span aria-hidden>🏛️</span>
-          <span className="truncate">Government viewer</span>
+          <span className="truncate font-semibold">Government viewer</span>
         </div>
       </header>
       <div className="p-14 rounded-none flex flex-col gap-14">

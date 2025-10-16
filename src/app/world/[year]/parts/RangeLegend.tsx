@@ -14,7 +14,7 @@ export function RangeLegend() {
 
   return (
     <div
-      className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground"
+      className="hidden sm:flex flex-wrap items-center gap-2 text-xs text-muted-foreground"
       data-testid="range-legend"
     >
       {items.map(([val, label]) => (

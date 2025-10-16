@@ -119,16 +119,6 @@
       "de": "Frankreich"
     }
   },
-  "jp": {
-    "flag": "🇯🇵",
-    "names": {
-      "es": "Japón",
-      "en": "Japan",
-      "fr": "Japon",
-      "pt": "Japão",
-      "de": "Japan"
-    }
-  },
   "gb": {
     "flag": "🇬🇧",
     "names": {
@@ -149,7 +139,27 @@
       "de": "Honduras"
     }
   },
-  "mo": {
+  "jp": {
+    "flag": "🇯🇵",
+    "names": {
+      "es": "Japón",
+      "en": "Japan",
+      "fr": "Japon",
+      "pt": "Japão",
+      "de": "Japan"
+    }
+  },
+  "kr": {
+    "flag": "🇰🇷",
+    "names": {
+      "es": "Corea del Sur",
+      "en": "South Korea",
+      "fr": "Corée du Sud",
+      "pt": "Coreia do Sul",
+      "de": "Südkorea"
+    }
+  },
+  "mc": {
     "flag": "🇲🇨",
     "names": {
       "es": "Mónaco",

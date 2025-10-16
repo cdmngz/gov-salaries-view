@@ -76,20 +76,22 @@ export function DataTable({
           aria-label="Filter countries"
         />
 
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-6">
           <RangeLegend />
 
-          {(["executiveRange", "restRange"] as const).map((columnId) => (
-            <WingFilterDropdown
-              key={columnId}
-              column={table.getColumn(columnId)}
-              columnLabel={
-                columnId === "executiveRange" ? "Wing (Exec)" : "Wing (Rest)"
-              }
-            />
-          ))}
+          <div className="flex flex-wrap gap-3">
+            {(["executiveRange", "restRange"] as const).map((columnId) => (
+              <WingFilterDropdown
+                key={columnId}
+                column={table.getColumn(columnId)}
+                columnLabel={
+                  columnId === "executiveRange" ? "Wing (Exec)" : "Wing (Rest)"
+                }
+              />
+            ))}
 
-          <ColumnsDropdown table={table} />
+            <ColumnsDropdown table={table} />
+          </div>
         </div>
       </div>
 

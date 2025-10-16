@@ -32,7 +32,7 @@ export default function ServerHeader({
         className="text-lg select-none flex items-center gap-2 font-medium transition"
       >
         <span aria-hidden>🏛️</span>
-        <span className="truncate">Government viewer</span>
+        <span className="truncate font-semibold">Government viewer</span>
       </Link>
 
       <HeaderControlsClient
