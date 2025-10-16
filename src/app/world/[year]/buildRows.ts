@@ -2,11 +2,17 @@
 import countriesJson from "@/data/countries.json";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { convert } from "@/lib/utils";
-import { CountryCode } from "@/types";
 import type { components } from "@/types/openapi";
 import type { Row, RangeValue } from "./table/types";
 import { isRangeValue } from "./table/types";
 import type { Language } from "@/validators/lang";
+
+type CountriesRecord = Record<
+  string,
+  (typeof countriesJson)[keyof typeof countriesJson]
+>;
+
+const countriesRecord = countriesJson as CountriesRecord;
 
 export function buildRows(
   data: components["schemas"]["WorldData"],
@@ -15,6 +21,15 @@ export function buildRows(
   lang: Language
 ): Row[] {
   return Object.entries(data).map(([code, stats]) => {
+    const normalizedCode = code.toLowerCase();
+    const countryMeta = countriesRecord[normalizedCode];
+    const hasCountryPage = Boolean(countryMeta);
+    const codeLabel = code.toUpperCase();
+    const displayName =
+      countryMeta?.names?.[lang] ??
+      (countryMeta?.names?.en ?? codeLabel);
+    const flag = countryMeta?.flag ?? null;
+
     const executiveRange = (
       stats.partyRangeStatsSplit?.executive?.mostPopularRanges ?? []
     ).filter(isRangeValue) as RangeValue[];
@@ -48,7 +63,11 @@ export function buildRows(
     const senateQty = stats.senate.quantity;
 
     return {
-      code: code as CountryCode,
+      code: normalizedCode,
+      codeLabel,
+      displayName,
+      flag,
+      hasCountryPage,
       executiveRange,
       restRange,
       ministersQty,
@@ -59,7 +78,7 @@ export function buildRows(
       gdpPercent,
       deputiesQty,
       senateQty,
-      countryName: `${countriesJson[code as CountryCode].names[lang]} ${code}`,
+      countryName: `${displayName} ${codeLabel}`,
       total: ministersQty + deputiesQty + senateQty,
     };
   });

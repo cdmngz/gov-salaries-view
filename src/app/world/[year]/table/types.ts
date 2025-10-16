@@ -1,10 +1,12 @@
-import type { CountryCode } from "@/types";
-
 export const RANGE_VALUES = [1, 2, 3, 4, 5] as const;
 export type RangeValue = (typeof RANGE_VALUES)[number];
 
 export type Row = {
-  code: CountryCode;
+  code: string;
+  codeLabel: string;
+  displayName: string;
+  flag: string | null;
+  hasCountryPage: boolean;
   executiveRange?: RangeValue[];
   restRange?: RangeValue[];
   ministersQty: number;

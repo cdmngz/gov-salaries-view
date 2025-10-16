@@ -15,42 +15,50 @@ function makeColumnMock(selection: WingFilterSelection = []) {
 }
 
 describe("<WingFilterDropdown />", () => {
-  it("opens menu and toggles a value when none selected", () => {
+  it("opens menu and toggles a value when none selected", async () => {
     const column = makeColumnMock([]);
     render(<WingFilterDropdown column={column} columnLabel="Wing (Exec)" />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Wing \(Exec\)/i }));
-    const leftOption = screen.getByTestId("wing-filter-option-left");
+    const trigger = screen.getByRole("button", { name: /Wing \(Exec\)/i });
+    fireEvent.pointerDown(trigger);
+    fireEvent.click(trigger);
+    const leftOption = await screen.findByTestId("wing-filter-option-left");
     fireEvent.click(leftOption);
 
     expect(column.setFilterValue).toHaveBeenCalledWith(["left"]);
   });
 
-  it("shows Clear filter when there is a selection", () => {
+  it("shows Clear filter when there is a selection", async () => {
     const column = makeColumnMock(["left"]);
     render(<WingFilterDropdown column={column} columnLabel="Wing (Exec)" />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Wing \(Exec\)/i }));
-    expect(screen.getByText(/Clear filter/i)).toBeInTheDocument();
+    const trigger = screen.getByRole("button", { name: /Wing \(Exec\)/i });
+    fireEvent.pointerDown(trigger);
+    fireEvent.click(trigger);
+    expect(await screen.findByText(/Clear filter/i)).toBeInTheDocument();
   });
 
-  it("deselects the same value and clears filter", () => {
+  it("deselects the same value and clears filter", async () => {
     const column = makeColumnMock(["left"]);
     render(<WingFilterDropdown column={column} columnLabel="Wing (Exec)" />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Wing \(Exec\)/i }));
-    const leftOption = screen.getByTestId("wing-filter-option-left");
+    const trigger = screen.getByRole("button", { name: /Wing \(Exec\)/i });
+    fireEvent.pointerDown(trigger);
+    fireEvent.click(trigger);
+    const leftOption = await screen.findByTestId("wing-filter-option-left");
     fireEvent.click(leftOption);
 
     expect(column.setFilterValue).toHaveBeenCalledWith(undefined);
   });
 
-  it("adds multiple selections", () => {
+  it("adds multiple selections", async () => {
     const column = makeColumnMock(["left"]);
     render(<WingFilterDropdown column={column} columnLabel="Wing (Rest)" />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Wing \(Rest\)/i }));
-    const centerOption = screen.getByTestId("wing-filter-option-center");
+    const trigger = screen.getByRole("button", { name: /Wing \(Rest\)/i });
+    fireEvent.pointerDown(trigger);
+    fireEvent.click(trigger);
+    const centerOption = await screen.findByTestId("wing-filter-option-center");
     fireEvent.click(centerOption);
 
     expect(column.setFilterValue).toHaveBeenCalledWith(["left", "center"]);

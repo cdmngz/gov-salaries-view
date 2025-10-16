@@ -41,7 +41,7 @@ vi.mock("@/i18n", () => ({
 vi.mock("@/data/countries.json", () => ({
   default: {
     world: { flag: "🌍", names: { en: "World" } },
-    ES: { flag: "🇪🇸", names: { en: "Spain" } },
+    es: { flag: "🇪🇸", names: { en: "Spain" } },
   },
 }));
 

@@ -31,8 +31,8 @@ export default function ClientView({
   );
 
   const columns = useMemo(
-    () => buildColumns({ currency, lang, year, searchParams }),
-    [currency, lang, year, searchParams]
+    () => buildColumns({ currency, year, searchParams }),
+    [currency, year, searchParams]
   );
 
   return (
