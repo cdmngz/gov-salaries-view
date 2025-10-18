@@ -309,6 +309,16 @@
       "de": "Schweden"
     }
   },
+  "ch": {
+    "flag": "🇨🇭",
+    "names": {
+      "es": "Suiza",
+      "en": "Switzerland",
+      "fr": "Suisse",
+      "pt": "Suíça",
+      "de": "Schweiz"
+    }
+  },
   "us": {
     "flag": "🇺🇸",
     "names": {
