@@ -1,18 +1,12 @@
 // src/app/world/[year]/buildRows.ts
-import countriesJson from "@/data/countries.json";
+
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { convert } from "@/lib/utils";
 import type { components } from "@/types/openapi";
 import type { Row, RangeValue } from "./table/types";
 import { isRangeValue } from "./table/types";
 import type { Language } from "@/validators/lang";
-
-type CountriesRecord = Record<
-  string,
-  (typeof countriesJson)[keyof typeof countriesJson]
->;
-
-const countriesRecord = countriesJson as CountriesRecord;
+import { countriesRecord } from "@/lib/map-colors";
 
 export function buildRows(
   data: components["schemas"]["WorldData"],
@@ -26,8 +20,7 @@ export function buildRows(
     const hasCountryPage = Boolean(countryMeta);
     const codeLabel = code.toUpperCase();
     const displayName =
-      countryMeta?.names?.[lang] ??
-      (countryMeta?.names?.en ?? codeLabel);
+      countryMeta?.names?.[lang] ?? countryMeta?.names?.en ?? codeLabel;
     const flag = countryMeta?.flag ?? null;
 
     const executiveRange = (
