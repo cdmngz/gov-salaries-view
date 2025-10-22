@@ -56,14 +56,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/data/{code}/{year}/rates.json": {
+    "/data/{code}/{year}/economics.json": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get rates by country and year */
+        /** Get macroeconomic indicators by country and year */
         get: {
             parameters: {
                 query?: never;
@@ -88,7 +88,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Rates"];
+                        "application/json": components["schemas"]["CountryEconomics"];
                     };
                 };
                 /** @description Not Found */
@@ -490,6 +490,46 @@ export interface components {
             senate?: components["schemas"]["Official"][];
             officials?: components["schemas"]["Official"][];
             parties?: components["schemas"]["Parties"];
+        };
+        /**
+         * @description Macroeconomic indicators for a country in its base currency.
+         * @example {
+         *       "baseCurrency": "EUR",
+         *       "timestamp": "2025-01-01T00:00:00Z",
+         *       "GDP": 1749040659341,
+         *       "GDPPerCapita": 37121,
+         *       "GDPGrowthYoY": 2.2,
+         *       "GDPPerCapitaGrowthYoY": 1,
+         *       "minAnnualSalary": 22000,
+         *       "minAnnualSalaryGrowthYoY": 3.5,
+         *       "ministersBudgetPctOfGDP": 1.12
+         *     }
+         */
+        CountryEconomics: {
+            /**
+             * @description ISO 4217 currency code for the economic figures.
+             * @example USD
+             */
+            baseCurrency: string;
+            /**
+             * Format: date-time
+             * @example 2025-07-31T00:00:00Z
+             */
+            timestamp: string;
+            /** @description Nominal GDP measured in the base currency. */
+            GDP?: number | null;
+            /** @description Nominal GDP per capita measured in the base currency. */
+            GDPPerCapita?: number | null;
+            /** @description Year-over-year growth of GDP (percent). */
+            GDPGrowthYoY?: number | null;
+            /** @description Year-over-year growth of GDP per capita (percent). */
+            GDPPerCapitaGrowthYoY?: number | null;
+            /** @description Statutory minimum annual salary measured in the base currency. */
+            minAnnualSalary?: number | null;
+            /** @description Year-over-year growth of minimum annual salary (percent). */
+            minAnnualSalaryGrowthYoY?: number | null;
+            /** @description Ministerial budget as a percentage of GDP. */
+            ministersBudgetPctOfGDP?: number | null;
         };
         /** @enum {string} */
         CoreCurrencyCode: "USD" | "EUR" | "JPY" | "GBP" | "CHF" | "CNY" | "INR" | "BRL" | "MXN" | "AUD" | "BTC" | "ETH";

@@ -64,11 +64,13 @@ export async function fetchCountryPeriods(country: CountryCode) {
 export function buildDataUrls(
   country: CountryCode,
   year: number
-): { dataUrl: string; ratesUrl: string } {
+): { dataUrl: string; economicsUrl: string; ratesUrl: string } {
   const path = [country, `${year}`];
+  const worldUrls = buildWorldUrls(year);
   return {
     dataUrl: buildFetchPath([...path, "data.json"]),
-    ratesUrl: buildFetchPath([...path, "rates.json"]),
+    economicsUrl: buildFetchPath([...path, "economics.json"]),
+    ratesUrl: worldUrls.ratesUrl,
   };
 }
 
@@ -78,20 +80,22 @@ const fetchCountryDataInternal = cache(
     year: number
   ): Promise<{
     data: components["schemas"]["CountryData"];
+    economics: components["schemas"]["CountryEconomics"];
     rates: components["schemas"]["Rates"];
   }> => {
-    const { dataUrl, ratesUrl } = buildDataUrls(country, year);
-    const [data, rates] = await Promise.all([
+    const { dataUrl, economicsUrl, ratesUrl } = buildDataUrls(country, year);
+    const [data, economics, rates] = await Promise.all([
       fetchJson<components["schemas"]["CountryData"]>(
         dataUrl,
         "fetchCountryData: data.json failed"
       ),
-      fetchJson<components["schemas"]["Rates"]>(
-        ratesUrl,
-        "fetchCountryData: rates.json failed"
+      fetchJson<components["schemas"]["CountryEconomics"]>(
+        economicsUrl,
+        "fetchCountryData: economics.json failed"
       ),
+      fetchWorldRatesInternal(year),
     ]);
-    return { data, rates };
+    return { data, economics, rates };
   }
 );
 
@@ -100,6 +104,7 @@ export async function fetchCountryData(
   year: number
 ): Promise<{
   data: components["schemas"]["CountryData"];
+  economics: components["schemas"]["CountryEconomics"];
   rates: components["schemas"]["Rates"];
 }> {
   return fetchCountryDataInternal(country, year);
@@ -129,6 +134,16 @@ export function buildWorldUrls(year: number): {
   };
 }
 
+const fetchWorldRatesInternal = cache(
+  async (year: number): Promise<components["schemas"]["Rates"]> => {
+    const { ratesUrl } = buildWorldUrls(year);
+    return fetchJson<components["schemas"]["Rates"]>(
+      ratesUrl,
+      "fetchWorldRates: rates.json failed"
+    );
+  }
+);
+
 const fetchWorldDataInternal = cache(
   async (
     year: number
@@ -142,10 +157,7 @@ const fetchWorldDataInternal = cache(
         dataUrl,
         "fetchWorldYear: data.json failed"
       ),
-      fetchJson<components["schemas"]["Rates"]>(
-        ratesUrl,
-        "fetchWorldYear: rates.json failed"
-      ),
+      fetchWorldRatesInternal(year),
     ]);
     return { data, rates };
   }
@@ -156,4 +168,10 @@ export async function fetchWorldData(year: number): Promise<{
   rates: components["schemas"]["Rates"];
 }> {
   return fetchWorldDataInternal(year);
+}
+
+export async function fetchWorldRates(
+  year: number
+): Promise<components["schemas"]["Rates"]> {
+  return fetchWorldRatesInternal(year);
 }
