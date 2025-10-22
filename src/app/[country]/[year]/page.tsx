@@ -96,7 +96,10 @@ export default async function Page({
   const periods = await fetchCountryPeriods(country);
   const { data: json, rates } = await fetchCountryData(country, Number(year));
   const baseCurrency = json.baseCurrency;
-  const { dataUrl, ratesUrl } = buildDataUrls(country, Number(year));
+  const { dataUrl, economicsUrl, ratesUrl } = buildDataUrls(
+    country,
+    Number(year)
+  );
   const structuredSeo = buildCountrySeo({
     country,
     year,
@@ -130,7 +133,11 @@ export default async function Page({
             contentUrl: dataUrl,
           },
           {
-            name: `${structuredSeo.countryName} ${year} currency rates (rates.json)`,
+            name: `${structuredSeo.countryName} ${year} macroeconomics (economics.json)`,
+            contentUrl: economicsUrl,
+          },
+          {
+            name: `World ${year} currency rates (rates.json)`,
             contentUrl: ratesUrl,
           },
         ]}
