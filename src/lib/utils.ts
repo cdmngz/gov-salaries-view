@@ -48,8 +48,8 @@ export function sortBy<T>(array: T[], key: keyof T, locale = "en"): T[] {
       return valA.localeCompare(valB, locale, { sensitivity: "base" });
     }
 
-    if (valA! < valB!) return -1;
-    if (valA! > valB!) return 1;
+    if (valA < valB) return -1;
+    if (valA > valB) return 1;
     return 0;
   });
 }

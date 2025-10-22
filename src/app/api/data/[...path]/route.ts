@@ -10,8 +10,7 @@ export async function GET(
 ) {
   const { path } = await ctx.params;
 
-  const externalBase = serverEnv.DATA_API_URL!;
-  const url = [externalBase, ...path].join("/");
+  const url = [serverEnv["DATA_API_URL"], ...path].join("/");
 
   const res = await fetch(url, request);
   const body = await res.arrayBuffer();

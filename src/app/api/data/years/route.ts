@@ -3,6 +3,10 @@
 import { NextResponse } from "next/server";
 import { serverEnv } from "@/lib/env";
 
+type YearsIndex = number[];
+const isYearsIndex = (x: unknown): x is YearsIndex =>
+  Array.isArray(x) && x.every((n) => Number.isInteger(n));
+
 export async function GET() {
   const baseUrl = serverEnv.DATA_API_URL.replace(/\/$/, "");
   const url = `${baseUrl}/index.json`;
@@ -16,7 +20,11 @@ export async function GET() {
       );
     }
 
-    const json = await res.json();
+    const json: unknown = await res.json();
+    if (!isYearsIndex(json)) {
+      return NextResponse.json({ error: "Invalid payload" }, { status: 500 });
+    }
+
     return NextResponse.json(json);
   } catch (err) {
     console.error("❌ Failed to load years index:", err);

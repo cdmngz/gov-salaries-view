@@ -104,10 +104,7 @@ function OfficialCard({
 
         {official.role && (
           <div className="text-xs text-muted-foreground rounded p-1 text-center w-48">
-            <p>
-              {ROLE_TRANSLATIONS[official.role as string]?.[lang] ??
-                official.role}
-            </p>
+            <p>{ROLE_TRANSLATIONS[official.role]?.[lang] ?? official.role}</p>
             {official.budget && (
               <p>
                 Budget:{" "}

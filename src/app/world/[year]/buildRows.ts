@@ -1,12 +1,12 @@
 // src/app/world/[year]/buildRows.ts
 
 import { DEFAULT_CURRENCY } from "@/lib/constants";
+import { countriesRecord } from "@/lib/map-colors";
 import { convert } from "@/lib/utils";
 import type { components } from "@/types/openapi";
-import type { Row, RangeValue } from "./table/types";
-import { isRangeValue } from "./table/types";
 import type { Language } from "@/validators/lang";
-import { countriesRecord } from "@/lib/map-colors";
+import type { Row } from "./table/types";
+import { isRangeValue } from "./table/types";
 
 export function buildRows(
   data: components["schemas"]["WorldData"],
@@ -25,10 +25,10 @@ export function buildRows(
 
     const executiveRange = (
       stats.partyRangeStatsSplit?.executive?.mostPopularRanges ?? []
-    ).filter(isRangeValue) as RangeValue[];
+    ).filter(isRangeValue);
     const restRange = (
       stats.partyRangeStatsSplit?.rest?.mostPopularRanges ?? []
-    ).filter(isRangeValue) as RangeValue[];
+    ).filter(isRangeValue);
 
     const minAnnualSalary = convert(
       stats.minAnnualSalary,

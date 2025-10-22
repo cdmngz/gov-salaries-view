@@ -1,5 +1,4 @@
 // src/hooks/useOfficials.ts
-
 "use client";
 
 import { fetchCountryData, fetchCountryPeriods } from "@/lib/data";
@@ -17,7 +16,6 @@ export function useOfficials(country: CountryCode) {
   const [rates, setRates] = useState<components["schemas"]["Rates"] | null>(
     null
   );
-
   const [periods, setPeriods] = useState<
     components["schemas"]["CountryYears"] | null
   >(null);
@@ -78,16 +76,9 @@ export function useOfficials(country: CountryCode) {
       }
     }
 
-    loadData();
+    void loadData();
     return () => controller.abort();
   }, [country]);
 
-  return {
-    officials,
-    loading,
-    baseCurrency,
-    rates,
-    periods,
-    year,
-  };
+  return { officials, loading, baseCurrency, rates, periods, year };
 }
