@@ -88,7 +88,7 @@ export default function WorldPoliticalMap({
       <TooltipProvider delayDuration={150}>
         <ComposableMap
           projectionConfig={{ scale: 160 }}
-          style={{ width: "100%", height: "auto" }}
+          style={{ width: "100%", height: "auto", touchAction: "none" }}
         >
           <ZoomableGroup
             zoom={zoom}

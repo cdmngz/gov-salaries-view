@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useParams, useSearchParams } from "next/navigation";
 import countriesJson from "@/data/countries.json";
@@ -12,11 +12,11 @@ import { DataTable } from "./DataTable";
 import { buildRows } from "./buildRows";
 import { buildColumns } from "./buildColumns";
 import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 const WorldPoliticalMap = dynamic(() => import("./WorldPoliticalMap"), {
   ssr: false,
@@ -46,10 +46,8 @@ export default function ClientView({
     [currency, year, searchParams]
   );
 
-  const [open, setOpen] = useState<string | undefined>(undefined);
-
   return (
-    <div className="p-4 space-y-8">
+    <div className="space-y-8 p-4">
       <h1
         className="text-xl text-center font-semibold"
         data-testid="world-stats-title"
@@ -58,28 +56,28 @@ export default function ClientView({
         {TEXT_TRANSLATION["stats"][lang]} 📊
       </h1>
 
-      <Accordion
-        type="single"
-        collapsible
-        value={open}
-        onValueChange={(v) => setOpen(v || undefined)}
-      >
-        <AccordionItem value="maps" className="p-2">
-          <AccordionTrigger className="cursor-pointer">
-            World maps
-          </AccordionTrigger>
-          <AccordionContent>
-            {open === "maps" && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-                <WorldPoliticalMap data={data} lang={lang} />
-                <GlobeMap3D data={data} lang={lang} />
-              </div>
-            )}
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
-      <DataTable columns={columns} data={rows} />
+      <Tabs defaultValue="map-2d" className="space-y-6">
+        <TabsList className="mx-auto flex w-full max-w-xl flex-col gap-2 sm:flex-row">
+          <TabsTrigger value="map-2d" className="flex-1">
+            2D map
+          </TabsTrigger>
+          <TabsTrigger value="map-3d" className="flex-1">
+            3D world map
+          </TabsTrigger>
+          <TabsTrigger value="table" className="flex-1">
+            Table
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="map-2d" className="focus-visible:outline-none">
+          <WorldPoliticalMap data={data} lang={lang} />
+        </TabsContent>
+        <TabsContent value="map-3d" className="focus-visible:outline-none">
+          <GlobeMap3D data={data} lang={lang} />
+        </TabsContent>
+        <TabsContent value="table" className="focus-visible:outline-none">
+          <DataTable columns={columns} data={rows} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

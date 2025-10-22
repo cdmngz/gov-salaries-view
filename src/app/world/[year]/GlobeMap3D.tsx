@@ -74,7 +74,7 @@ export default function GlobeMap3D({
         <ComposableMap
           projection="geoOrthographic"
           projectionConfig={{ rotate: rotation, scale: 240 }}
-          style={{ width: "100%", height: "auto" }}
+          style={{ width: "100%", height: "auto", touchAction: "none" }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
