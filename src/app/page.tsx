@@ -1,24 +1,15 @@
 // src/app/page.tsx
 
-import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { permanentRedirect } from "next/navigation";
+import { parseLang } from "@/validators/lang";
+import { DEFAULT_LANG } from "@/lib/constants";
 
-import ClientRedirect from "@/components/ClientRedirect";
-import { serverEnv } from "@/lib/env";
-import { SITE_DESCRIPTION } from "@/lib/seo";
-
-const baseUrl = serverEnv.WEB_URL.replace(/\/+$/, "");
-
-export const metadata: Metadata = {
-  title: "Explore public officials salaries",
-  description: SITE_DESCRIPTION,
-  alternates: { canonical: baseUrl },
-  openGraph: {
-    title: "Explore public officials salaries",
-    description: SITE_DESCRIPTION,
-    url: baseUrl,
-  },
-};
-
-export default function HomePage() {
-  return <ClientRedirect />;
+export default async function HomePage() {
+  const h = await headers();
+  const accept = h.get("accept-language") ?? "";
+  const primary = accept.split(",")[0] ?? "";
+  const lang = parseLang(primary.split("-")[0] ?? DEFAULT_LANG);
+  const year = new Date().getFullYear();
+  permanentRedirect(`/world/${year}?lang=${lang}`);
 }

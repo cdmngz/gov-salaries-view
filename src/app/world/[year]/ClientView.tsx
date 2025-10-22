@@ -11,12 +11,7 @@ import { parseLang } from "@/validators/lang";
 import { DataTable } from "./DataTable";
 import { buildRows } from "./buildRows";
 import { buildColumns } from "./buildColumns";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const WorldPoliticalMap = dynamic(() => import("./WorldPoliticalMap"), {
   ssr: false,
@@ -33,7 +28,7 @@ export default function ClientView({
   const searchParams = useSearchParams();
   const { year } = useParams<{ year: string }>();
   const currency = (
-    (searchParams.get("currency") ?? DEFAULT_CURRENCY) as string
+    searchParams.get("currency") ?? DEFAULT_CURRENCY
   ).toUpperCase();
   const lang = parseLang(searchParams.get("lang"));
 
@@ -57,18 +52,27 @@ export default function ClientView({
       </h1>
 
       <Tabs defaultValue="map-2d" className="space-y-6">
-        <TabsList className="mx-auto flex w-full max-w-xl flex-col gap-2 sm:flex-row">
-          <TabsTrigger value="map-2d" className="flex-1">
+        <TabsList className="flex w-full gap-4">
+          <TabsTrigger
+            value="map-2d"
+            className="bg-card rounded-none shadow-none data-[state=active]:bg-card"
+          >
             2D map
           </TabsTrigger>
-          <TabsTrigger value="map-3d" className="flex-1">
+          <TabsTrigger
+            value="map-3d"
+            className="bg-card rounded-none shadow-none data-[state=active]:bg-card"
+          >
             3D world map
           </TabsTrigger>
-          <TabsTrigger value="table" className="flex-1">
+          <TabsTrigger
+            value="table"
+            className="bg-card rounded-none shadow-none data-[state=active]:bg-card"
+          >
             Table
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="map-2d" className="focus-visible:outline-none">
+        <TabsContent value="map-2d">
           <WorldPoliticalMap data={data} lang={lang} />
         </TabsContent>
         <TabsContent value="map-3d" className="focus-visible:outline-none">

@@ -1,4 +1,3 @@
-// src/components/WorldPoliticalMap.tsx
 "use client";
 
 import * as React from "react";
@@ -28,6 +27,34 @@ import {
 import type { Language } from "@/validators/lang";
 import MapLegend from "@/app/world/[year]/maps/MapLegend";
 
+type Geometry =
+  | { type: "Point"; coordinates: [number, number] }
+  | {
+      type:
+        | "MultiPoint"
+        | "LineString"
+        | "MultiLineString"
+        | "Polygon"
+        | "MultiPolygon";
+      coordinates: unknown;
+    }
+  | { type: "GeometryCollection"; geometries: Geometry[] };
+
+type Feature<G = Geometry, P = Record<string, unknown>> = {
+  type: "Feature";
+  id?: string | number;
+  properties: P | null;
+  geometry: G | null;
+};
+
+type CountryProps = {
+  ISO2?: string;
+  ISO_A2?: string;
+  [k: string]: unknown;
+};
+
+type CountryFeature = Feature<Geometry, CountryProps>;
+
 export default function WorldPoliticalMap({
   data,
   className,
@@ -55,12 +82,7 @@ export default function WorldPoliticalMap({
   const [center, setCenter] = React.useState<[number, number]>([0, 15]);
 
   return (
-    <div
-      className={cn(
-        "mx-auto w-full max-w-4xl rounded-lg border bg-card p-3 shadow-sm",
-        className
-      )}
-    >
+    <div className={cn("mx-auto w-full max-w-4xl  bg-card p-3", className)}>
       <div className="mb-2 flex items-center justify-end gap-2">
         <button
           className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
@@ -72,7 +94,7 @@ export default function WorldPoliticalMap({
           className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
           onClick={() => setZoom((z) => Math.max(minZoom, z / 1.3))}
         >
-          −
+          -
         </button>
         <button
           className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
@@ -93,7 +115,7 @@ export default function WorldPoliticalMap({
           <ZoomableGroup
             zoom={zoom}
             center={center}
-            onMoveEnd={(p) => {
+            onMoveEnd={(p: { coordinates: [number, number]; zoom: number }) => {
               setCenter(p.coordinates);
               setZoom(p.zoom);
             }}
@@ -101,18 +123,20 @@ export default function WorldPoliticalMap({
             maxZoom={maxZoom}
           >
             <Geographies geography={GEO_URL}>
-              {({ geographies }) =>
-                geographies.map((geo) => {
-                  const p = geo["properties"] || {};
-                  const iso2: string = (p.ISO2 || p.ISO_A2 || "").toUpperCase();
+              {({ geographies }: { geographies: CountryFeature[] }) =>
+                geographies.map((geo, idx) => {
+                  const props = geo.properties ?? {};
+                  const iso2 = String(
+                    props.ISO2 ?? props.ISO_A2 ?? ""
+                  ).toUpperCase();
                   const rec = byIso2.get(iso2);
-                  const name = rec?.name || localizedName(iso2, lang);
+                  const name = rec?.name ?? localizedName(iso2, lang);
                   const wing = rec?.wing ?? "empty";
                   const range = rec?.range;
                   const fill = fillForIso2(byIso2, iso2);
                   const stroke = "#CBD5E1";
                   return (
-                    <Tooltip key={geo.rsmKey || iso2}>
+                    <Tooltip key={`fill-${geo.id ?? iso2 ?? idx}`}>
                       <TooltipTrigger asChild>
                         <Geography
                           geography={geo}

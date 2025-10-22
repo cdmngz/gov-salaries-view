@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import ThemeToggle from "@/components/ThemeToggle";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -13,12 +14,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import countriesData from "@/data/countries.json";
 import { LANGUAGE_NAMES } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { CURRENCY_SYMBOLS } from "@/lib/currencies";
-import type { CountriesData, CountryCode } from "@/types";
+import type { CountryCode } from "@/types";
 import { components } from "@/types/openapi";
 import { Language, LanguageSchema, parseLang } from "@/validators/lang";
 
@@ -125,7 +125,7 @@ export default function HeaderControlsClient({
 }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const countries = countriesData as CountriesData;
+  const countries = countriesData;
 
   const currencyCodes = useMemo(() => {
     const set = new Set<string>();
@@ -195,7 +195,11 @@ export default function HeaderControlsClient({
       .filter((c) => !pinnedOrder.includes(c.code))
       .sort((a, b) => a.name.localeCompare(b.name, currentLang));
 
-    const toOption = ({ code, label, searchText }: typeof withNames[number]) => ({
+    const toOption = ({
+      code,
+      label,
+      searchText,
+    }: (typeof withNames)[number]) => ({
       value: code,
       label,
       searchText,
