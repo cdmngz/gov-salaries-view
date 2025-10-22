@@ -39,6 +39,16 @@
       "de": "Brasilien"
     }
   },
+  "ca": {
+    "flag": "🇨🇦",
+    "names": {
+      "es": "Canadá",
+      "en": "Canada",
+      "fr": "Canada",
+      "pt": "Canadá",
+      "de": "Kanada"
+    }
+  },
   "cl": {
     "flag": "🇨🇱",
     "names": {
