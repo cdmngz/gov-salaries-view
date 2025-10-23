@@ -95,7 +95,12 @@ export default function GlobeMap3D({
   }
 
   return (
-    <div className={cn("rounded-lg border bg-card p-3 shadow-sm", className)}>
+    <div
+      className={cn(
+        "border-none bg-card p-3 shadow-none rounded-none",
+        className
+      )}
+    >
       <div className="mb-2 flex items-center justify-end gap-2">
         <button
           type="button"
@@ -111,7 +116,7 @@ export default function GlobeMap3D({
           className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
           onClick={() => zoomBy(1 / 1.2)}
         >
-          −
+          -
         </button>
         <button
           type="button"
@@ -149,17 +154,19 @@ export default function GlobeMap3D({
             {({ geographies }: { geographies: CountryFeature[] }) => (
               <>
                 {geographies.map((geo, idx) => {
-                  const props = geo.properties ?? {};
+                  const props = geo.properties;
+
                   const iso2 = String(
                     props.ISO2 ?? props.ISO_A2 ?? ""
                   ).toUpperCase();
+
                   const rec = byIso2.get(iso2);
                   const name = rec?.name ?? localizedName(iso2, lang);
                   const wing = rec?.wing ?? "empty";
                   const fill = fillForIso2(byIso2, iso2);
 
                   return (
-                    <Tooltip key={`fill-${geo.id ?? iso2 ?? idx}`}>
+                    <Tooltip key={`fill-${String(geo.id ?? iso2 ?? idx)}`}>
                       <TooltipTrigger asChild>
                         <Geography
                           geography={geo}
@@ -206,7 +213,7 @@ export default function GlobeMap3D({
 
                 {geographies.map((geo, idx) => (
                   <Geography
-                    key={`border-${geo.id ?? idx}`}
+                    key={`border-${String(geo.id ?? idx)}`}
                     geography={geo}
                     style={{
                       default: {

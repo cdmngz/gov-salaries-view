@@ -51,34 +51,33 @@ export default function ClientView({
         {TEXT_TRANSLATION["stats"][lang]} 📊
       </h1>
 
-      <Tabs defaultValue="map-2d" className="space-y-6">
-        <TabsList className="flex w-full gap-4">
-          <TabsTrigger
-            value="map-2d"
-            className="bg-card rounded-none shadow-none data-[state=active]:bg-card"
-          >
-            2D map
-          </TabsTrigger>
-          <TabsTrigger
-            value="map-3d"
-            className="bg-card rounded-none shadow-none data-[state=active]:bg-card"
-          >
-            3D world map
-          </TabsTrigger>
-          <TabsTrigger
-            value="table"
-            className="bg-card rounded-none shadow-none data-[state=active]:bg-card"
-          >
-            Table
-          </TabsTrigger>
+      <Tabs defaultValue="map-2d">
+        <TabsList className="flex w-full gap-4 bg-background">
+          {[
+            { tab: "map-2d", label: "2D Map" },
+            { tab: "map-3d", label: "3D World Map" },
+            { tab: "table", label: "Stats Table" },
+          ].map(({ tab, label }) => (
+            <TabsTrigger
+              key={tab}
+              value={tab}
+              className="rounded-none cursor-pointer select-none shadow-none data-[state=active]:bg-card"
+            >
+              {label}
+            </TabsTrigger>
+          ))}
         </TabsList>
-        <TabsContent value="map-2d">
-          <WorldPoliticalMap data={data} lang={lang} />
+        <TabsContent value="map-2d" className="flex justify-center">
+          <div className="w-3xl">
+            <WorldPoliticalMap data={data} lang={lang} />
+          </div>
         </TabsContent>
-        <TabsContent value="map-3d" className="focus-visible:outline-none">
-          <GlobeMap3D data={data} lang={lang} />
+        <TabsContent value="map-3d" className="flex justify-center">
+          <div className="w-3xl">
+            <GlobeMap3D data={data} lang={lang} />
+          </div>
         </TabsContent>
-        <TabsContent value="table" className="focus-visible:outline-none">
+        <TabsContent value="table" className="flex justify-center">
           <DataTable columns={columns} data={rows} />
         </TabsContent>
       </Tabs>

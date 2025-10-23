@@ -83,7 +83,7 @@ const fetchCountryDataInternal = cache(
     economics: components["schemas"]["CountryEconomics"];
     rates: components["schemas"]["Rates"];
   }> => {
-    const { dataUrl, economicsUrl, ratesUrl } = buildDataUrls(country, year);
+    const { dataUrl, economicsUrl } = buildDataUrls(country, year);
     const [data, economics, rates] = await Promise.all([
       fetchJson<components["schemas"]["CountryData"]>(
         dataUrl,
@@ -151,7 +151,7 @@ const fetchWorldDataInternal = cache(
     data: components["schemas"]["WorldData"];
     rates: components["schemas"]["Rates"];
   }> => {
-    const { dataUrl, ratesUrl } = buildWorldUrls(year);
+    const { dataUrl } = buildWorldUrls(year);
     const [data, rates] = await Promise.all([
       fetchJson<components["schemas"]["WorldData"]>(
         dataUrl,

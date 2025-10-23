@@ -60,15 +60,13 @@ export function buildColumns(args: {
     },
     {
       accessorKey: "executiveRange",
-      header: "Wing (Exec)",
-      enableSorting: false,
+      header: "Executive",
       filterFn: wingRangeFilter,
       cell: ({ row }) => <RangeDots ranges={row.original.executiveRange} />,
     },
     {
       accessorKey: "restRange",
-      header: "Wing (Rest)",
-      enableSorting: false,
+      header: "Officials",
       filterFn: wingRangeFilter,
       cell: ({ row }) => <RangeDots ranges={row.original.restRange} />,
     },

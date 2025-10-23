@@ -1,8 +1,7 @@
 // src/app/world/[year]/DataTable.tsx
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +41,7 @@ export function DataTable({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [pageSizeChoice, setPageSizeChoice] = useState<number | "all">(25);
 
   const table = useReactTable({
     data,
@@ -56,13 +56,21 @@ export function DataTable({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     initialState: {
-      pagination: { pageSize: 50 },
+      pagination: { pageSize: 25 },
       sorting: [{ id: "total", desc: true }],
     },
   });
 
+  const filteredLen = table.getFilteredRowModel().rows.length;
+
+  useEffect(() => {
+    const size = pageSizeChoice === "all" ? filteredLen : pageSizeChoice;
+    table.setPageSize(size || 1);
+    table.setPageIndex(0);
+  }, [pageSizeChoice, filteredLen, table]);
+
   return (
-    <div className="space-y-2 bg-card p-8">
+    <div className="space-y-2 bg-card p-8 overflow-auto">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
         <Input
           className="w-full sm:max-w-xs"
@@ -78,7 +86,6 @@ export function DataTable({
 
         <div className="ml-auto flex items-center gap-6">
           <RangeLegend />
-
           <div className="flex flex-wrap gap-3">
             {(["executiveRange", "restRange"] as const).map((columnId) => (
               <WingFilterDropdown
@@ -89,7 +96,6 @@ export function DataTable({
                 }
               />
             ))}
-
             <ColumnsDropdown table={table} />
           </div>
         </div>
@@ -163,17 +169,37 @@ export function DataTable({
         </UITable>
       </div>
 
-      <div className="flex flex-wrap justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center gap-3">
         <div className="text-xs text-muted-foreground">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount() || 1} •{" "}
-          {table.getFilteredRowModel().rows.length} rows
+          {table.getPageCount() || 1} • {filteredLen} rows
         </div>
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-center gap-3">
+          <label htmlFor="rows-per-page" className="text-xs">
+            Rows per page
+          </label>
+          <select
+            id="rows-per-page"
+            className="h-8 rounded-none border-none bg-background px-2 text-sm"
+            value={String(pageSizeChoice)}
+            onChange={(e) =>
+              setPageSizeChoice(
+                e.target.value === "all" ? "all" : Number(e.target.value)
+              )
+            }
+            aria-label="Rows per page"
+          >
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="all">All</option>
+          </select>
+
           <Button
             variant="outline"
             size="sm"
-            className="border-none"
+            className="border-none rounded-none"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
             aria-label="Previous page"
@@ -183,7 +209,7 @@ export function DataTable({
           <Button
             variant="outline"
             size="sm"
-            className="border-none"
+            className="border-none rounded-none"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
             aria-label="Next page"
