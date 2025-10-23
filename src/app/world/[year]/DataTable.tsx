@@ -1,4 +1,5 @@
 // src/app/world/[year]/DataTable.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
