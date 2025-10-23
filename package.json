@@ -55,7 +55,7 @@
     "@types/react-dom": "^19",
     "@types/react-simple-maps": "^3.0.6",
     "@vitejs/plugin-react": "^5.0.4",
-    "@vitest/ui": "^3.2.4",
+    "@vitest/ui": "^4.0.1",
     "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-plugin-react": "^7.37.5",
@@ -71,7 +71,7 @@
     "typescript-eslint": "^8.46.2",
     "vite": "^7.1.11",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.1"
   },
   "packageManager": "pnpm@9.15.4+sha256.9bee59c7313a216722c079c1e22160dea7f88df4e0c3450b1d7b01b882336c6a"
 }
