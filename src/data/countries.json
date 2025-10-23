@@ -29,6 +29,16 @@
       "de": "Argentinien"
     }
   },
+  "bo": {
+    "flag": "🇧🇴",
+    "names": {
+      "es": "Bolivia",
+      "en": "Bolivia",
+      "fr": "Bolivie",
+      "pt": "Bolívia",
+      "de": "Bolivien"
+    }
+  },
   "br": {
     "flag": "🇧🇷",
     "names": {
@@ -37,6 +47,16 @@
       "fr": "Brésil",
       "pt": "Brasil",
       "de": "Brasilien"
+    }
+  },
+  "bz": {
+    "flag": "🇧🇿",
+    "names": {
+      "es": "Belice",
+      "en": "Belize",
+      "fr": "Belize",
+      "pt": "Belize",
+      "de": "Belize"
     }
   },
   "ca": {
@@ -147,6 +167,16 @@
       "fr": "Royaume-Uni",
       "pt": "Reino Unido",
       "de": "Vereinigtes Königreich"
+    }
+  },
+  "gt": {
+    "flag": "🇬🇹",
+    "names": {
+      "es": "Guatemala",
+      "en": "Guatemala",
+      "fr": "Guatemala",
+      "pt": "Guatemala",
+      "de": "Guatemala"
     }
   },
   "hn": {
