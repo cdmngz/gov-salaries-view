@@ -99,6 +99,16 @@
       "de": "Kolumbien"
     }
   },
+  "cr": {
+    "flag": "🇨🇷",
+    "names": {
+      "es": "Costa Rica",
+      "en": "Costa Rica",
+      "fr": "Costa Rica",
+      "pt": "Costa Rica",
+      "de": "Costa Rica"
+    }
+  },
   "cu": {
     "flag": "🇨🇺",
     "names": {
@@ -127,6 +137,16 @@
       "fr": "Émirats arabes unis",
       "pt": "Emirados Árabes Unidos",
       "de": "Vereinigte Arabische Emirate"
+    }
+  },
+  "ec": {
+    "flag": "🇪🇨",
+    "names": {
+      "es": "Ecuador",
+      "en": "Ecuador",
+      "fr": "Équateur",
+      "pt": "Equador",
+      "de": "Ecuador"
     }
   },
   "ee": {
@@ -177,6 +197,16 @@
       "fr": "Guatemala",
       "pt": "Guatemala",
       "de": "Guatemala"
+    }
+  },
+  "gy": {
+    "flag": "🇬🇾",
+    "names": {
+      "es": "Guyana",
+      "en": "Guyana",
+      "fr": "Guyana",
+      "pt": "Guiana",
+      "de": "Guyana"
     }
   },
   "hn": {
@@ -309,6 +339,16 @@
       "de": "Neuseeland"
     }
   },
+  "pa": {
+    "flag": "🇵🇦",
+    "names": {
+      "es": "Panamá",
+      "en": "Panama",
+      "fr": "Panama",
+      "pt": "Panamá",
+      "de": "Panama"
+    }
+  },
   "pe": {
     "flag": "🇵🇪",
     "names": {
@@ -357,6 +397,16 @@
       "fr": "Sénégal",
       "pt": "Senegal",
       "de": "Senegal"
+    }
+  },
+  "sr": {
+    "flag": "🇸🇷",
+    "names": {
+      "es": "Surinam",
+      "en": "Suriname",
+      "fr": "Suriname",
+      "pt": "Suriname",
+      "de": "Suriname"
     }
   },
   "se": {
