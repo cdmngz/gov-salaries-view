@@ -129,6 +129,16 @@
       "de": "Deutschland"
     }
   },
+  "dz": {
+    "flag": "🇩🇿",
+    "names": {
+      "es": "Argelia",
+      "en": "Algeria",
+      "fr": "Algérie",
+      "pt": "Argélia",
+      "de": "Algerien"
+    }
+  },
   "ae": {
     "flag": "🇦🇪",
     "names": {
@@ -147,6 +157,16 @@
       "fr": "Équateur",
       "pt": "Equador",
       "de": "Ecuador"
+    }
+  },
+  "eg": {
+    "flag": "🇪🇬",
+    "names": {
+      "es": "Egipto",
+      "en": "Egypt",
+      "fr": "Égypte",
+      "pt": "Egito",
+      "de": "Ägypten"
     }
   },
   "ee": {
@@ -239,6 +259,16 @@
       "de": "Südkorea"
     }
   },
+  "ma": {
+    "flag": "🇲🇦",
+    "names": {
+      "es": "Marruecos",
+      "en": "Morocco",
+      "fr": "Maroc",
+      "pt": "Marrocos",
+      "de": "Marokko"
+    }
+  },
   "mc": {
     "flag": "🇲🇨",
     "names": {
@@ -297,6 +327,16 @@
       "fr": "Luxembourg",
       "pt": "Luxemburgo",
       "de": "Luxemburg"
+    }
+  },
+  "ly": {
+    "flag": "🇱🇾",
+    "names": {
+      "es": "Libia",
+      "en": "Libya",
+      "fr": "Libye",
+      "pt": "Líbia",
+      "de": "Libyen"
     }
   },
   "ni": {
@@ -389,6 +429,16 @@
       "de": "Russland"
     }
   },
+  "sd": {
+    "flag": "🇸🇩",
+    "names": {
+      "es": "Sudán",
+      "en": "Sudan",
+      "fr": "Soudan",
+      "pt": "Sudão",
+      "de": "Sudan"
+    }
+  },
   "sn": {
     "flag": "🇸🇳",
     "names": {
@@ -417,6 +467,16 @@
       "fr": "Suède",
       "pt": "Suécia",
       "de": "Schweden"
+    }
+  },
+  "tn": {
+    "flag": "🇹🇳",
+    "names": {
+      "es": "Túnez",
+      "en": "Tunisia",
+      "fr": "Tunisie",
+      "pt": "Tunísia",
+      "de": "Tunesien"
     }
   },
   "ch": {
