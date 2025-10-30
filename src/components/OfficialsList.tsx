@@ -15,7 +15,7 @@ import { Language } from "@/validators/lang";
 
 type Official = components["schemas"]["Official"];
 type Parties = components["schemas"]["Parties"];
-type Rates = components["schemas"]["Rates"];
+type Rates = components["schemas"]["WorldRates"];
 type Party = components["schemas"]["Official"]["party"];
 type RangeGroupId = (typeof rangeGroups)[number]["id"];
 

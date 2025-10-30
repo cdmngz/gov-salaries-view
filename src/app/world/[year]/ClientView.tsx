@@ -23,7 +23,7 @@ export default function ClientView({
   rates,
 }: {
   data: components["schemas"]["WorldData"];
-  rates: components["schemas"]["Rates"];
+  rates: components["schemas"]["WorldRates"];
 }) {
   const searchParams = useSearchParams();
   const { year } = useParams<{ year: string }>();

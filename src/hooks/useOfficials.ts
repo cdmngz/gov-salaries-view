@@ -13,7 +13,7 @@ export function useOfficials(country: CountryCode) {
   >([]);
   const [loading, setLoading] = useState(true);
   const [baseCurrency, setBaseCurrency] = useState("");
-  const [rates, setRates] = useState<components["schemas"]["Rates"] | null>(
+  const [rates, setRates] = useState<components["schemas"]["WorldRates"] | null>(
     null
   );
   const [periods, setPeriods] = useState<
