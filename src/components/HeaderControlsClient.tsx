@@ -26,7 +26,7 @@ type Props = {
   country: CountryCode;
   currency: string;
   baseCurrency: string;
-  rates: components["schemas"]["Rates"] | null;
+  rates: components["schemas"]["WorldRates"] | null;
   periods: number[];
   defaultYear: number;
 };

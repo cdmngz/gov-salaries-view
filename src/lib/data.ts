@@ -80,8 +80,8 @@ const fetchCountryDataInternal = cache(
     year: number
   ): Promise<{
     data: components["schemas"]["CountryData"];
-    economics: components["schemas"]["CountryEconomics"];
-    rates: components["schemas"]["Rates"];
+    economics: components["schemas"]["EconomicsSnapshot"];
+    rates: components["schemas"]["WorldRates"];
   }> => {
     const { dataUrl, economicsUrl } = buildDataUrls(country, year);
     const [data, economics, rates] = await Promise.all([
@@ -89,7 +89,7 @@ const fetchCountryDataInternal = cache(
         dataUrl,
         "fetchCountryData: data.json failed"
       ),
-      fetchJson<components["schemas"]["CountryEconomics"]>(
+      fetchJson<components["schemas"]["EconomicsSnapshot"]>(
         economicsUrl,
         "fetchCountryData: economics.json failed"
       ),
@@ -104,8 +104,8 @@ export async function fetchCountryData(
   year: number
 ): Promise<{
   data: components["schemas"]["CountryData"];
-  economics: components["schemas"]["CountryEconomics"];
-  rates: components["schemas"]["Rates"];
+  economics: components["schemas"]["EconomicsSnapshot"];
+  rates: components["schemas"]["WorldRates"];
 }> {
   return fetchCountryDataInternal(country, year);
 }
@@ -135,9 +135,9 @@ export function buildWorldUrls(year: number): {
 }
 
 const fetchWorldRatesInternal = cache(
-  async (year: number): Promise<components["schemas"]["Rates"]> => {
+  async (year: number): Promise<components["schemas"]["WorldRates"]> => {
     const { ratesUrl } = buildWorldUrls(year);
-    return fetchJson<components["schemas"]["Rates"]>(
+    return fetchJson<components["schemas"]["WorldRates"]>(
       ratesUrl,
       "fetchWorldRates: rates.json failed"
     );
@@ -149,7 +149,7 @@ const fetchWorldDataInternal = cache(
     year: number
   ): Promise<{
     data: components["schemas"]["WorldData"];
-    rates: components["schemas"]["Rates"];
+    rates: components["schemas"]["WorldRates"];
   }> => {
     const { dataUrl } = buildWorldUrls(year);
     const [data, rates] = await Promise.all([
@@ -165,13 +165,13 @@ const fetchWorldDataInternal = cache(
 
 export async function fetchWorldData(year: number): Promise<{
   data: components["schemas"]["WorldData"];
-  rates: components["schemas"]["Rates"];
+  rates: components["schemas"]["WorldRates"];
 }> {
   return fetchWorldDataInternal(year);
 }
 
 export async function fetchWorldRates(
   year: number
-): Promise<components["schemas"]["Rates"]> {
+): Promise<components["schemas"]["WorldRates"]> {
   return fetchWorldRatesInternal(year);
 }

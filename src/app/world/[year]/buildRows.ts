@@ -11,7 +11,7 @@ import { isRangeValue } from "./table/types";
 export function buildRows(
   data: components["schemas"]["WorldData"],
   currency: string,
-  rates: components["schemas"]["Rates"]["rates"],
+  rates: components["schemas"]["WorldRates"]["rates"],
   lang: Language
 ): Row[] {
   return Object.entries(data).map(([code, stats]) => {

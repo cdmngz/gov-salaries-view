@@ -27,7 +27,7 @@ export default function ClientView({
   baseCurrency,
 }: {
   json: components["schemas"]["CountryData"];
-  rates: components["schemas"]["Rates"];
+  rates: components["schemas"]["WorldRates"];
   baseCurrency: string;
 }) {
   const { country } = useParams<{ country: CountryCode }>();

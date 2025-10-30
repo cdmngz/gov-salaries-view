@@ -11,7 +11,7 @@ type Props = {
   year: number;
   currency: string;
   baseCurrency: string;
-  rates: components["schemas"]["Rates"] | null;
+  rates: components["schemas"]["WorldRates"] | null;
   periods: number[];
 };
 
