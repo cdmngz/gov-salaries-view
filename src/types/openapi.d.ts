@@ -88,7 +88,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["CountryEconomics"];
+                        "application/json": components["schemas"]["EconomicsSnapshot"];
                     };
                 };
                 /** @description Not Found */
@@ -312,7 +312,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Rates"];
+                        "application/json": components["schemas"]["WorldRates"];
                     };
                 };
                 /** @description Not Found */
@@ -421,7 +421,8 @@ export interface components {
         Source: {
             [key: string]: number | string;
         };
-        /** @example [
+        /**
+         * @example [
          *       {
          *         "pdf": "https://example.com/salary.pdf"
          *       },
@@ -431,7 +432,8 @@ export interface components {
          *       {
          *         "notes": "Declared report"
          *       }
-         *     ] */
+         *     ]
+         */
         Sources: components["schemas"]["Source"][];
         Official: {
             name: string;
@@ -491,50 +493,30 @@ export interface components {
             officials?: components["schemas"]["Official"][];
             parties?: components["schemas"]["Parties"];
         };
-        /**
-         * @description Macroeconomic indicators for a country in its base currency.
-         * @example {
-         *       "baseCurrency": "EUR",
-         *       "timestamp": "2025-01-01T00:00:00Z",
-         *       "GDP": 1749040659341,
-         *       "GDPPerCapita": 37121,
-         *       "GDPGrowthYoY": 2.2,
-         *       "GDPPerCapitaGrowthYoY": 1,
-         *       "minAnnualSalary": 22000,
-         *       "minAnnualSalaryGrowthYoY": 3.5,
-         *       "ministersBudgetPctOfGDP": 1.12
-         *     }
-         */
-        CountryEconomics: {
+        /** @enum {string} */
+        CoreCurrencyCode: "USD" | "EUR" | "GBP" | "JPY" | "CNY" | "AED" | "RUB" | "SEK" | "MXN" | "BRL" | "BTC" | "ETH";
+        /** @description Country-level macro indicators stored in local currency. */
+        EconomicsSnapshot: {
             /**
              * @description ISO 4217 currency code for the economic figures.
-             * @example USD
+             * @example EUR
              */
             baseCurrency: string;
+            /** @description Nominal gross domestic product in the local currency. */
+            GDP: number;
+            /** @description Nominal GDP per capita in the local currency. */
+            GDPPerCapita: number;
+            /** @description Minimum annual salary in the local currency. */
+            minAnnualSalary: number;
             /**
              * Format: date-time
+             * @description ISO timestamp for when the indicators were last refreshed.
              * @example 2025-07-31T00:00:00Z
              */
             timestamp: string;
-            /** @description Nominal GDP measured in the base currency. */
-            GDP?: number | null;
-            /** @description Nominal GDP per capita measured in the base currency. */
-            GDPPerCapita?: number | null;
-            /** @description Year-over-year growth of GDP (percent). */
-            GDPGrowthYoY?: number | null;
-            /** @description Year-over-year growth of GDP per capita (percent). */
-            GDPPerCapitaGrowthYoY?: number | null;
-            /** @description Statutory minimum annual salary measured in the base currency. */
-            minAnnualSalary?: number | null;
-            /** @description Year-over-year growth of minimum annual salary (percent). */
-            minAnnualSalaryGrowthYoY?: number | null;
-            /** @description Ministerial budget as a percentage of GDP. */
-            ministersBudgetPctOfGDP?: number | null;
         };
-        /** @enum {string} */
-        CoreCurrencyCode: "USD" | "EUR" | "JPY" | "GBP" | "CHF" | "CNY" | "INR" | "BRL" | "MXN" | "AUD" | "BTC" | "ETH";
         /** @description Snapshot of exchange rates for the 12-core currencies. */
-        Rates: {
+        WorldRates: {
             /**
              * @description ISO 4217 or ticker symbol of the base currency.
              * @example USD
@@ -550,22 +532,22 @@ export interface components {
                 USD: number;
                 /** @example 0.91 */
                 EUR: number;
-                /** @example 140.3 */
-                JPY: number;
                 /** @example 0.78 */
                 GBP: number;
-                /** @example 0.89 */
-                CHF: number;
+                /** @example 140.3 */
+                JPY: number;
                 /** @example 7.25 */
                 CNY: number;
-                /** @example 83.1 */
-                INR: number;
-                /** @example 5.2 */
-                BRL: number;
+                /** @example 3.95 */
+                AED: number;
+                /** @example 95 */
+                RUB: number;
+                /** @example 10.6 */
+                SEK: number;
                 /** @example 17.1 */
                 MXN: number;
-                /** @example 1.51 */
-                AUD: number;
+                /** @example 5.2 */
+                BRL: number;
                 /** @example 0.000016 */
                 BTC: number;
                 /** @example 0.00025 */
@@ -593,7 +575,8 @@ export interface components {
             partyRangeStats?: components["schemas"]["PartyRangeStats"];
             partyRangeStatsSplit?: components["schemas"]["PartyRangeSplitStats"];
         };
-        /** @example {
+        /**
+         * @example {
          *       "ar": [
          *         2025
          *       ],
@@ -606,7 +589,8 @@ export interface components {
          *       "us": [
          *         2025
          *       ]
-         *     } */
+         *     }
+         */
         CountriesYears: {
             [key: string]: number[];
         };
