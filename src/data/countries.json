@@ -19,6 +19,36 @@
       "de": "Andorra"
     }
   },
+  "ae": {
+    "flag": "🇦🇪",
+    "names": {
+      "es": "Emiratos Árabes Unidos",
+      "en": "United Arab Emirates",
+      "fr": "Émirats arabes unis",
+      "pt": "Emirados Árabes Unidos",
+      "de": "Vereinigte Arabische Emirate"
+    }
+  },
+  "al": {
+    "flag": "🇦🇱",
+    "names": {
+      "es": "Albania",
+      "en": "Albania",
+      "fr": "Albanie",
+      "pt": "Albânia",
+      "de": "Albanien"
+    }
+  },
+  "am": {
+    "flag": "🇦🇲",
+    "names": {
+      "es": "Armenia",
+      "en": "Armenia",
+      "fr": "Arménie",
+      "pt": "Armênia",
+      "de": "Armenien"
+    }
+  },
   "ar": {
     "flag": "🇦🇷",
     "names": {
@@ -27,6 +57,56 @@
       "fr": "Argentine",
       "pt": "Argentina",
       "de": "Argentinien"
+    }
+  },
+  "at": {
+    "flag": "🇦🇹",
+    "names": {
+      "es": "Austria",
+      "en": "Austria",
+      "fr": "Autriche",
+      "pt": "Áustria",
+      "de": "Österreich"
+    }
+  },
+  "az": {
+    "flag": "🇦🇿",
+    "names": {
+      "es": "Azerbaiyán",
+      "en": "Azerbaijan",
+      "fr": "Azerbaïdjan",
+      "pt": "Azerbaijão",
+      "de": "Aserbaidschan"
+    }
+  },
+  "ba": {
+    "flag": "🇧🇦",
+    "names": {
+      "es": "Bosnia y Herzegovina",
+      "en": "Bosnia and Herzegovina",
+      "fr": "Bosnie-Herzégovine",
+      "pt": "Bósnia e Herzegovina",
+      "de": "Bosnien und Herzegowina"
+    }
+  },
+  "be": {
+    "flag": "🇧🇪",
+    "names": {
+      "es": "Bélgica",
+      "en": "Belgium",
+      "fr": "Belgique",
+      "pt": "Bélgica",
+      "de": "Belgien"
+    }
+  },
+  "bg": {
+    "flag": "🇧🇬",
+    "names": {
+      "es": "Bulgaria",
+      "en": "Bulgaria",
+      "fr": "Bulgarie",
+      "pt": "Bulgária",
+      "de": "Bulgarien"
     }
   },
   "bo": {
@@ -59,6 +139,16 @@
       "de": "Belize"
     }
   },
+  "by": {
+    "flag": "🇧🇾",
+    "names": {
+      "es": "Bielorrusia",
+      "en": "Belarus",
+      "fr": "Biélorussie",
+      "pt": "Bielorrússia",
+      "de": "Belarus"
+    }
+  },
   "ca": {
     "flag": "🇨🇦",
     "names": {
@@ -67,6 +157,16 @@
       "fr": "Canada",
       "pt": "Canadá",
       "de": "Kanada"
+    }
+  },
+  "ch": {
+    "flag": "🇨🇭",
+    "names": {
+      "es": "Suiza",
+      "en": "Switzerland",
+      "fr": "Suisse",
+      "pt": "Suíça",
+      "de": "Schweiz"
     }
   },
   "cl": {
@@ -119,6 +219,26 @@
       "de": "Kuba"
     }
   },
+  "cy": {
+    "flag": "🇨🇾",
+    "names": {
+      "es": "Chipre",
+      "en": "Cyprus",
+      "fr": "Chypre",
+      "pt": "Chipre",
+      "de": "Zypern"
+    }
+  },
+  "cz": {
+    "flag": "🇨🇿",
+    "names": {
+      "es": "República Checa",
+      "en": "Czech Republic",
+      "fr": "République tchèque",
+      "pt": "República Tcheca",
+      "de": "Tschechien"
+    }
+  },
   "de": {
     "flag": "🇩🇪",
     "names": {
@@ -127,6 +247,16 @@
       "fr": "Allemagne",
       "pt": "Alemanha",
       "de": "Deutschland"
+    }
+  },
+  "dk": {
+    "flag": "🇩🇰",
+    "names": {
+      "es": "Dinamarca",
+      "en": "Denmark",
+      "fr": "Danemark",
+      "pt": "Dinamarca",
+      "de": "Dänemark"
     }
   },
   "dz": {
@@ -139,16 +269,6 @@
       "de": "Algerien"
     }
   },
-  "ae": {
-    "flag": "🇦🇪",
-    "names": {
-      "es": "Emiratos Árabes Unidos",
-      "en": "United Arab Emirates",
-      "fr": "Émirats arabes unis",
-      "pt": "Emirados Árabes Unidos",
-      "de": "Vereinigte Arabische Emirate"
-    }
-  },
   "ec": {
     "flag": "🇪🇨",
     "names": {
@@ -157,16 +277,6 @@
       "fr": "Équateur",
       "pt": "Equador",
       "de": "Ecuador"
-    }
-  },
-  "eg": {
-    "flag": "🇪🇬",
-    "names": {
-      "es": "Egipto",
-      "en": "Egypt",
-      "fr": "Égypte",
-      "pt": "Egito",
-      "de": "Ägypten"
     }
   },
   "ee": {
@@ -179,6 +289,16 @@
       "de": "Estland"
     }
   },
+  "eg": {
+    "flag": "🇪🇬",
+    "names": {
+      "es": "Egipto",
+      "en": "Egypt",
+      "fr": "Égypte",
+      "pt": "Egito",
+      "de": "Ägypten"
+    }
+  },
   "es": {
     "flag": "🇪🇸",
     "names": {
@@ -187,6 +307,16 @@
       "fr": "Espagne",
       "pt": "Espanha",
       "de": "Spanien"
+    }
+  },
+  "fi": {
+    "flag": "🇫🇮",
+    "names": {
+      "es": "Finlandia",
+      "en": "Finland",
+      "fr": "Finlande",
+      "pt": "Finlândia",
+      "de": "Finnland"
     }
   },
   "fr": {
@@ -207,6 +337,26 @@
       "fr": "Royaume-Uni",
       "pt": "Reino Unido",
       "de": "Vereinigtes Königreich"
+    }
+  },
+  "ge": {
+    "flag": "🇬🇪",
+    "names": {
+      "es": "Georgia",
+      "en": "Georgia",
+      "fr": "Géorgie",
+      "pt": "Geórgia",
+      "de": "Georgien"
+    }
+  },
+  "gr": {
+    "flag": "🇬🇷",
+    "names": {
+      "es": "Grecia",
+      "en": "Greece",
+      "fr": "Grèce",
+      "pt": "Grécia",
+      "de": "Griechenland"
     }
   },
   "gt": {
@@ -239,6 +389,56 @@
       "de": "Honduras"
     }
   },
+  "hr": {
+    "flag": "🇭🇷",
+    "names": {
+      "es": "Croacia",
+      "en": "Croatia",
+      "fr": "Croatie",
+      "pt": "Croácia",
+      "de": "Kroatien"
+    }
+  },
+  "hu": {
+    "flag": "🇭🇺",
+    "names": {
+      "es": "Hungría",
+      "en": "Hungary",
+      "fr": "Hongrie",
+      "pt": "Hungria",
+      "de": "Ungarn"
+    }
+  },
+  "ie": {
+    "flag": "🇮🇪",
+    "names": {
+      "es": "Irlanda",
+      "en": "Ireland",
+      "fr": "Irlande",
+      "pt": "Irlanda",
+      "de": "Irland"
+    }
+  },
+  "is": {
+    "flag": "🇮🇸",
+    "names": {
+      "es": "Islandia",
+      "en": "Iceland",
+      "fr": "Islande",
+      "pt": "Islândia",
+      "de": "Island"
+    }
+  },
+  "it": {
+    "flag": "🇮🇹",
+    "names": {
+      "es": "Italia",
+      "en": "Italy",
+      "fr": "Italie",
+      "pt": "Itália",
+      "de": "Italien"
+    }
+  },
   "jp": {
     "flag": "🇯🇵",
     "names": {
@@ -257,56 +457,6 @@
       "fr": "Corée du Sud",
       "pt": "Coreia do Sul",
       "de": "Südkorea"
-    }
-  },
-  "ma": {
-    "flag": "🇲🇦",
-    "names": {
-      "es": "Marruecos",
-      "en": "Morocco",
-      "fr": "Maroc",
-      "pt": "Marrocos",
-      "de": "Marokko"
-    }
-  },
-  "mc": {
-    "flag": "🇲🇨",
-    "names": {
-      "es": "Mónaco",
-      "en": "Monaco",
-      "fr": "Monaco",
-      "pt": "Mónaco",
-      "de": "Monaco"
-    }
-  },
-  "mx": {
-    "flag": "🇲🇽",
-    "names": {
-      "es": "México",
-      "en": "Mexico",
-      "fr": "Mexique",
-      "pt": "México",
-      "de": "Mexiko"
-    }
-  },
-  "mg": {
-    "flag": "🇲🇬",
-    "names": {
-      "es": "Madagascar",
-      "en": "Madagascar",
-      "fr": "Madagascar",
-      "pt": "Madagáscar",
-      "de": "Madagaskar"
-    }
-  },
-  "no": {
-    "flag": "🇳🇴",
-    "names": {
-      "es": "Noruega",
-      "en": "Norway",
-      "fr": "Norvège",
-      "pt": "Noruega",
-      "de": "Norwegen"
     }
   },
   "li": {
@@ -339,14 +489,104 @@
       "de": "Libyen"
     }
   },
-  "ni": {
-    "flag": "🇳🇮",
+  "lt": {
+    "flag": "🇱🇹",
     "names": {
-      "es": "Nicaragua",
-      "en": "Nicaragua",
-      "fr": "Nicaragua",
-      "pt": "Nicarágua",
-      "de": "Nicaragua"
+      "es": "Lituania",
+      "en": "Lithuania",
+      "fr": "Lituanie",
+      "pt": "Lituânia",
+      "de": "Litauen"
+    }
+  },
+  "lv": {
+    "flag": "🇱🇻",
+    "names": {
+      "es": "Letonia",
+      "en": "Latvia",
+      "fr": "Lettonie",
+      "pt": "Letônia",
+      "de": "Lettland"
+    }
+  },
+  "ma": {
+    "flag": "🇲🇦",
+    "names": {
+      "es": "Marruecos",
+      "en": "Morocco",
+      "fr": "Maroc",
+      "pt": "Marrocos",
+      "de": "Marokko"
+    }
+  },
+  "mc": {
+    "flag": "🇲🇨",
+    "names": {
+      "es": "Mónaco",
+      "en": "Monaco",
+      "fr": "Monaco",
+      "pt": "Mónaco",
+      "de": "Monaco"
+    }
+  },
+  "md": {
+    "flag": "🇲🇩",
+    "names": {
+      "es": "Moldavia",
+      "en": "Moldova",
+      "fr": "Moldavie",
+      "pt": "Moldávia",
+      "de": "Moldawien"
+    }
+  },
+  "me": {
+    "flag": "🇲🇪",
+    "names": {
+      "es": "Montenegro",
+      "en": "Montenegro",
+      "fr": "Monténégro",
+      "pt": "Montenegro",
+      "de": "Montenegro"
+    }
+  },
+  "mg": {
+    "flag": "🇲🇬",
+    "names": {
+      "es": "Madagascar",
+      "en": "Madagascar",
+      "fr": "Madagascar",
+      "pt": "Madagáscar",
+      "de": "Madagaskar"
+    }
+  },
+  "mk": {
+    "flag": "🇲🇰",
+    "names": {
+      "es": "Macedonia del Norte",
+      "en": "North Macedonia",
+      "fr": "Macédoine du Nord",
+      "pt": "Macedônia do Norte",
+      "de": "Nordmazedonien"
+    }
+  },
+  "mt": {
+    "flag": "🇲🇹",
+    "names": {
+      "es": "Malta",
+      "en": "Malta",
+      "fr": "Malte",
+      "pt": "Malta",
+      "de": "Malta"
+    }
+  },
+  "mx": {
+    "flag": "🇲🇽",
+    "names": {
+      "es": "México",
+      "en": "Mexico",
+      "fr": "Mexique",
+      "pt": "México",
+      "de": "Mexiko"
     }
   },
   "ng": {
@@ -359,6 +599,26 @@
       "de": "Nigeria"
     }
   },
+  "ni": {
+    "flag": "🇳🇮",
+    "names": {
+      "es": "Nicaragua",
+      "en": "Nicaragua",
+      "fr": "Nicaragua",
+      "pt": "Nicarágua",
+      "de": "Nicaragua"
+    }
+  },
+  "no": {
+    "flag": "🇳🇴",
+    "names": {
+      "es": "Noruega",
+      "en": "Norway",
+      "fr": "Norvège",
+      "pt": "Noruega",
+      "de": "Norwegen"
+    }
+  },
   "np": {
     "flag": "🇳🇵",
     "names": {
@@ -367,6 +627,16 @@
       "fr": "Népal",
       "pt": "Nepal",
       "de": "Nepal"
+    }
+  },
+  "nl": {
+    "flag": "🇳🇱",
+    "names": {
+      "es": "Países Bajos",
+      "en": "Netherlands",
+      "fr": "Pays-Bas",
+      "pt": "Países Baixos",
+      "de": "Niederlande"
     }
   },
   "nz": {
@@ -399,6 +669,26 @@
       "de": "Peru"
     }
   },
+  "pl": {
+    "flag": "🇵🇱",
+    "names": {
+      "es": "Polonia",
+      "en": "Poland",
+      "fr": "Pologne",
+      "pt": "Polônia",
+      "de": "Polen"
+    }
+  },
+  "pt": {
+    "flag": "🇵🇹",
+    "names": {
+      "es": "Portugal",
+      "en": "Portugal",
+      "fr": "Portugal",
+      "pt": "Portugal",
+      "de": "Portugal"
+    }
+  },
   "py": {
     "flag": "🇵🇾",
     "names": {
@@ -409,14 +699,24 @@
       "de": "Paraguay"
     }
   },
-  "sv": {
-    "flag": "🇸🇻",
+  "ro": {
+    "flag": "🇷🇴",
     "names": {
-      "es": "El Salvador",
-      "en": "El Salvador",
-      "fr": "Salvador",
-      "pt": "El Salvador",
-      "de": "El Salvador"
+      "es": "Rumanía",
+      "en": "Romania",
+      "fr": "Roumanie",
+      "pt": "Romênia",
+      "de": "Rumänien"
+    }
+  },
+  "rs": {
+    "flag": "🇷🇸",
+    "names": {
+      "es": "Serbia",
+      "en": "Serbia",
+      "fr": "Serbie",
+      "pt": "Sérvia",
+      "de": "Serbien"
     }
   },
   "ru": {
@@ -439,6 +739,46 @@
       "de": "Sudan"
     }
   },
+  "se": {
+    "flag": "🇸🇪",
+    "names": {
+      "es": "Suecia",
+      "en": "Sweden",
+      "fr": "Suède",
+      "pt": "Suécia",
+      "de": "Schweden"
+    }
+  },
+  "si": {
+    "flag": "🇸🇮",
+    "names": {
+      "es": "Eslovenia",
+      "en": "Slovenia",
+      "fr": "Slovénie",
+      "pt": "Eslovênia",
+      "de": "Slowenien"
+    }
+  },
+  "sk": {
+    "flag": "🇸🇰",
+    "names": {
+      "es": "Eslovaquia",
+      "en": "Slovakia",
+      "fr": "Slovaquie",
+      "pt": "Eslováquia",
+      "de": "Slowakei"
+    }
+  },
+  "sm": {
+    "flag": "🇸🇲",
+    "names": {
+      "es": "San Marino",
+      "en": "San Marino",
+      "fr": "Saint-Marin",
+      "pt": "San Marino",
+      "de": "San Marino"
+    }
+  },
   "sn": {
     "flag": "🇸🇳",
     "names": {
@@ -459,14 +799,14 @@
       "de": "Suriname"
     }
   },
-  "se": {
-    "flag": "🇸🇪",
+  "sv": {
+    "flag": "🇸🇻",
     "names": {
-      "es": "Suecia",
-      "en": "Sweden",
-      "fr": "Suède",
-      "pt": "Suécia",
-      "de": "Schweden"
+      "es": "El Salvador",
+      "en": "El Salvador",
+      "fr": "Salvador",
+      "pt": "El Salvador",
+      "de": "El Salvador"
     }
   },
   "tn": {
@@ -479,14 +819,24 @@
       "de": "Tunesien"
     }
   },
-  "ch": {
-    "flag": "🇨🇭",
+  "tr": {
+    "flag": "🇹🇷",
     "names": {
-      "es": "Suiza",
-      "en": "Switzerland",
-      "fr": "Suisse",
-      "pt": "Suíça",
-      "de": "Schweiz"
+      "es": "Turquía",
+      "en": "Turkey",
+      "fr": "Turquie",
+      "pt": "Turquia",
+      "de": "Türkei"
+    }
+  },
+  "ua": {
+    "flag": "🇺🇦",
+    "names": {
+      "es": "Ucrania",
+      "en": "Ukraine",
+      "fr": "Ukraine",
+      "pt": "Ucrânia",
+      "de": "Ukraine"
     }
   },
   "us": {
@@ -499,6 +849,26 @@
       "de": "Vereinigte Staaten"
     }
   },
+  "uy": {
+    "flag": "🇺🇾",
+    "names": {
+      "es": "Uruguay",
+      "en": "Uruguay",
+      "fr": "Uruguay",
+      "pt": "Uruguay",
+      "de": "Uruguay"
+    }
+  },
+  "va": {
+    "flag": "🇻🇦",
+    "names": {
+      "es": "Ciudad del Vaticano",
+      "en": "Vatican City",
+      "fr": "Cité du Vatican",
+      "pt": "Cidade do Vaticano",
+      "de": "Vatikanstadt"
+    }
+  },
   "ve": {
     "flag": "🇻🇪",
     "names": {
@@ -509,14 +879,14 @@
       "de": "Venezuela"
     }
   },
-  "uy": {
-    "flag": "🇺🇾",
+  "xk": {
+    "flag": "🇽🇰",
     "names": {
-      "es": "Uruguay",
-      "en": "Uruguay",
-      "fr": "Uruguay",
-      "pt": "Uruguay",
-      "de": "Uruguay"
+      "es": "Kosovo",
+      "en": "Kosovo",
+      "fr": "Kosovo",
+      "pt": "Kosovo",
+      "de": "Kosovo"
     }
   },
   "zw": {
