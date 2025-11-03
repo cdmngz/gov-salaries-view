@@ -49,6 +49,16 @@
       "de": "Armenien"
     }
   },
+  "ao": {
+    "flag": "🇦🇴",
+    "names": {
+      "es": "Angola",
+      "en": "Angola",
+      "fr": "Angola",
+      "pt": "Angola",
+      "de": "Angola"
+    }
+  },
   "ar": {
     "flag": "🇦🇷",
     "names": {
@@ -109,6 +119,16 @@
       "de": "Bulgarien"
     }
   },
+  "bi": {
+    "flag": "🇧🇮",
+    "names": {
+      "es": "Burundi",
+      "en": "Burundi",
+      "fr": "Burundi",
+      "pt": "Burundi",
+      "de": "Burundi"
+    }
+  },
   "bo": {
     "flag": "🇧🇴",
     "names": {
@@ -159,6 +179,36 @@
       "de": "Kanada"
     }
   },
+  "cd": {
+    "flag": "🇨🇩",
+    "names": {
+      "es": "República Democrática del Congo",
+      "en": "Democratic Republic of the Congo",
+      "fr": "République démocratique du Congo",
+      "pt": "República Democrática do Congo",
+      "de": "Demokratische Republik Kongo"
+    }
+  },
+  "cf": {
+    "flag": "🇨🇫",
+    "names": {
+      "es": "República Centroafricana",
+      "en": "Central African Republic",
+      "fr": "République centrafricaine",
+      "pt": "República Centro-Africana",
+      "de": "Zentralafrikanische Republik"
+    }
+  },
+  "cg": {
+    "flag": "🇨🇬",
+    "names": {
+      "es": "República del Congo",
+      "en": "Republic of the Congo",
+      "fr": "République du Congo",
+      "pt": "República do Congo",
+      "de": "Republik Kongo"
+    }
+  },
   "ch": {
     "flag": "🇨🇭",
     "names": {
@@ -177,6 +227,16 @@
       "fr": "Chili",
       "pt": "Chile",
       "de": "Chile"
+    }
+  },
+  "cm": {
+    "flag": "🇨🇲",
+    "names": {
+      "es": "Camerún",
+      "en": "Cameroon",
+      "fr": "Cameroun",
+      "pt": "Camarões",
+      "de": "Kamerun"
     }
   },
   "cn": {
@@ -329,6 +389,16 @@
       "de": "Frankreich"
     }
   },
+  "ga": {
+    "flag": "🇬🇦",
+    "names": {
+      "es": "Gabón",
+      "en": "Gabon",
+      "fr": "Gabon",
+      "pt": "Gabão",
+      "de": "Gabun"
+    }
+  },
   "gb": {
     "flag": "🇬🇧",
     "names": {
@@ -347,6 +417,16 @@
       "fr": "Géorgie",
       "pt": "Geórgia",
       "de": "Georgien"
+    }
+  },
+  "gq": {
+    "flag": "🇬🇶",
+    "names": {
+      "es": "Guinea Ecuatorial",
+      "en": "Equatorial Guinea",
+      "fr": "Guinée équatoriale",
+      "pt": "Guiné Equatorial",
+      "de": "Äquatorialguinea"
     }
   },
   "gr": {
@@ -729,6 +809,16 @@
       "de": "Russland"
     }
   },
+  "rw": {
+    "flag": "🇷🇼",
+    "names": {
+      "es": "Ruanda",
+      "en": "Rwanda",
+      "fr": "Rwanda",
+      "pt": "Ruanda",
+      "de": "Ruanda"
+    }
+  },
   "sd": {
     "flag": "🇸🇩",
     "names": {
@@ -799,6 +889,16 @@
       "de": "Suriname"
     }
   },
+  "st": {
+    "flag": "🇸🇹",
+    "names": {
+      "es": "Santo Tomé y Príncipe",
+      "en": "São Tomé and Príncipe",
+      "fr": "Sao Tomé-et-Principe",
+      "pt": "São Tomé e Príncipe",
+      "de": "São Tomé und Príncipe"
+    }
+  },
   "sv": {
     "flag": "🇸🇻",
     "names": {
@@ -807,6 +907,16 @@
       "fr": "Salvador",
       "pt": "El Salvador",
       "de": "El Salvador"
+    }
+  },
+  "td": {
+    "flag": "🇹🇩",
+    "names": {
+      "es": "Chad",
+      "en": "Chad",
+      "fr": "Tchad",
+      "pt": "Chade",
+      "de": "Tschad"
     }
   },
   "tn": {
