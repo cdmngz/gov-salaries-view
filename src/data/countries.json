@@ -89,6 +89,16 @@
       "de": "Österreich"
     }
   },
+  "au": {
+    "flag": "🇦🇺",
+    "names": {
+      "es": "Australia",
+      "en": "Australia",
+      "fr": "Australie",
+      "pt": "Austrália",
+      "de": "Australien"
+    }
+  },
   "az": {
     "flag": "🇦🇿",
     "names": {
