@@ -29,6 +29,16 @@
       "de": "Vereinigte Arabische Emirate"
     }
   },
+  "ag": {
+    "flag": "🇦🇬",
+    "names": {
+      "es": "Antigua y Barbuda",
+      "en": "Antigua and Barbuda",
+      "fr": "Antigua-et-Barbuda",
+      "pt": "Antígua e Barbuda",
+      "de": "Antigua und Barbuda"
+    }
+  },
   "al": {
     "flag": "🇦🇱",
     "names": {
@@ -99,6 +109,16 @@
       "de": "Bosnien und Herzegowina"
     }
   },
+  "bb": {
+    "flag": "🇧🇧",
+    "names": {
+      "es": "Barbados",
+      "en": "Barbados",
+      "fr": "Barbade",
+      "pt": "Barbados",
+      "de": "Barbados"
+    }
+  },
   "be": {
     "flag": "🇧🇪",
     "names": {
@@ -137,6 +157,16 @@
       "fr": "Bolivie",
       "pt": "Bolívia",
       "de": "Bolivien"
+    }
+  },
+  "bs": {
+    "flag": "🇧🇸",
+    "names": {
+      "es": "Bahamas",
+      "en": "Bahamas",
+      "fr": "Bahamas",
+      "pt": "Bahamas",
+      "de": "Bahamas"
     }
   },
   "br": {
@@ -319,6 +349,26 @@
       "de": "Dänemark"
     }
   },
+  "dm": {
+    "flag": "🇩🇲",
+    "names": {
+      "es": "Dominica",
+      "en": "Dominica",
+      "fr": "Dominique",
+      "pt": "Dominica",
+      "de": "Dominica"
+    }
+  },
+  "do": {
+    "flag": "🇩🇴",
+    "names": {
+      "es": "República Dominicana",
+      "en": "Dominican Republic",
+      "fr": "République dominicaine",
+      "pt": "República Dominicana",
+      "de": "Dominikanische Republik"
+    }
+  },
   "dz": {
     "flag": "🇩🇿",
     "names": {
@@ -399,6 +449,16 @@
       "de": "Gabun"
     }
   },
+  "gd": {
+    "flag": "🇬🇩",
+    "names": {
+      "es": "Granada",
+      "en": "Grenada",
+      "fr": "Grenade",
+      "pt": "Granada",
+      "de": "Grenada"
+    }
+  },
   "gb": {
     "flag": "🇬🇧",
     "names": {
@@ -469,6 +529,16 @@
       "de": "Honduras"
     }
   },
+  "ht": {
+    "flag": "🇭🇹",
+    "names": {
+      "es": "Haití",
+      "en": "Haiti",
+      "fr": "Haïti",
+      "pt": "Haiti",
+      "de": "Haiti"
+    }
+  },
   "hr": {
     "flag": "🇭🇷",
     "names": {
@@ -519,6 +589,16 @@
       "de": "Italien"
     }
   },
+  "jm": {
+    "flag": "🇯🇲",
+    "names": {
+      "es": "Jamaica",
+      "en": "Jamaica",
+      "fr": "Jamaïque",
+      "pt": "Jamaica",
+      "de": "Jamaika"
+    }
+  },
   "jp": {
     "flag": "🇯🇵",
     "names": {
@@ -527,6 +607,16 @@
       "fr": "Japon",
       "pt": "Japão",
       "de": "Japan"
+    }
+  },
+  "kn": {
+    "flag": "🇰🇳",
+    "names": {
+      "es": "San Cristóbal y Nieves",
+      "en": "Saint Kitts and Nevis",
+      "fr": "Saint-Christophe-et-Niévès",
+      "pt": "São Cristóvão e Nevis",
+      "de": "St. Kitts und Nevis"
     }
   },
   "kr": {
@@ -939,6 +1029,16 @@
       "de": "Türkei"
     }
   },
+  "tt": {
+    "flag": "🇹🇹",
+    "names": {
+      "es": "Trinidad y Tobago",
+      "en": "Trinidad and Tobago",
+      "fr": "Trinité-et-Tobago",
+      "pt": "Trinidad e Tobago",
+      "de": "Trinidad und Tobago"
+    }
+  },
   "ua": {
     "flag": "🇺🇦",
     "names": {
@@ -977,6 +1077,16 @@
       "fr": "Cité du Vatican",
       "pt": "Cidade do Vaticano",
       "de": "Vatikanstadt"
+    }
+  },
+  "vc": {
+    "flag": "🇻🇨",
+    "names": {
+      "es": "San Vicente y las Granadinas",
+      "en": "Saint Vincent and the Grenadines",
+      "fr": "Saint-Vincent-et-les-Grenadines",
+      "pt": "São Vicente e Granadinas",
+      "de": "St. Vincent und die Grenadinen"
     }
   },
   "ve": {
