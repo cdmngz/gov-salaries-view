@@ -439,6 +439,16 @@
       "de": "Finnland"
     }
   },
+  "fo": {
+    "flag": "🇫🇴",
+    "names": {
+      "es": "Islas Feroe",
+      "en": "Faroe Islands",
+      "fr": "Îles Féroé",
+      "pt": "Ilhas Faroé",
+      "de": "Färöer"
+    }
+  },
   "fr": {
     "flag": "🇫🇷",
     "names": {
@@ -467,6 +477,16 @@
       "fr": "Grenade",
       "pt": "Granada",
       "de": "Grenada"
+    }
+  },
+  "gg": {
+    "flag": "🇬🇬",
+    "names": {
+      "es": "Guernsey",
+      "en": "Guernsey",
+      "fr": "Guernesey",
+      "pt": "Guernsey",
+      "de": "Guernsey"
     }
   },
   "gb": {
@@ -579,6 +599,16 @@
       "de": "Irland"
     }
   },
+  "im": {
+    "flag": "🇮🇲",
+    "names": {
+      "es": "Isla de Man",
+      "en": "Isle of Man",
+      "fr": "Île de Man",
+      "pt": "Ilha de Man",
+      "de": "Insel Man"
+    }
+  },
   "is": {
     "flag": "🇮🇸",
     "names": {
@@ -597,6 +627,16 @@
       "fr": "Italie",
       "pt": "Itália",
       "de": "Italien"
+    }
+  },
+  "je": {
+    "flag": "🇯🇪",
+    "names": {
+      "es": "Jersey",
+      "en": "Jersey",
+      "fr": "Jersey",
+      "pt": "Jersey",
+      "de": "Jersey"
     }
   },
   "jm": {
