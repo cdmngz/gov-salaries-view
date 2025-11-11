@@ -26,23 +26,25 @@ export default function ServerHeader({
   const latestAvailableYear = periods.length > 0 ? Math.max(...periods) : year;
 
   return (
-    <header className="w-full flex flex-wrap items-center justify-between z-10 sticky top-0 p-4 shadow bg-background">
-      <Link
-        href={`/world/${latestAvailableYear}`}
-        className="text-lg select-none flex items-center gap-2 font-medium transition"
-      >
-        <span aria-hidden>🏛️</span>
-        <span className="truncate font-semibold">Government viewer</span>
-      </Link>
+    <header className="sticky top-0 z-40 border-b bg-background/70 backdrop-blur supports-backdrop-filter:bg-background/80">
+      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+        <Link
+          href={`/world/${latestAvailableYear}`}
+          className="text-lg select-none flex items-center gap-2 font-medium transition"
+        >
+          <span aria-hidden>🏛️</span>
+          <span className="truncate font-semibold">Government viewer</span>
+        </Link>
 
-      <HeaderControlsClient
-        country={country}
-        defaultYear={year}
-        currency={currency}
-        baseCurrency={baseCurrency}
-        rates={rates}
-        periods={periods}
-      />
+        <HeaderControlsClient
+          country={country}
+          defaultYear={year}
+          currency={currency}
+          baseCurrency={baseCurrency}
+          rates={rates}
+          periods={periods}
+        />
+      </div>
     </header>
   );
 }
