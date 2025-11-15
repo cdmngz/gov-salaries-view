@@ -1,25 +1,67 @@
-export const metadata = {
-  title: "Terms of Use - OfficialSalaries.org",
-  description: "Terms of use for accessing public salary data.",
-};
+import type { Metadata } from "next";
+
+import { buildStaticMetadata } from "@/lib/metadata";
+
+const DESCRIPTION =
+  "Guidelines for using, remixing, and attributing the salary transparency data on OfficialSalaries.org.";
+
+export const metadata: Metadata = buildStaticMetadata({
+  path: "/docs/terms-of-use",
+  title: "Terms of Use",
+  description: DESCRIPTION,
+  keywords: [
+    "salary data terms",
+    "open data reuse",
+    "government salary license",
+  ],
+});
 
 export default function TermsOfUsePage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed">
-      <h1 className="text-xl font-semibold mb-4">Terms of Use</h1>
-      <p>
-        By using OfficialSalaries.org, you agree to use the content for lawful,
-        non-commercial, informational purposes only. The data provided is based
-        on public records and may not always reflect the most current updates
-        from government sources.
-      </p>
-      <p className="mt-4">
-        We do not guarantee the accuracy, completeness, or availability of any
-        data. You assume full responsibility for any use of the information
-        presented. We are not liable for damages or losses related to the use of
-        this site.
-      </p>
-      <p className="mt-4 text-gray-500">Last updated: August 2025</p>
+      <header className="mb-6">
+        <h1 className="text-2xl font-semibold">Terms of Use</h1>
+        <p className="mt-3 text-base text-gray-700">{DESCRIPTION}</p>
+      </header>
+
+      <section aria-labelledby="scope" className="space-y-3">
+        <h2 id="scope" className="text-lg font-semibold">
+          Scope of permitted use
+        </h2>
+        <p>
+          OfficialSalaries.org is designed for journalism, research, civic
+          oversight, and educational projects. You may download and analyze the
+          data for lawful purposes, provided that you credit the site and any
+          government publishers referenced on the relevant dataset page.
+        </p>
+      </section>
+
+      <section aria-labelledby="accuracy" className="mt-8 space-y-3">
+        <h2 id="accuracy" className="text-lg font-semibold">
+          Accuracy & liability
+        </h2>
+        <p>
+          While we strive to reflect official records, there may be delays or
+          corrections issued by the originating agency. Use the information at
+          your own risk, and confirm figures with the source portal before making
+          financial or employment decisions. We are not liable for damages that
+          arise from reliance on the dataset.
+        </p>
+      </section>
+
+      <section aria-labelledby="derivatives" className="mt-8 space-y-3">
+        <h2 id="derivatives" className="text-lg font-semibold">
+          Derivative works & attribution
+        </h2>
+        <p>
+          You are encouraged to create derivative analyses, but you must
+          maintain attribution and keep public data open whenever possible. If
+          you fork or mirror the repository, include a link back to
+          OfficialSalaries.org so search engines understand the provenance of the
+          material.
+        </p>
+        <p className="text-sm text-gray-500">Last updated: August 2025</p>
+      </section>
     </main>
   );
 }

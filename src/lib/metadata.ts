@@ -1,5 +1,7 @@
 // src/lib/metadata.ts
 
+import type { Metadata } from "next";
+
 import countriesJson from "@/data/countries.json";
 import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
 import { serverEnv } from "@/lib/env";
@@ -185,3 +187,74 @@ export const catalogPublisher = {
   name: SITE_NAME,
   url: baseUrl,
 };
+
+type StaticSeoParams = {
+  path: string;
+  title: string;
+  description: string;
+  keywords?: string[];
+};
+
+type StaticSeoDetails = {
+  title: string;
+  description: string;
+  keywords: string[];
+  pagePath: string;
+  pageUrl: string;
+  languageAlternates: Record<string, string>;
+  openGraphLocale: string;
+  openGraphAlternateLocales: string[];
+};
+
+export function buildStaticSeo({
+  path,
+  title,
+  description,
+  keywords,
+}: StaticSeoParams): StaticSeoDetails {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const pageUrl = buildPageUrl(normalizedPath);
+
+  return {
+    title,
+    description,
+    keywords: buildKeywordList(keywords),
+    pagePath: normalizedPath,
+    pageUrl,
+    languageAlternates: buildLanguageAlternates(normalizedPath),
+    openGraphLocale: resolveOgLocale(DEFAULT_LANG),
+    openGraphAlternateLocales: resolveOgAlternateLocales(DEFAULT_LANG),
+  };
+}
+
+export function buildStaticMetadata(params: StaticSeoParams): Metadata {
+  const seo = buildStaticSeo(params);
+  const imageAlt = buildSocialImageAlt(seo.title);
+
+  return {
+    title: seo.title,
+    description: seo.description,
+    keywords: seo.keywords,
+    alternates: {
+      canonical: seo.pageUrl,
+      languages: seo.languageAlternates,
+    },
+    openGraph: {
+      type: "article",
+      title: seo.title,
+      description: seo.description,
+      url: seo.pageUrl,
+      siteName: SITE_NAME,
+      locale: seo.openGraphLocale,
+      alternateLocale: seo.openGraphAlternateLocales,
+      images: [{ url: socialImageUrl, alt: imageAlt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.title,
+      description: seo.description,
+      images: [socialImageUrl],
+    },
+    robots: { index: true, follow: true },
+  };
+}
