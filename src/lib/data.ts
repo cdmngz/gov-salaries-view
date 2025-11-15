@@ -19,7 +19,7 @@ export function buildFetchPath(parts: string[]): string {
 }
 
 async function fetchJson<T>(url: string, errorContext: string): Promise<T> {
-  const res = await fetch(url, { cache: "force-cache" });
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`${errorContext} (${res.status})`);
   return (await res.json()) as T;
 }

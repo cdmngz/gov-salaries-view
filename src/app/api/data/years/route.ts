@@ -12,7 +12,7 @@ export async function GET() {
   const url = `${baseUrl}/index.json`;
 
   try {
-    const res = await fetch(url, { cache: "force-cache" });
+    const res = await fetch(url);
     if (!res.ok) {
       return NextResponse.json(
         { error: "Failed to fetch index" },
