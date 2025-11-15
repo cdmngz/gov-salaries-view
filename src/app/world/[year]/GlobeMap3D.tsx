@@ -39,7 +39,7 @@ export default function GlobeMap3D({
   data,
   className,
   ocean = "#3b82f6",
-  stroke = "#CDE",
+  stroke = "#56B",
   lang,
   onCountryClick,
 }: {

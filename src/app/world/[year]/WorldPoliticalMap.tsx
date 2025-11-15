@@ -134,7 +134,7 @@ export default function WorldPoliticalMap({
                   const wing = rec?.wing ?? "empty";
                   const range = rec?.range;
                   const fill = fillForIso2(byIso2, iso2);
-                  const stroke = "#CBD5E1";
+                  const stroke = "#56B";
                   return (
                     <Tooltip key={`fill-${geo.id ?? iso2 ?? idx}`}>
                       <TooltipTrigger asChild>
