@@ -6,15 +6,11 @@ import { serverEnv } from "@/lib/env";
 
 export async function GET(
   request: NextRequest,
-  ctx: RouteContext<"/api/data/[...path]">
+  { params }: { params: { path: string[] } }
 ) {
-  const { path } = await ctx.params;
-
-  const url = [serverEnv["DATA_API_URL"], ...path].join("/");
-
+  const url = [serverEnv.DATA_API_URL!, ...params.path].join("/");
   const res = await fetch(url, request);
-  const body = await res.arrayBuffer();
-  return new Response(body, {
+  return new Response(await res.arrayBuffer(), {
     status: res.status,
     headers: {
       "content-type": res.headers.get("content-type") || "application/json",
