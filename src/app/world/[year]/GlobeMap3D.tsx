@@ -57,6 +57,7 @@ export default function GlobeMap3D({
   ]);
   const dragging = React.useRef(false);
   const last = React.useRef<{ x: number; y: number } | null>(null);
+  const lastTap = React.useRef<{ x: number; y: number; ts: number } | null>(null);
 
   const [scale, setScale] = React.useState(240);
   const MIN_SCALE = 140;
@@ -78,20 +79,29 @@ export default function GlobeMap3D({
     dragging.current = false;
     last.current = null;
     (e.target as Element).releasePointerCapture(e.pointerId);
+
+    if (e.pointerType === "touch") {
+      const now = Date.now();
+      if (lastTap.current) {
+        const delta = now - lastTap.current.ts;
+        const moved = Math.hypot(
+          e.clientX - lastTap.current.x,
+          e.clientY - lastTap.current.y
+        );
+        if (delta < 350 && moved < 20) {
+          zoomBy(1.2);
+          lastTap.current = null;
+          return;
+        }
+      }
+      lastTap.current = { x: e.clientX, y: e.clientY, ts: now };
+    }
   }
 
   function zoomBy(f: number) {
     setScale((s) =>
       Math.max(MIN_SCALE, Math.min(MAX_SCALE, Math.round(s * f)))
     );
-  }
-  function onWheel(e: React.WheelEvent) {
-    e.preventDefault();
-    const f = e.deltaY > 0 ? 1 / 1.1 : 1.1;
-    zoomBy(f);
-  }
-  function onDoubleClick() {
-    zoomBy(1.25);
   }
 
   return (
@@ -139,8 +149,6 @@ export default function GlobeMap3D({
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
-          onWheel={onWheel}
-          onDoubleClick={onDoubleClick}
         >
           <Sphere
             id="globe-sphere"

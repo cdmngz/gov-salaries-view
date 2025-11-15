@@ -80,6 +80,10 @@ export default function WorldPoliticalMap({
   const byIso2 = React.useMemo(() => buildIso2Map(data, lang), [data, lang]);
   const [zoom, setZoom] = React.useState(initialZoom);
   const [center, setCenter] = React.useState<[number, number]>([0, 15]);
+  const filterZoomEvent = React.useCallback((event?: { type?: string }) => {
+    if (!event) return false;
+    return event.type !== "wheel";
+  }, []);
 
   return (
     <div className={cn("mx-auto w-full max-w-4xl  bg-card p-3", className)}>
@@ -121,6 +125,7 @@ export default function WorldPoliticalMap({
             }}
             minZoom={minZoom}
             maxZoom={maxZoom}
+            filterZoomEvent={filterZoomEvent}
           >
             <Geographies geography={GEO_URL}>
               {({ geographies }: { geographies: CountryFeature[] }) =>

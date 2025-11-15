@@ -8,7 +8,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { path: string[] } }
 ) {
-  const url = [serverEnv.DATA_API_URL!, ...params.path].join("/");
+  const url = [serverEnv.DATA_API_URL, ...params.path].join("/");
   const res = await fetch(url, request);
   return new Response(await res.arrayBuffer(), {
     status: res.status,
