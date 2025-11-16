@@ -4,6 +4,7 @@
 
 import { FOOTER_MESSAGE } from "@/i18n";
 import { Language, parseLang } from "@/validators/lang";
+
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
