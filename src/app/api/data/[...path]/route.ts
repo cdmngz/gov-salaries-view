@@ -6,9 +6,10 @@ import { serverEnv } from "@/lib/env";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: Promise<{ path: string[] }> }
 ) {
-  const url = [serverEnv.DATA_API_URL, ...params.path].join("/");
+  const { path } = await context.params;
+  const url = [serverEnv.DATA_API_URL, ...path].join("/");
   const res = await fetch(url, request);
   return new Response(await res.arrayBuffer(), {
     status: res.status,
