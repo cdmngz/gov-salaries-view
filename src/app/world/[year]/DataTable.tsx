@@ -85,9 +85,8 @@ export function DataTable({
           aria-label="Filter countries"
         />
 
-        <div className="ml-auto flex items-center gap-6">
-          <RangeLegend />
-          <div className="flex flex-wrap gap-3">
+        <div className="flex w-full flex-wrap justify-end items-center gap-4">
+          <div className="flex flex-wrap gap-4">
             {(["executiveRange", "restRange"] as const).map((columnId) => (
               <WingFilterDropdown
                 key={columnId}
@@ -97,10 +96,11 @@ export function DataTable({
                 }
               />
             ))}
-            <ColumnsDropdown table={table} />
           </div>
+          <ColumnsDropdown table={table} />
         </div>
       </div>
+      <RangeLegend />
 
       <div className="rounded-md border">
         <UITable>
@@ -182,7 +182,7 @@ export function DataTable({
           </label>
           <select
             id="rows-per-page"
-            className="h-8 rounded-none border-none bg-background px-2 text-sm"
+            className="h-8  border-none bg-background px-2 text-sm"
             value={String(pageSizeChoice)}
             onChange={(e) =>
               setPageSizeChoice(
@@ -200,7 +200,7 @@ export function DataTable({
           <Button
             variant="outline"
             size="sm"
-            className="border-none rounded-none"
+            className="border-none "
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
             aria-label="Previous page"
@@ -210,7 +210,7 @@ export function DataTable({
           <Button
             variant="outline"
             size="sm"
-            className="border-none rounded-none"
+            className="border-none "
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
             aria-label="Next page"

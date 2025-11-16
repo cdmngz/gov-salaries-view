@@ -22,7 +22,7 @@ export function ColumnsDropdown({ table }: { table: Table<Row> }) {
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 rounded-none bg-card px-3 py-2 shadow-none"
+          className="flex items-center gap-2  bg-card px-3 py-2 shadow-none"
         >
           <span
             className="flex items-center gap-2 text-[0.65rem] font-medium uppercase tracking-wide"

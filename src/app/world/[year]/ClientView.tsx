@@ -54,14 +54,14 @@ export default function ClientView({
       <Tabs defaultValue="map-2d">
         <TabsList className="flex w-full gap-4 bg-background">
           {[
-            { tab: "map-2d", label: "2D Map" },
+            { tab: "map-2d", label: "World Political Map" },
             { tab: "map-3d", label: "3D World Map" },
             { tab: "table", label: "Stats Table" },
           ].map(({ tab, label }) => (
             <TabsTrigger
               key={tab}
               value={tab}
-              className="rounded-none cursor-pointer select-none shadow-none data-[state=active]:bg-card"
+              className=" cursor-pointer select-none shadow-none data-[state=active]:bg-card"
             >
               {label}
             </TabsTrigger>

@@ -97,7 +97,7 @@ function OfficialCard({
         </div>
 
         {official.district && (
-          <div className="text-muted-foreground border rounded-none m-1 py-1 px-2 max-w-48">
+          <div className="text-muted-foreground border  m-1 py-1 px-2 max-w-48">
             <p className="text-center text-xs">{official.district}</p>
           </div>
         )}
@@ -281,7 +281,7 @@ export default function OfficialsList({
   }, [officials, selectedParties]);
 
   return (
-    <div className="flex flex-col py-4 px-8 items-center gap-4 bg-card rounded-none w-fit">
+    <div className="flex flex-col py-4 px-8 items-center gap-4 bg-card  w-fit">
       <div className="flex items-center gap-3">
         <h3 className="text-xl font-semibold">
           {title} ({officials.length})

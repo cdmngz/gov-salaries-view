@@ -80,7 +80,7 @@ function ControlSelect({
         if (!open) setSearchTerm("");
       }}
     >
-      <SelectTrigger className="text-sm bg-card rounded-none border-none shadow-none">
+      <SelectTrigger className="text-sm bg-card  border-none shadow-none">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className={searchConfig ? "max-h-72" : undefined}>

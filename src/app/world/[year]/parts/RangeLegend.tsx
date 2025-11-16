@@ -1,7 +1,10 @@
 // src/app/world/[year]/parts/RangeLegend.tsx
 
+import {
+  rangeColorByValue,
+  type RangeValue,
+} from "@/app/world/[year]/table/types";
 import { cn } from "@/lib/utils";
-import { rangeColorByValue, type RangeValue } from "../table/types";
 
 export function RangeLegend() {
   const items: Array<[RangeValue, string]> = [
@@ -14,7 +17,7 @@ export function RangeLegend() {
 
   return (
     <div
-      className="hidden sm:flex flex-wrap items-center gap-2 text-xs text-muted-foreground"
+      className="flex flex-wrap justify-end items-center gap-2 text-xs text-muted-foreground"
       data-testid="range-legend"
     >
       {items.map(([val, label]) => (

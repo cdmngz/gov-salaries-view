@@ -15,7 +15,7 @@ export default function ThemeToggle() {
       variant="outline"
       size="icon"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="relative bg-card border-none rounded-none shadow-none"
+      className="relative bg-card border-none  shadow-none"
       aria-label="Toggle theme"
     >
       <SunIcon className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />

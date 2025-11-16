@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   ComposableMap,
   Geographies,
@@ -26,6 +25,7 @@ import {
 } from "@/lib/map-colors";
 import type { Language } from "@/validators/lang";
 import MapLegend from "@/app/world/[year]/maps/MapLegend";
+import { useCallback, useMemo, useState } from "react";
 
 type Geometry =
   | { type: "Point"; coordinates: [number, number] }
@@ -77,13 +77,19 @@ export default function WorldPoliticalMap({
     range?: RangeValue;
   }) => void;
 }) {
-  const byIso2 = React.useMemo(() => buildIso2Map(data, lang), [data, lang]);
-  const [zoom, setZoom] = React.useState(initialZoom);
-  const [center, setCenter] = React.useState<[number, number]>([0, 15]);
-  const filterZoomEvent = React.useCallback((event?: { type?: string }) => {
-    if (!event) return false;
-    return event.type !== "wheel";
-  }, []);
+  const byIso2 = useMemo(() => buildIso2Map(data, lang), [data, lang]);
+  const [zoom, setZoom] = useState(initialZoom);
+  const [center, setCenter] = useState<[number, number]>([0, 15]);
+
+  const filterZoomEvent = useCallback(
+    (value: SVGElement | { type?: string } | null) => {
+      if (value && "type" in value && typeof value.type === "string") {
+        return value.type !== "wheel";
+      }
+      return true;
+    },
+    []
+  );
 
   return (
     <div className={cn("mx-auto w-full max-w-4xl  bg-card p-3", className)}>

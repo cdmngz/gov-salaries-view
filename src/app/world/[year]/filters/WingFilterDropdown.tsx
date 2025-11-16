@@ -77,7 +77,7 @@ export function WingFilterDropdown({
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 bg-card px-3 py-2 text-left shadow-none rounded-none"
+          className="flex items-center gap-2 bg-card px-3 py-2 text-left shadow-none "
         >
           <span className="flex items-center gap-2 text-[0.65rem] font-medium uppercase tracking-wide">
             <Indicator />

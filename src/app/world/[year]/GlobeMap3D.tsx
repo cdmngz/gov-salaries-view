@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   ComposableMap,
   Geographies,
@@ -26,6 +25,9 @@ import {
 } from "@/lib/map-colors";
 import type { Language } from "@/validators/lang";
 import type { Feature, Geometry } from "geojson";
+import { Button } from "@/components/ui/button";
+import { useMemo, useRef, useState } from "react";
+import MapLegend from "./maps/MapLegend";
 
 type CountryProps = {
   ISO2?: string;
@@ -50,16 +52,16 @@ export default function GlobeMap3D({
   lang: Language;
   onCountryClick?: (p: { iso_a2?: string; name?: string; wing?: Wing }) => void;
 }) {
-  const byIso2 = React.useMemo(() => buildIso2Map(data, lang), [data, lang]);
+  const byIso2 = useMemo(() => buildIso2Map(data, lang), [data, lang]);
 
-  const [rotation, setRotation] = React.useState<[number, number, number]>([
+  const [rotation, setRotation] = useState<[number, number, number]>([
     0, -10, 0,
   ]);
-  const dragging = React.useRef(false);
-  const last = React.useRef<{ x: number; y: number } | null>(null);
-  const lastTap = React.useRef<{ x: number; y: number; ts: number } | null>(null);
+  const dragging = useRef(false);
+  const last = useRef<{ x: number; y: number } | null>(null);
+  const lastTap = useRef<{ x: number; y: number; ts: number } | null>(null);
 
-  const [scale, setScale] = React.useState(240);
+  const [scale, setScale] = useState(240);
   const MIN_SCALE = 140;
   const MAX_SCALE = 800;
 
@@ -105,42 +107,36 @@ export default function GlobeMap3D({
   }
 
   return (
-    <div
-      className={cn(
-        "border-none bg-card p-3 shadow-none rounded-none",
-        className
-      )}
-    >
+    <div className={cn("border-none bg-card p-3 shadow-none ", className)}>
       <div className="mb-2 flex items-center justify-end gap-2">
-        <button
-          type="button"
+        <Button
           aria-label="Zoom in"
-          className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
           onClick={() => zoomBy(1.2)}
+          size="sm"
+          variant="outline"
         >
           +
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
           aria-label="Zoom out"
-          className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
           onClick={() => zoomBy(1 / 1.2)}
+          size="sm"
+          variant="outline"
         >
           -
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
           aria-label="Reset view"
-          className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
+          size="sm"
           onClick={() => {
             setScale(240);
             setRotation([0, -10, 0]);
           }}
+          variant="outline"
         >
           Reset
-        </button>
+        </Button>
       </div>
-
       <TooltipProvider delayDuration={150}>
         <ComposableMap
           projection="geoOrthographic"
@@ -259,6 +255,7 @@ export default function GlobeMap3D({
           </Geographies>
         </ComposableMap>
       </TooltipProvider>
+      <MapLegend />
     </div>
   );
 }

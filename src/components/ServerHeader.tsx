@@ -30,10 +30,9 @@ export default function ServerHeader({
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
         <Link
           href={`/world/${latestAvailableYear}`}
-          className="text-lg select-none flex items-center gap-2 font-medium transition"
+          className="text-lg select-none font-light"
         >
-          <span aria-hidden>🏛️</span>
-          <span className="truncate font-semibold">Government viewer</span>
+          <span>Government View</span>
         </Link>
 
         <HeaderControlsClient
