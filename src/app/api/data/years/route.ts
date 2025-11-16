@@ -1,6 +1,7 @@
 // src/app/api/data/years/route.ts
 
 import { NextResponse } from "next/server";
+
 import { serverEnv } from "@/lib/env";
 
 type YearsIndex = number[];
