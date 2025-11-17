@@ -69,7 +69,7 @@ export default function SearchableCombobox({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[200px] p-0 max-h-96 overflow-y-auto">
         <Command>
           <CommandInput placeholder={searchConfig?.placeholder ?? "Search"} />
           <CommandEmpty>

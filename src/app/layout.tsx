@@ -2,7 +2,7 @@
 
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
-import { type PropsWithChildren } from "react";
+import { type PropsWithChildren, Suspense } from "react";
 import "./globals.css";
 
 import ServerFooter from "@/components/ServerFooter";
@@ -78,8 +78,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex-1">{children}</div>
-          <ServerFooter />
+          <Suspense fallback={null}>
+            <div className="flex-1">{children}</div>
+            <ServerFooter />
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
