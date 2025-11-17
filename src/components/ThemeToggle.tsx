@@ -1,5 +1,8 @@
+// src/components/ThemeToggle.tsx
+
 "use client";
 
+import { Check, LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -10,7 +13,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Check, LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 
 export default function ThemeToggle() {
   const { theme, setTheme, resolvedTheme } = useTheme();
