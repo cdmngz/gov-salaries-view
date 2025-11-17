@@ -22,19 +22,22 @@ export default function DocsIndexPage() {
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed">
       <header className="mb-8">
         <p className="text-xs uppercase tracking-wide text-gray-500">Docs</p>
-        <h1 className="text-2xl font-semibold mt-2">
+        <h1 className="text-2xl font-light mt-2">
           Documentation & Legal Resources
         </h1>
         <p className="mt-3 text-base text-gray-700">{DESCRIPTION}</p>
       </header>
 
       <section aria-labelledby="docs-links" className="space-y-4">
-        <h2 id="docs-links" className="text-lg font-semibold">
+        <h2 id="docs-links" className="text-lg font-light">
           Quick links
         </h2>
         <ul className="list-disc list-inside space-y-3">
           <li>
-            <Link href="/docs/privacy-policy" className="text-blue-600 underline">
+            <Link
+              href="/docs/privacy-policy"
+              className="text-blue-600 underline"
+            >
               Privacy Policy
             </Link>{" "}
             – Learn how we handle browsing data and keep the site cookie-free.
@@ -57,7 +60,7 @@ export default function DocsIndexPage() {
       </section>
 
       <section aria-labelledby="transparency" className="mt-10 space-y-3">
-        <h2 id="transparency" className="text-lg font-semibold">
+        <h2 id="transparency" className="text-lg font-light">
           Why document transparency matters
         </h2>
         <p>
@@ -76,7 +79,7 @@ export default function DocsIndexPage() {
       </section>
 
       <section aria-labelledby="contact" className="mt-10 space-y-3">
-        <h2 id="contact" className="text-lg font-semibold">
+        <h2 id="contact" className="text-lg font-light">
           Need additional context?
         </h2>
         <p>

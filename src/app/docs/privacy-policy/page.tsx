@@ -20,12 +20,12 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed">
       <header className="mb-6">
-        <h1 className="text-2xl font-semibold">Privacy Policy</h1>
+        <h1 className="text-2xl font-light">Privacy Policy</h1>
         <p className="mt-3 text-base text-gray-700">{DESCRIPTION}</p>
       </header>
 
       <section aria-labelledby="collection" className="space-y-3">
-        <h2 id="collection" className="text-lg font-semibold">
+        <h2 id="collection" className="text-lg font-light">
           Data collection practices
         </h2>
         <p>
@@ -37,7 +37,7 @@ export default function PrivacyPolicyPage() {
       </section>
 
       <section aria-labelledby="sources" className="mt-8 space-y-3">
-        <h2 id="sources" className="text-lg font-semibold">
+        <h2 id="sources" className="text-lg font-light">
           Source material
         </h2>
         <p>
@@ -50,13 +50,14 @@ export default function PrivacyPolicyPage() {
       </section>
 
       <section aria-labelledby="contact" className="mt-8 space-y-3">
-        <h2 id="contact" className="text-lg font-semibold">
+        <h2 id="contact" className="text-lg font-light">
           Contact & updates
         </h2>
         <p>
           Please open an issue on GitHub if you notice a privacy concern or
           believe additional disclosures are necessary. We review the policy
-          annually and whenever infrastructure changes could impact visitor data.
+          annually and whenever infrastructure changes could impact visitor
+          data.
         </p>
         <p className="text-sm text-gray-500">Last updated: August 2025</p>
       </section>

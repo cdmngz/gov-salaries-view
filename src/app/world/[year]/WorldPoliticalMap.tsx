@@ -1,31 +1,32 @@
 "use client";
 
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  ZoomableGroup,
-} from "react-simple-maps";
+import MapLegend from "@/app/world/[year]/maps/MapLegend";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 import {
-  GEO_URL,
   DataShape,
-  Wing,
+  GEO_URL,
   RangeValue,
+  Wing,
   buildIso2Map,
   fillForIso2,
-  shade,
   localizedName,
+  shade,
 } from "@/lib/map-colors";
+import { cn } from "@/lib/utils";
 import type { Language } from "@/validators/lang";
-import MapLegend from "@/app/world/[year]/maps/MapLegend";
 import { useCallback, useMemo, useState } from "react";
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup,
+} from "react-simple-maps";
 
 type Geometry =
   | { type: "Point"; coordinates: [number, number] }
@@ -94,27 +95,33 @@ export default function WorldPoliticalMap({
   return (
     <div className={cn("mx-auto w-full max-w-4xl  bg-card p-3", className)}>
       <div className="mb-2 flex items-center justify-end gap-2">
-        <button
-          className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
+        <Button
+          className="bg-card shadow-none"
           onClick={() => setZoom((z) => Math.min(maxZoom, z * 1.3))}
+          variant="outline"
+          size="sm"
         >
           +
-        </button>
-        <button
-          className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
+        </Button>
+        <Button
+          className="bg-card shadow-none"
           onClick={() => setZoom((z) => Math.max(minZoom, z / 1.3))}
+          variant="outline"
+          size="sm"
         >
           -
-        </button>
-        <button
-          className="rounded-md border px-2 py-1 text-sm hover:bg-accent"
+        </Button>
+        <Button
+          className="bg-card shadow-none"
           onClick={() => {
             setZoom(initialZoom);
             setCenter([0, 15]);
           }}
+          variant="outline"
+          size="sm"
         >
           Reset
-        </button>
+        </Button>
       </div>
 
       <TooltipProvider delayDuration={150}>

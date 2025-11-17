@@ -111,6 +111,7 @@ export default function GlobeMap3D({
       <div className="mb-2 flex items-center justify-end gap-2">
         <Button
           aria-label="Zoom in"
+          className="bg-card shadow-none"
           onClick={() => zoomBy(1.2)}
           size="sm"
           variant="outline"
@@ -119,6 +120,7 @@ export default function GlobeMap3D({
         </Button>
         <Button
           aria-label="Zoom out"
+          className="bg-card shadow-none"
           onClick={() => zoomBy(1 / 1.2)}
           size="sm"
           variant="outline"
@@ -127,6 +129,7 @@ export default function GlobeMap3D({
         </Button>
         <Button
           aria-label="Reset view"
+          className="bg-card shadow-none"
           size="sm"
           onClick={() => {
             setScale(240);

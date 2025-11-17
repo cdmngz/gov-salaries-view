@@ -22,12 +22,12 @@ export default function DataSourcesPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed">
       <header className="mb-6">
-        <h1 className="text-2xl font-semibold">Data Sources & Attribution</h1>
+        <h1 className="text-2xl font-light">Data Sources & Attribution</h1>
         <p className="mt-3 text-base text-gray-700">{DESCRIPTION}</p>
       </header>
 
       <section aria-labelledby="catalog" className="space-y-3">
-        <h2 id="catalog" className="text-lg font-semibold">
+        <h2 id="catalog" className="text-lg font-light">
           Central data catalog
         </h2>
         <p>
@@ -50,7 +50,7 @@ export default function DataSourcesPage() {
       </section>
 
       <section aria-labelledby="attribution" className="mt-8 space-y-3">
-        <h2 id="attribution" className="text-lg font-semibold">
+        <h2 id="attribution" className="text-lg font-light">
           Attribution guidance
         </h2>
         <p>
@@ -61,14 +61,15 @@ export default function DataSourcesPage() {
         </p>
         <p>
           When in doubt, cite the specific jurisdictional portal listed inside
-          the repository README and include a link to the commit hash you used to
-          build your story or analysis. This approach provides a verifiable audit
-          trail and improves search visibility for the original data stewards.
+          the repository README and include a link to the commit hash you used
+          to build your story or analysis. This approach provides a verifiable
+          audit trail and improves search visibility for the original data
+          stewards.
         </p>
       </section>
 
       <section aria-labelledby="updates" className="mt-8 space-y-3">
-        <h2 id="updates" className="text-lg font-semibold">
+        <h2 id="updates" className="text-lg font-light">
           Update cadence
         </h2>
         <p>

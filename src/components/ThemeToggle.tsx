@@ -1,25 +1,94 @@
-// src/components/ThemeToggle.tsx
-
 "use client";
 
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Check, LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 
 export default function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return (
+      <Button
+        variant="outline"
+        size="icon"
+        className="relative bg-card border-none shadow-none"
+        disabled
+      >
+        <SunIcon className="size-4" />
+      </Button>
+    );
+  }
+
+  const icon =
+    resolvedTheme === "dark" ? (
+      <MoonIcon className="size-4" />
+    ) : (
+      <SunIcon className="size-4" />
+    );
+
+  const Item = ({
+    value,
+    label,
+    icon,
+  }: {
+    value: string;
+    label: string;
+    icon: React.ReactNode;
+  }) => (
+    <DropdownMenuItem
+      onClick={() => setTheme(value)}
+      className="flex items-center justify-between"
+    >
+      <div className="flex items-center gap-2">
+        {icon}
+        {label}
+      </div>
+      {theme === value && <Check className="size-4 opacity-70" />}
+    </DropdownMenuItem>
+  );
 
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="relative bg-card border-none  shadow-none"
-      aria-label="Toggle theme"
-    >
-      <SunIcon className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <MoonIcon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative bg-card border-none shadow-none"
+          aria-label="Toggle theme"
+        >
+          {icon}
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <Item
+          value="light"
+          label="Light"
+          icon={<SunIcon className="size-4" />}
+        />
+        <Item
+          value="dark"
+          label="Dark"
+          icon={<MoonIcon className="size-4" />}
+        />
+        <Item
+          value="system"
+          label="System"
+          icon={<LaptopIcon className="size-4" />}
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

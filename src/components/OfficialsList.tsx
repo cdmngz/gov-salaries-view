@@ -120,7 +120,7 @@ function OfficialCard({
         {official.party && partyMeta && (
           <>
             <p
-              className="text-xs text-center w-48 font-semibold"
+              className="text-xs text-center w-48 font-light"
               style={{ color: partyMeta.color }}
             >
               {official.party} {rangeIcon} {partyMeta.name}
@@ -283,7 +283,7 @@ export default function OfficialsList({
   return (
     <div className="flex flex-col py-4 px-8 items-center gap-4 bg-card  w-fit">
       <div className="flex items-center gap-3">
-        <h3 className="text-xl font-semibold">
+        <h3 className="text-xl font-light">
           {title} ({officials.length})
         </h3>
         <div className="flex gap-2">

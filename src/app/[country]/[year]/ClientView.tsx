@@ -60,7 +60,7 @@ export default function ClientView({
   return (
     <div>
       <div className="my-4 pb-6 flex flex-col items-center gap-2">
-        <h2 className="text-2xl font-semibold">
+        <h2 className="text-2xl font-light">
           {TITLE_PREFIX[lang]} {countryName}
         </h2>
         <p className="text-muted-foreground text-xs">

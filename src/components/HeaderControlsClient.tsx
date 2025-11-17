@@ -3,10 +3,10 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
+import SearchableCombobox from "@/components/SearchableCombobox";
 import ThemeToggle from "@/components/ThemeToggle";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -30,90 +30,6 @@ type Props = {
   periods: number[];
   defaultYear: number;
 };
-
-type SearchConfig = {
-  placeholder?: string;
-  emptyMessage?: string;
-};
-
-type Option = {
-  value: string;
-  label: React.ReactNode;
-  searchText?: string;
-};
-
-function ControlSelect({
-  value,
-  onChange,
-  placeholder,
-  options,
-  searchConfig,
-}: {
-  value: string;
-  onChange: (val: string) => void;
-  placeholder: string;
-  options: Option[];
-  searchConfig?: SearchConfig;
-}) {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredOptions = useMemo(() => {
-    if (!searchConfig) return options;
-    const term = searchTerm.trim().toLowerCase();
-    if (!term) return options;
-    return options.filter((opt) => {
-      const searchTarget = (
-        opt.searchText ??
-        (typeof opt.label === "string" ? opt.label : opt.value)
-      )
-        .toString()
-        .toLowerCase();
-      return searchTarget.includes(term);
-    });
-  }, [options, searchConfig, searchTerm]);
-
-  return (
-    <Select
-      value={value}
-      onValueChange={onChange}
-      onOpenChange={(open) => {
-        if (!open) setSearchTerm("");
-      }}
-    >
-      <SelectTrigger className="text-sm bg-card  border-none shadow-none">
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent className={searchConfig ? "max-h-72" : undefined}>
-        {searchConfig ? (
-          <div className="sticky top-0 z-10 bg-popover p-2 pb-1">
-            <Input
-              autoFocus
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") return;
-                event.stopPropagation();
-              }}
-              placeholder={searchConfig.placeholder ?? "Search"}
-              className="h-8"
-            />
-          </div>
-        ) : null}
-        {filteredOptions.length ? (
-          filteredOptions.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
-            </SelectItem>
-          ))
-        ) : (
-          <div className="px-3 py-6 text-center text-sm text-muted-foreground">
-            {searchConfig?.emptyMessage ?? "No results"}
-          </div>
-        )}
-      </SelectContent>
-    </Select>
-  );
-}
 
 export default function HeaderControlsClient({
   country,
@@ -167,7 +83,7 @@ export default function HeaderControlsClient({
     return DEFAULT_CURRENCY;
   }, [searchParams, currencyCodes, currency, baseCurrency]);
 
-  const countryOptions = useMemo<Option[]>(() => {
+  const countryOptions = useMemo(() => {
     const withNames = Object.entries(countries).map(([code, meta]) => ({
       code,
       name: meta.names[currentLang] ?? code.toUpperCase(),
@@ -186,7 +102,6 @@ export default function HeaderControlsClient({
     }));
 
     const pinnedOrder = ["world", "europe"];
-
     const pinned = pinnedOrder
       .map((p) => withNames.find((c) => c.code === p))
       .filter(Boolean) as typeof withNames;
@@ -195,29 +110,24 @@ export default function HeaderControlsClient({
       .filter((c) => !pinnedOrder.includes(c.code))
       .sort((a, b) => a.name.localeCompare(b.name, currentLang));
 
-    const toOption = ({
-      code,
-      label,
-      searchText,
-    }: (typeof withNames)[number]) => ({
+    return [...pinned, ...rest].map(({ code, label, searchText }) => ({
       value: code,
       label,
       searchText,
-    });
-
-    return [...pinned.map(toOption), ...rest.map(toOption)];
+    }));
   }, [countries, currentLang]);
 
-  const languageOptions = useMemo<Option[]>(
+  const languageOptions = useMemo(
     () =>
       LanguageSchema.options.map((code) => ({
         value: code,
         label: LANGUAGE_NAMES[currentLang]?.[code] ?? code,
+        searchText: LANGUAGE_NAMES[currentLang]?.[code] ?? code,
       })),
     [currentLang]
   );
 
-  const currencyOptions = useMemo<Option[]>(
+  const currencyOptions = useMemo(
     () =>
       currencyCodes.map((code) => ({
         value: code,
@@ -226,18 +136,24 @@ export default function HeaderControlsClient({
             {code} {CURRENCY_SYMBOLS[code] ?? ""}
           </>
         ),
+        searchText: `${code} ${CURRENCY_SYMBOLS[code] ?? ""}`,
       })),
     [currencyCodes]
   );
 
-  const yearOptions = useMemo<Option[]>(
-    () => years.map((y) => ({ value: String(y), label: y })),
+  const yearOptions = useMemo(
+    () =>
+      years.map((y) => ({
+        value: String(y),
+        label: y,
+        searchText: String(y),
+      })),
     [years]
   );
 
   return (
     <div className="flex items-center flex-wrap justify-center gap-2 sm:gap-3">
-      <ControlSelect
+      <SearchableCombobox
         value={country}
         onChange={(val) => {
           const qs = searchParams?.toString() ?? "";
@@ -251,29 +167,56 @@ export default function HeaderControlsClient({
         }}
       />
 
-      <ControlSelect
+      <Select
         value={currentLang}
-        onChange={(val) => updateQuery({ lang: val })}
-        placeholder="Lang"
-        options={languageOptions}
-      />
+        onValueChange={(val) => updateQuery({ lang: val })}
+      >
+        <SelectTrigger className="text-sm bg-card border-none shadow-none">
+          <SelectValue placeholder="Lang" />
+        </SelectTrigger>
+        <SelectContent>
+          {languageOptions.map((opt) => (
+            <SelectItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-      <ControlSelect
+      <Select
         value={currentCurrency}
-        onChange={(val) => updateQuery({ currency: val })}
-        placeholder="Currency"
-        options={currencyOptions}
-      />
+        onValueChange={(val) => updateQuery({ currency: val })}
+      >
+        <SelectTrigger className="text-sm bg-card border-none shadow-none">
+          <SelectValue placeholder="Currency" />
+        </SelectTrigger>
+        <SelectContent>
+          {currencyOptions.map((opt) => (
+            <SelectItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-      <ControlSelect
+      <Select
         value={String(defaultYear)}
-        onChange={(val) => {
+        onValueChange={(val) => {
           const qs = searchParams?.toString() ?? "";
           router.push(`/${country}/${val}${qs ? `?${qs}` : ""}`);
         }}
-        placeholder="Year"
-        options={yearOptions}
-      />
+      >
+        <SelectTrigger className="text-sm bg-card border-none shadow-none">
+          <SelectValue placeholder="Year" />
+        </SelectTrigger>
+        <SelectContent>
+          {yearOptions.map((opt) => (
+            <SelectItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       <ThemeToggle />
     </div>

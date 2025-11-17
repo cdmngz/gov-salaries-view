@@ -44,7 +44,7 @@ export default function ClientView({
   return (
     <div className="space-y-8 p-4">
       <h1
-        className="text-xl text-center font-semibold"
+        className="text-xl text-center font-light"
         data-testid="world-stats-title"
       >
         {countriesJson["world"].flag} {countriesJson["world"].names[lang]} -{" "}
@@ -61,7 +61,7 @@ export default function ClientView({
             <TabsTrigger
               key={tab}
               value={tab}
-              className=" cursor-pointer select-none shadow-none data-[state=active]:bg-card"
+              className=" cursor-pointer data-[state=active]:border select-none shadow-none data-[state=active]:shadow-none data-[state=active]:bg-card"
             >
               {label}
             </TabsTrigger>

@@ -27,7 +27,7 @@ export default function ServerHeader({
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/70 backdrop-blur supports-backdrop-filter:bg-background/80">
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+      <div className="mx-auto flex max-w-5xl items-center justify-between p-4">
         <Link
           href={`/world/${latestAvailableYear}`}
           className="text-lg select-none font-light"

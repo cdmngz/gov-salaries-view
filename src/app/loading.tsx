@@ -1,16 +1,20 @@
 // src/app/loading.tsx
 
+import ServerHeader from "@/components/ServerHeader";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DEFAULT_COUNTRY, DEFAULT_CURRENCY } from "@/lib/constants";
 
 export default function Loading() {
   return (
     <>
-      <header className="sticky top-0 z-40 border-b bg-background/70 backdrop-blur supports-backdrop-filter:bg-background/80">
-        <div className="mx-auto flex text-lg h-14 max-w-5xl font-light items-center justify-between px-4">
-          <span>Government View</span>
-          <Skeleton className="h-2/3 bg-card w-1/2" />
-        </div>
-      </header>
+      <ServerHeader
+        country={DEFAULT_COUNTRY}
+        year={new Date().getFullYear()}
+        currency={DEFAULT_CURRENCY}
+        baseCurrency={DEFAULT_CURRENCY}
+        rates={null}
+        periods={[]}
+      />
       <div className="p-14  flex flex-col gap-14">
         <div className="flex justify-center">
           <Skeleton className=" h-32 bg-card w-1/3" />
