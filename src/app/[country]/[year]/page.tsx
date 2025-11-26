@@ -2,6 +2,7 @@
 
 import { Metadata } from "next";
 import ClientView from "@/app/[country]/[year]/ClientView";
+import BreadcrumbStructuredData from "@/components/BreadcrumbStructuredData";
 import DatasetStructuredData from "@/components/DatasetStructuredData";
 import ServerHeader from "@/components/ServerHeader";
 import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
@@ -19,6 +20,7 @@ import {
 import type { CountryCode } from "@/types";
 import { parseLang } from "@/validators/lang";
 import { SITE_NAME } from "@/lib/seo";
+import { serverEnv } from "@/lib/env";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -106,6 +108,12 @@ export default async function Page({
     lang: DEFAULT_LANG,
     currency: baseCurrency ?? DEFAULT_CURRENCY,
   });
+  const baseUrl = serverEnv.WEB_URL.replace(/\/+$/, "");
+  const breadcrumbs = [
+    { name: "OfficialSalaries.org", url: baseUrl },
+    { name: `${structuredSeo.countryName} salaries`, url: `${baseUrl}/${country}` },
+    { name: `${structuredSeo.countryName} ${year}`, url: structuredSeo.pageUrl },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -142,6 +150,7 @@ export default async function Page({
           },
         ]}
       />
+      <BreadcrumbStructuredData items={breadcrumbs} />
     </div>
   );
 }
