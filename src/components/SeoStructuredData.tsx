@@ -29,6 +29,12 @@ function buildStructuredData() {
       name: "OfficialSalaries.org",
       url: baseUrl,
     },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${baseUrl}/world/{search_term_string}`,
+      query: "required",
+      "query-input": "required name=search_term_string",
+    },
   } as const;
 
   return JSON.stringify(structuredData);

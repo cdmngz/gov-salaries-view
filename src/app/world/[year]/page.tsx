@@ -3,6 +3,7 @@
 import { Metadata } from "next";
 
 import ClientView from "@/app/world/[year]/ClientView";
+import BreadcrumbStructuredData from "@/components/BreadcrumbStructuredData";
 import DatasetStructuredData from "@/components/DatasetStructuredData";
 import ServerHeader from "@/components/ServerHeader";
 import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
@@ -12,6 +13,7 @@ import {
   buildWorldSeo,
   socialImageUrl,
 } from "@/lib/metadata";
+import { serverEnv } from "@/lib/env";
 import { SITE_NAME } from "@/lib/seo";
 import { parseLang } from "@/validators/lang";
 
@@ -85,6 +87,11 @@ export default async function Page({
     lang: DEFAULT_LANG,
     currency: DEFAULT_CURRENCY,
   });
+  const baseUrl = serverEnv.WEB_URL.replace(/\/+$/, "");
+  const breadcrumbs = [
+    { name: "OfficialSalaries.org", url: baseUrl },
+    { name: `${structuredSeo.worldName} ${safeYear}`, url: structuredSeo.pageUrl },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -117,6 +124,7 @@ export default async function Page({
           },
         ]}
       />
+      <BreadcrumbStructuredData items={breadcrumbs} />
     </div>
   );
 }
