@@ -689,6 +689,16 @@
       "de": "Äthiopien"
     }
   },
+  "eu": {
+    "flag": "🇪🇺",
+    "names": {
+      "es": "Unión Europea",
+      "en": "European Union",
+      "fr": "Union européenne",
+      "pt": "União Europeia",
+      "de": "Europäische Union"
+    }
+  },
   "fi": {
     "flag": "🇫🇮",
     "names": {
