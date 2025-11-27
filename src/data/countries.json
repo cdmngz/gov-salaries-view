@@ -149,6 +149,16 @@
       "de": "Aruba"
     }
   },
+  "ax": {
+    "flag": "🇦🇽",
+    "names": {
+      "es": "Islas Åland",
+      "en": "Åland Islands",
+      "fr": "Îles Åland",
+      "pt": "Ilhas Åland",
+      "de": "Ålandinseln"
+    }
+  },
   "az": {
     "flag": "🇦🇿",
     "names": {
