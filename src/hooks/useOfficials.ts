@@ -34,7 +34,8 @@ export function useOfficials(country: CountryCode) {
         setPeriods(fetchedPeriods);
 
         const lastYear =
-          fetchedPeriods.sort().at(0) ?? new Date().getFullYear();
+          [...fetchedPeriods].sort((a, b) => b - a).at(0) ??
+          new Date().getFullYear();
         setYear(lastYear);
 
         const { data, rates: fetchedRates } = await fetchCountryData(
