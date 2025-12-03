@@ -28,6 +28,7 @@ import type { Feature, Geometry } from "geojson";
 import { Button } from "@/components/ui/button";
 import { useMemo, useRef, useState } from "react";
 import MapLegend from "./maps/MapLegend";
+import { type LegendCounts } from "./parts/RangeLegend";
 
 type CountryProps = {
   ISO2?: string;
@@ -43,6 +44,7 @@ export default function GlobeMap3D({
   ocean = "#3b82f6",
   stroke = "#56B",
   lang,
+  legendCounts,
   onCountryClick,
 }: {
   data: DataShape;
@@ -50,6 +52,7 @@ export default function GlobeMap3D({
   ocean?: string;
   stroke?: string;
   lang: Language;
+  legendCounts?: LegendCounts;
   onCountryClick?: (p: { iso_a2?: string; name?: string; wing?: Wing }) => void;
 }) {
   const byIso2 = useMemo(() => buildIso2Map(data, lang), [data, lang]);
@@ -258,7 +261,7 @@ export default function GlobeMap3D({
           </Geographies>
         </ComposableMap>
       </TooltipProvider>
-      <MapLegend />
+      <MapLegend counts={legendCounts} />
     </div>
   );
 }

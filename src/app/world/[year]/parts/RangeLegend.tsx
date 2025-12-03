@@ -1,33 +1,45 @@
 // src/app/world/[year]/parts/RangeLegend.tsx
 
-import {
-  rangeColorByValue,
-  type RangeValue,
-} from "@/app/world/[year]/table/types";
+import { HEX_BY_RANGE, RANGE_LABELS, type RangeValue } from "@/lib/map-colors";
 import { cn } from "@/lib/utils";
 
-export function RangeLegend() {
-  const items: Array<[RangeValue, string]> = [
-    [1, "Left"],
-    [2, "Left-center"],
-    [3, "Center"],
-    [4, "Right-center"],
-    [5, "Right"],
-  ];
+const ITEMS: Array<{ value: RangeValue; label: string; color: string }> = (
+  [1, 2, 3, 4, 5] as const
+).map((value) => ({ value, label: RANGE_LABELS[value], color: HEX_BY_RANGE[value] }));
 
+export type LegendCounts = Partial<Record<RangeValue, number>>;
+
+export function RangeLegend({
+  counts,
+  shape = "circle",
+  className,
+}: {
+  counts?: LegendCounts;
+  shape?: "circle" | "square";
+  className?: string;
+}) {
   return (
     <div
-      className="flex flex-wrap justify-end items-center gap-2 text-xs text-muted-foreground"
+      className={cn(
+        "flex flex-wrap items-center gap-2 text-xs text-muted-foreground",
+        className
+      )}
       data-testid="range-legend"
     >
-      {items.map(([val, label]) => (
+      {ITEMS.map(({ value, label, color }) => (
         <div
-          key={val}
+          key={value}
           className="flex items-center gap-1"
           data-testid={`legend-${label}`}
         >
-          <div className={cn("size-3 rounded-full", rangeColorByValue[val])} />
-          <span>{label}</span>
+          <div
+            className={cn("size-3 border", shape === "circle" ? "rounded-full" : "rounded-sm")}
+            style={{ backgroundColor: color }}
+          />
+          <span>
+            {label}
+            {counts ? ` (${counts[value] ?? 0})` : ""}
+          </span>
         </div>
       ))}
     </div>

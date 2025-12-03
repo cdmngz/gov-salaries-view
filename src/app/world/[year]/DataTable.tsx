@@ -26,7 +26,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
-import { RangeLegend } from "./parts/RangeLegend";
+import { RangeLegend, type LegendCounts } from "./parts/RangeLegend";
 import { WingFilterDropdown } from "./filters/WingFilterDropdown";
 import { ColumnsDropdown } from "./filters/ColumnsDropdown";
 import { wingRangeFilter } from "./filters/wingRangeFilter";
@@ -35,9 +35,11 @@ import type { Row } from "./table/types";
 export function DataTable({
   columns,
   data,
+  legendCounts,
 }: {
   columns: ColumnDef<Row>[];
   data: Row[];
+  legendCounts?: LegendCounts;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -100,7 +102,7 @@ export function DataTable({
           <ColumnsDropdown table={table} />
         </div>
       </div>
-      <RangeLegend />
+      <RangeLegend counts={legendCounts} className="justify-end" />
 
       <div className="rounded-md border">
         <UITable>
