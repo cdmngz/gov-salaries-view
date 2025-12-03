@@ -21,6 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { Language } from "@/validators/lang";
 import { useCallback, useMemo, useState } from "react";
+import { type LegendCounts } from "./parts/RangeLegend";
 import {
   ComposableMap,
   Geographies,
@@ -63,6 +64,7 @@ export default function WorldPoliticalMap({
   minZoom = 0.8,
   maxZoom = 6,
   lang,
+  legendCounts,
   onCountryClick,
 }: {
   data: DataShape;
@@ -71,6 +73,7 @@ export default function WorldPoliticalMap({
   minZoom?: number;
   maxZoom?: number;
   lang: Language;
+  legendCounts?: LegendCounts;
   onCountryClick?: (p: {
     iso_a2: string;
     name?: string;
@@ -215,7 +218,7 @@ export default function WorldPoliticalMap({
         </ComposableMap>
       </TooltipProvider>
 
-      <MapLegend />
+      <MapLegend counts={legendCounts} />
     </div>
   );
 }

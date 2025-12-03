@@ -42,6 +42,14 @@ export const HEX_BY_RANGE: Record<RangeValue, string> = {
   5: "#60a5fa",
 };
 
+export const RANGE_LABELS: Record<RangeValue, string> = {
+  1: "Left",
+  2: "Left-center",
+  3: "Center",
+  4: "Right-center",
+  5: "Right",
+};
+
 export function mostExtreme(values?: number[]) {
   if (!values?.length) return undefined;
   let e = values[0],
@@ -105,6 +113,29 @@ export function buildIso2Map(data: DataShape, lang: Language) {
     });
   }
   return m;
+}
+
+export function rangeCounts(data: DataShape): Record<RangeValue, number> {
+  const counts: Record<RangeValue, number> = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+  };
+
+  for (const v of Object.values(data || {})) {
+    const ranges =
+      v.partyRangeStatsSplit?.executive?.mostPopularRanges ??
+      v.partyRangeStats?.mostPopularRanges ??
+      v.partyRangeStatsSplit?.rest?.mostPopularRanges ??
+      [];
+
+    const extreme = mostExtreme(ranges);
+    if (extreme) counts[extreme] += 1;
+  }
+
+  return counts;
 }
 
 export function fillForIso2(

@@ -6,6 +6,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import countriesJson from "@/data/countries.json";
 import { TEXT_TRANSLATION } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
+import { rangeCounts } from "@/lib/map-colors";
 import { components } from "@/types/openapi";
 import { parseLang } from "@/validators/lang";
 import { DataTable } from "./DataTable";
@@ -40,6 +41,7 @@ export default function ClientView({
     () => buildColumns({ currency, year, searchParams }),
     [currency, year, searchParams]
   );
+  const legendCounts = useMemo(() => rangeCounts(data), [data]);
 
   return (
     <div className="space-y-8 p-4">
@@ -69,16 +71,16 @@ export default function ClientView({
         </TabsList>
         <TabsContent value="map-2d" className="flex justify-center">
           <div className="w-3xl">
-            <WorldPoliticalMap data={data} lang={lang} />
+            <WorldPoliticalMap data={data} lang={lang} legendCounts={legendCounts} />
           </div>
         </TabsContent>
         <TabsContent value="map-3d" className="flex justify-center">
           <div className="w-3xl">
-            <GlobeMap3D data={data} lang={lang} />
+            <GlobeMap3D data={data} lang={lang} legendCounts={legendCounts} />
           </div>
         </TabsContent>
         <TabsContent value="table" className="flex justify-center">
-          <DataTable columns={columns} data={rows} />
+          <DataTable columns={columns} data={rows} legendCounts={legendCounts} />
         </TabsContent>
       </Tabs>
     </div>
