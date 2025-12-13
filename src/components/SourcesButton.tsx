@@ -1,4 +1,4 @@
-// src/components/GrossDisplay.tsx
+// src/components/SourcesButton.tsx
 
 import {
   Tooltip,
