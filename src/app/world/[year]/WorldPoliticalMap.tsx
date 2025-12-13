@@ -1,6 +1,7 @@
 "use client";
 
 import MapLegend from "@/app/world/[year]/maps/MapLegend";
+import { type LegendCounts } from "@/app/world/[year]/parts/RangeLegend";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -20,8 +21,7 @@ import {
 } from "@/lib/map-colors";
 import { cn } from "@/lib/utils";
 import type { Language } from "@/validators/lang";
-import { useCallback, useMemo, useState } from "react";
-import { type LegendCounts } from "./parts/RangeLegend";
+import { useMemo, useState } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -85,22 +85,6 @@ export default function WorldPoliticalMap({
   const [zoom, setZoom] = useState(initialZoom);
   const [center, setCenter] = useState<[number, number]>([0, 15]);
 
-  const filterZoomEvent = useCallback(
-    (event: Event | { type?: string } | null) => {
-      const eventType =
-        event && typeof event === "object" && "type" in event
-          ? event.type
-          : undefined;
-
-      if (typeof eventType === "string") {
-        return !["wheel", "mousewheel", "DOMMouseScroll"].includes(eventType);
-      }
-
-      return false;
-    },
-    []
-  );
-
   return (
     <div className={cn("mx-auto w-full max-w-4xl  bg-card p-3", className)}>
       <div className="mb-2 flex items-center justify-end gap-2">
@@ -137,7 +121,14 @@ export default function WorldPoliticalMap({
         <ComposableMap
           projectionConfig={{ scale: 160 }}
           style={{ width: "100%", height: "auto", touchAction: "none" }}
-          onWheelCapture={(event) => event.preventDefault()}
+          onWheel={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onWheelCapture={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           <ZoomableGroup
             zoom={zoom}
@@ -148,7 +139,6 @@ export default function WorldPoliticalMap({
             }}
             minZoom={minZoom}
             maxZoom={maxZoom}
-            filterZoomEvent={filterZoomEvent}
           >
             <Geographies geography={GEO_URL}>
               {({ geographies }: { geographies: CountryFeature[] }) =>

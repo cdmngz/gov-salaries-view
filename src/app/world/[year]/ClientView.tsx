@@ -63,7 +63,7 @@ export default function ClientView({
             <TabsTrigger
               key={tab}
               value={tab}
-              className=" cursor-pointer data-[state=active]:border select-none shadow-none data-[state=active]:shadow-none data-[state=active]:bg-card"
+              className=" cursor-pointer select-none shadow-none data-[state=active]:shadow-none data-[state=active]:bg-card"
             >
               {label}
             </TabsTrigger>
@@ -71,7 +71,11 @@ export default function ClientView({
         </TabsList>
         <TabsContent value="map-2d" className="flex justify-center">
           <div className="w-3xl">
-            <WorldPoliticalMap data={data} lang={lang} legendCounts={legendCounts} />
+            <WorldPoliticalMap
+              data={data}
+              lang={lang}
+              legendCounts={legendCounts}
+            />
           </div>
         </TabsContent>
         <TabsContent value="map-3d" className="flex justify-center">
@@ -80,7 +84,11 @@ export default function ClientView({
           </div>
         </TabsContent>
         <TabsContent value="table" className="flex justify-center">
-          <DataTable columns={columns} data={rows} legendCounts={legendCounts} />
+          <DataTable
+            columns={columns}
+            data={rows}
+            legendCounts={legendCounts}
+          />
         </TabsContent>
       </Tabs>
     </div>
