@@ -86,11 +86,17 @@ export default function WorldPoliticalMap({
   const [center, setCenter] = useState<[number, number]>([0, 15]);
 
   const filterZoomEvent = useCallback(
-    (value: SVGElement | { type?: string } | null) => {
-      if (value && "type" in value && typeof value.type === "string") {
-        return value.type !== "wheel";
+    (event: Event | { type?: string } | null) => {
+      const eventType =
+        event && typeof event === "object" && "type" in event
+          ? event.type
+          : undefined;
+
+      if (typeof eventType === "string") {
+        return !["wheel", "mousewheel", "DOMMouseScroll"].includes(eventType);
       }
-      return true;
+
+      return false;
     },
     []
   );
@@ -131,6 +137,7 @@ export default function WorldPoliticalMap({
         <ComposableMap
           projectionConfig={{ scale: 160 }}
           style={{ width: "100%", height: "auto", touchAction: "none" }}
+          onWheelCapture={(event) => event.preventDefault()}
         >
           <ZoomableGroup
             zoom={zoom}
