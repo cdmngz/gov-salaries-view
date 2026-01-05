@@ -60,6 +60,7 @@ export function ColumnsDropdown({ table }: { table: Table<Row> }) {
               data-testid={`column-toggle-${column.id}`}
               className="capitalize"
               checked={column.getIsVisible()}
+              onSelect={(event) => event.preventDefault()}
               onCheckedChange={(v) => column.toggleVisibility(!!v)}
             >
               {String(column.columnDef.header ?? column.id)}
