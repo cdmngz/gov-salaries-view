@@ -1,6 +1,7 @@
 // src/app/[country]/[year]/page.tsx
 
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import ClientView from "@/app/[country]/[year]/ClientView";
 import BreadcrumbStructuredData from "@/components/BreadcrumbStructuredData";
 import DatasetStructuredData from "@/components/DatasetStructuredData";
@@ -94,13 +95,18 @@ export default async function Page({
   params: Promise<{ country: CountryCode; year: string }>;
 }) {
   const { country, year } = await params;
+  const yearNumber = Number(year);
 
   const periods = await fetchCountryPeriods(country);
-  const { data: json, rates } = await fetchCountryData(country, Number(year));
+  if (!Number.isFinite(yearNumber) || !periods.includes(yearNumber)) {
+    notFound();
+  }
+
+  const { data: json, rates } = await fetchCountryData(country, yearNumber);
   const baseCurrency = json.baseCurrency;
   const { dataUrl, economicsUrl, ratesUrl } = buildDataUrls(
     country,
-    Number(year)
+    yearNumber
   );
   const structuredSeo = buildCountrySeo({
     country,
