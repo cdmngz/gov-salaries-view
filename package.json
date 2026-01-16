@@ -52,7 +52,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/geojson": "^7946.0.16",
     "@types/jsdom": "^27.0.0",
-    "@types/node": "^25.0.8",
+    "@types/node": "^25.0.9",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@types/react-simple-maps": "^3.0.6",
