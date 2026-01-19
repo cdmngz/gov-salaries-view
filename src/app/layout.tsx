@@ -10,7 +10,12 @@ import SeoStructuredData from "@/components/SeoStructuredData";
 import { ThemeProvider } from "@/components/theme-provider";
 import { DEFAULT_LANG } from "@/lib/constants";
 import { serverEnv } from "@/lib/env";
-import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME } from "@/lib/seo";
+import {
+  DEFAULT_ROBOTS,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+} from "@/lib/seo";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -56,10 +61,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [new URL("/globe.svg", baseUrl).toString()],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: DEFAULT_ROBOTS,
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

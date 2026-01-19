@@ -20,7 +20,7 @@ import {
 } from "@/lib/metadata";
 import type { CountryCode } from "@/types";
 import { parseLang } from "@/validators/lang";
-import { SITE_NAME } from "@/lib/seo";
+import { DEFAULT_ROBOTS, SITE_NAME } from "@/lib/seo";
 import { serverEnv } from "@/lib/env";
 
 export const dynamic = "force-static";
@@ -85,7 +85,7 @@ export async function generateMetadata({
       canonical: seoDetails.pageUrl,
       languages: seoDetails.languageAlternates,
     },
-    robots: { index: true, follow: true },
+    robots: DEFAULT_ROBOTS,
   };
 }
 

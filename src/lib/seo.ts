@@ -22,3 +22,18 @@ export const OG_LOCALE_BY_LANG = {
   pt: "pt_PT",
   de: "de_DE",
 } as const;
+
+export const DEFAULT_ROBOTS = {
+  index: true,
+  follow: true,
+  maxImagePreview: "large",
+  maxSnippet: -1,
+  maxVideoPreview: -1,
+  googleBot: {
+    index: true,
+    follow: true,
+    maxImagePreview: "large",
+    maxSnippet: -1,
+    maxVideoPreview: -1,
+  },
+} as const;
