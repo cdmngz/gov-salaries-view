@@ -6,7 +6,7 @@ import { notFound, redirect } from "next/navigation";
 import { DEFAULT_LANG } from "@/lib/constants";
 import { fetchAvailableCountries, fetchCountryPeriods } from "@/lib/data";
 import { buildCountrySeo, buildSocialImageAlt, socialImageUrl } from "@/lib/metadata";
-import { SITE_NAME } from "@/lib/seo";
+import { DEFAULT_ROBOTS, SITE_NAME } from "@/lib/seo";
 import type { CountryCode } from "@/types";
 
 export const dynamic = "force-static";
@@ -71,7 +71,7 @@ export async function generateMetadata({
       description: seoDetails.description,
       images: [socialImageUrl],
     },
-    robots: { index: true, follow: true },
+    robots: DEFAULT_ROBOTS,
   };
 }
 

@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
 import { fetchWorldYears } from "@/lib/data";
 import { buildSocialImageAlt, buildWorldSeo, socialImageUrl } from "@/lib/metadata";
-import { SITE_NAME } from "@/lib/seo";
+import { DEFAULT_ROBOTS, SITE_NAME } from "@/lib/seo";
 import { parseLang } from "@/validators/lang";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -45,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: seoDetails.description,
       images: [socialImageUrl],
     },
-    robots: { index: true, follow: true },
+    robots: DEFAULT_ROBOTS,
   };
 }
 

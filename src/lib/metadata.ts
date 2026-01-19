@@ -6,6 +6,7 @@ import countriesJson from "@/data/countries.json";
 import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
 import { serverEnv } from "@/lib/env";
 import {
+  DEFAULT_ROBOTS,
   OG_LOCALE_BY_LANG,
   SITE_KEYWORDS,
   SITE_NAME,
@@ -40,12 +41,17 @@ export function buildKeywordList(
 }
 
 function buildLanguageAlternates(path: string) {
-  return Object.fromEntries(
+  const alternates = Object.fromEntries(
     SUPPORTED_LANGUAGES.map((lang) => [
       lang,
       `${buildPageUrl(path)}?lang=${lang}`,
     ])
   );
+
+  return {
+    ...alternates,
+    "x-default": `${buildPageUrl(path)}?lang=${DEFAULT_LANG}`,
+  };
 }
 
 function resolveOgLocale(lang: Language) {
@@ -255,6 +261,6 @@ export function buildStaticMetadata(params: StaticSeoParams): Metadata {
       description: seo.description,
       images: [socialImageUrl],
     },
-    robots: { index: true, follow: true },
+    robots: DEFAULT_ROBOTS,
   };
 }
