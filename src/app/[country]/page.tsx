@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
 import { DEFAULT_LANG } from "@/lib/constants";
-import { fetchAvailableCountries, fetchCountryPeriods } from "@/lib/data";
+import { fetchCountriesPeriodsMap } from "@/lib/data";
 import { buildCountrySeo, buildSocialImageAlt, socialImageUrl } from "@/lib/metadata";
 import { DEFAULT_ROBOTS, SITE_NAME } from "@/lib/seo";
 import type { CountryCode } from "@/types";
@@ -14,8 +14,8 @@ export const dynamicParams = false;
 export const revalidate = false;
 
 export async function generateStaticParams() {
-  const countries = await fetchAvailableCountries();
-  return countries.map((country) => ({ country }));
+  const countriesPeriods = await fetchCountriesPeriodsMap();
+  return Object.keys(countriesPeriods).map((country) => ({ country }));
 }
 
 export async function generateMetadata({
@@ -24,13 +24,8 @@ export async function generateMetadata({
   params: Promise<{ country: CountryCode }>;
 }): Promise<Metadata> {
   const { country } = await params;
-  const valid = await fetchAvailableCountries();
-
-  if (!valid.includes(country)) {
-    return {};
-  }
-
-  const periods = await fetchCountryPeriods(country);
+  const countriesPeriods = await fetchCountriesPeriodsMap();
+  const periods = countriesPeriods[country];
   if (!periods?.length) {
     return {};
   }
@@ -82,12 +77,8 @@ export default async function CountryIndex({
 }) {
   const { country } = await params;
 
-  const valid = await fetchAvailableCountries();
-  if (!valid.includes(country)) {
-    notFound();
-  }
-
-  const periods = await fetchCountryPeriods(country);
+  const countriesPeriods = await fetchCountriesPeriodsMap();
+  const periods = countriesPeriods[country];
   if (!periods?.length) {
     notFound();
   }

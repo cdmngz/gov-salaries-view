@@ -2,11 +2,7 @@
 
 import type { MetadataRoute } from "next";
 
-import {
-  fetchAvailableCountries,
-  fetchCountryPeriods,
-  fetchWorldYears,
-} from "@/lib/data";
+import { fetchCountriesPeriodsMap, fetchWorldYears } from "@/lib/data";
 import { serverEnv } from "@/lib/env";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -35,8 +31,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   try {
-    const countries = await fetchAvailableCountries();
-    for (const country of countries) {
+    const countriesPeriods = await fetchCountriesPeriodsMap();
+    for (const [country, periods] of Object.entries(countriesPeriods)) {
       entries.push({
         url: toUrl(country),
         lastModified: now,
@@ -44,18 +40,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.6,
       });
 
-      try {
-        const periods = await fetchCountryPeriods(country);
-        for (const year of periods) {
-          entries.push({
-            url: toUrl(`${country}/${year}`),
-            lastModified: now,
-            changeFrequency: "monthly",
-            priority: 0.8,
-          });
-        }
-      } catch (error) {
-        console.warn(`sitemap: failed to load periods for ${country}`, error);
+      for (const year of periods) {
+        entries.push({
+          url: toUrl(`${country}/${year}`),
+          lastModified: now,
+          changeFrequency: "monthly",
+          priority: 0.8,
+        });
       }
     }
   } catch (error) {
