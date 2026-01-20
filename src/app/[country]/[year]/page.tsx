@@ -9,9 +9,8 @@ import ServerHeader from "@/components/ServerHeader";
 import { DEFAULT_CURRENCY, DEFAULT_LANG } from "@/lib/constants";
 import {
   buildDataUrls,
-  fetchAvailableCountries,
+  fetchCountriesPeriodsMap,
   fetchCountryData,
-  fetchCountryPeriods,
 } from "@/lib/data";
 import {
   buildCountrySeo,
@@ -28,14 +27,10 @@ export const dynamicParams = false;
 export const revalidate = false;
 
 export async function generateStaticParams() {
-  const countries = await fetchAvailableCountries();
-  const combos = await Promise.all(
-    countries.map(async (country: CountryCode) => {
-      const years = await fetchCountryPeriods(country);
-      return years.map((y) => ({ country, year: String(y) }));
-    })
+  const countriesPeriods = await fetchCountriesPeriodsMap();
+  return Object.entries(countriesPeriods).flatMap(([country, years]) =>
+    years.map((year) => ({ country: country as CountryCode, year: String(year) }))
   );
-  return combos.flat();
 }
 
 export async function generateMetadata({
@@ -97,8 +92,13 @@ export default async function Page({
   const { country, year } = await params;
   const yearNumber = Number(year);
 
-  const periods = await fetchCountryPeriods(country);
-  if (!Number.isFinite(yearNumber) || !periods.includes(yearNumber)) {
+  const countriesPeriods = await fetchCountriesPeriodsMap();
+  const periods = countriesPeriods[country];
+  if (
+    !periods?.length ||
+    !Number.isFinite(yearNumber) ||
+    !periods.includes(yearNumber)
+  ) {
     notFound();
   }
 

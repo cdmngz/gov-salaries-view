@@ -36,16 +36,31 @@ function normalizeYears(input: unknown): number[] {
   return [];
 }
 
-const fetchAvailableCountriesInternal = cache(async () => {
+const fetchCountriesIndexInternal = cache(async () => {
   const url = buildFetchPath(["index.json"]);
-  const countriesYearsList = await fetchJson<
-    components["schemas"]["CountriesYears"]
-  >(url, "fetchAvailableCountries: failed");
-  return Object.keys(countriesYearsList) as CountryCode[];
+  return fetchJson<components["schemas"]["CountriesYears"]>(
+    url,
+    "fetchAvailableCountries: failed"
+  );
+});
+
+const fetchCountriesPeriodsMapInternal = cache(async () => {
+  const countriesYearsList = await fetchCountriesIndexInternal();
+  return Object.fromEntries(
+    Object.entries(countriesYearsList).map(([country, years]) => [
+      country,
+      normalizeYears(years),
+    ])
+  ) as Record<CountryCode, number[]>;
 });
 
 export async function fetchAvailableCountries() {
-  return fetchAvailableCountriesInternal();
+  const countriesYearsList = await fetchCountriesIndexInternal();
+  return Object.keys(countriesYearsList) as CountryCode[];
+}
+
+export async function fetchCountriesPeriodsMap() {
+  return fetchCountriesPeriodsMapInternal();
 }
 
 const fetchCountryPeriodsInternal = cache(async (country: CountryCode) => {
@@ -58,7 +73,8 @@ const fetchCountryPeriodsInternal = cache(async (country: CountryCode) => {
 });
 
 export async function fetchCountryPeriods(country: CountryCode) {
-  return fetchCountryPeriodsInternal(country);
+  const countriesPeriods = await fetchCountriesPeriodsMapInternal();
+  return countriesPeriods[country] ?? fetchCountryPeriodsInternal(country);
 }
 
 export function buildDataUrls(
