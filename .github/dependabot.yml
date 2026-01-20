@@ -5,23 +5,14 @@ updates:
     schedule:
       interval: "daily"
       time: "00:00"
-
     groups:
-      major-deps:
-        applies-to: version-updates
+      all-major-updates:
         update-types:
           - "major"
-        patterns:
-          - "*"
-
-      minor-patch-deps:
-        applies-to: version-updates
+      all-minor-updates:
         update-types:
           - "minor"
           - "patch"
-        patterns:
-          - "*"
-
     open-pull-requests-limit: 10
     commit-message:
       prefix: "deps"
