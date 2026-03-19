@@ -60,7 +60,7 @@ export default function SearchableCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between bg-card border-none shadow-none text-sm"
+          className="h-9 w-full justify-between rounded-full border-0 bg-transparent px-3 text-sm shadow-none hover:bg-transparent"
         >
           {selected ? (
             selected.label
@@ -71,7 +71,7 @@ export default function SearchableCombobox({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[200px] p-0 max-h-96 overflow-y-auto">
+      <PopoverContent className="w-[240px] rounded-2xl border-border/70 p-0 max-h-96 overflow-y-auto shadow-xl">
         <Command>
           <CommandInput placeholder={searchConfig?.placeholder ?? "Search"} />
           <CommandEmpty>

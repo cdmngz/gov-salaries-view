@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { type PropsWithChildren, Suspense } from "react";
 import "./globals.css";
 
@@ -17,10 +17,21 @@ import {
   SITE_NAME,
 } from "@/lib/seo";
 
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "600", "700", "800"],
+const openSans = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Inter/Inter-VariableFont_opsz,wght.ttf",
+      style: "normal",
+      weight: "100 900",
+    },
+    {
+      path: "../../public/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf",
+      style: "italic",
+      weight: "100 900",
+    },
+  ],
   variable: "--font-open-sans",
+  display: "swap",
 });
 
 const baseUrl = new URL(serverEnv.WEB_URL);
