@@ -25,7 +25,7 @@ export default function ThemeToggle() {
       <Button
         variant="outline"
         size="icon"
-        className="relative bg-card border-none shadow-none"
+        className="relative rounded-full border border-border/70 bg-background/80 shadow-none backdrop-blur-sm"
         disabled
       >
         <SunIcon className="size-4" />
@@ -67,7 +67,7 @@ export default function ThemeToggle() {
         <Button
           variant="outline"
           size="icon"
-          className="relative bg-card border-none shadow-none"
+          className="relative rounded-full border border-border/70 bg-background/80 shadow-none backdrop-blur-sm"
           aria-label="Toggle theme"
         >
           {icon}

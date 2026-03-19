@@ -2,6 +2,7 @@
 
 "use client";
 
+import { CalendarRange, Coins, Languages, MapPinned } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
@@ -31,6 +32,9 @@ type Props = {
   defaultYear: number;
 };
 
+const triggerClassName =
+  "h-11 min-w-[110px] rounded-full border-border/70 bg-background/80 px-4 text-sm shadow-none backdrop-blur-sm";
+
 export default function HeaderControlsClient({
   country,
   currency,
@@ -46,8 +50,9 @@ export default function HeaderControlsClient({
   const currencyCodes = useMemo(() => {
     const set = new Set<string>();
     if (baseCurrency) set.add(baseCurrency.toUpperCase());
-    if (rates?.rates)
+    if (rates?.rates) {
       Object.keys(rates.rates).forEach((c) => set.add(c.toUpperCase()));
+    }
     return Array.from(set).sort();
   }, [baseCurrency, rates]);
 
@@ -76,10 +81,12 @@ export default function HeaderControlsClient({
   const currentCurrency: string = useMemo(() => {
     const q = (searchParams.get("currency") || "").toUpperCase();
     if (q && currencyCodes.includes(q)) return q;
-    if (currency && currencyCodes.includes(currency.toUpperCase()))
+    if (currency && currencyCodes.includes(currency.toUpperCase())) {
       return currency.toUpperCase();
-    if (baseCurrency && currencyCodes.includes(baseCurrency.toUpperCase()))
+    }
+    if (baseCurrency && currencyCodes.includes(baseCurrency.toUpperCase())) {
       return baseCurrency.toUpperCase();
+    }
     return DEFAULT_CURRENCY;
   }, [searchParams, currencyCodes, currency, baseCurrency]);
 
@@ -152,26 +159,32 @@ export default function HeaderControlsClient({
   );
 
   return (
-    <div className="flex items-center flex-wrap justify-center gap-2 sm:gap-3">
-      <SearchableCombobox
-        value={country}
-        onChange={(val) => {
-          const qs = searchParams?.toString() ?? "";
-          router.push(`/${val}/${defaultYear}${qs ? `?${qs}` : ""}`);
-        }}
-        placeholder="Country"
-        options={countryOptions}
-        searchConfig={{
-          placeholder: "Search countries",
-          emptyMessage: "No countries found",
-        }}
-      />
+    <div className="flex flex-wrap items-center justify-center gap-2 rounded-[28px] border border-border/60 bg-card/70 p-2 shadow-lg shadow-black/5 backdrop-blur-md sm:gap-3">
+      <div className="flex min-w-[200px] items-center gap-2 rounded-full border border-border/60 bg-background/70 px-2 py-1 backdrop-blur-sm">
+        <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <MapPinned className="size-4" />
+        </span>
+        <SearchableCombobox
+          value={country}
+          onChange={(val) => {
+            const qs = searchParams?.toString() ?? "";
+            router.push(`/${val}/${defaultYear}${qs ? `?${qs}` : ""}`);
+          }}
+          placeholder="Country"
+          options={countryOptions}
+          searchConfig={{
+            placeholder: "Search countries",
+            emptyMessage: "No countries found",
+          }}
+        />
+      </div>
 
       <Select
         value={currentLang}
         onValueChange={(val) => updateQuery({ lang: val })}
       >
-        <SelectTrigger className="text-sm bg-card border-none shadow-none">
+        <SelectTrigger className={triggerClassName}>
+          <Languages className="size-4 text-muted-foreground" />
           <SelectValue placeholder="Lang" />
         </SelectTrigger>
         <SelectContent>
@@ -187,7 +200,8 @@ export default function HeaderControlsClient({
         value={currentCurrency}
         onValueChange={(val) => updateQuery({ currency: val })}
       >
-        <SelectTrigger className="text-sm bg-card border-none shadow-none">
+        <SelectTrigger className={triggerClassName}>
+          <Coins className="size-4 text-muted-foreground" />
           <SelectValue placeholder="Currency" />
         </SelectTrigger>
         <SelectContent>
@@ -206,7 +220,8 @@ export default function HeaderControlsClient({
           router.push(`/${country}/${val}${qs ? `?${qs}` : ""}`);
         }}
       >
-        <SelectTrigger className="text-sm bg-card border-none shadow-none">
+        <SelectTrigger className={triggerClassName}>
+          <CalendarRange className="size-4 text-muted-foreground" />
           <SelectValue placeholder="Year" />
         </SelectTrigger>
         <SelectContent>
