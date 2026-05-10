@@ -73,8 +73,8 @@ export function DataTable({
   }, [pageSizeChoice, filteredLen, table]);
 
   return (
-    <div className="space-y-2 bg-card p-8 overflow-auto">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+    <div className="space-y-3 overflow-x-auto rounded-xl bg-card p-3 sm:p-6 lg:p-8">
+      <div className="flex flex-col items-stretch gap-2 lg:flex-row lg:items-center">
         <Input
           className="w-full sm:max-w-xs"
           placeholder="Filter countries"
@@ -87,7 +87,7 @@ export function DataTable({
           aria-label="Filter countries"
         />
 
-        <div className="flex w-full flex-wrap justify-end items-center gap-4">
+        <div className="flex w-full flex-wrap items-center gap-2 lg:justify-end">
           <div className="flex flex-wrap gap-4">
             {(["executiveRange", "restRange"] as const).map((columnId) => (
               <WingFilterDropdown
@@ -102,7 +102,7 @@ export function DataTable({
           <ColumnsDropdown table={table} />
         </div>
       </div>
-      <RangeLegend counts={legendCounts} className="justify-end" />
+      <RangeLegend counts={legendCounts} className="justify-start lg:justify-end" />
 
       <div className="rounded-md border">
         <UITable>
@@ -172,13 +172,13 @@ export function DataTable({
         </UITable>
       </div>
 
-      <div className="flex flex-wrap justify-between items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="text-xs text-muted-foreground">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount() || 1} • {filteredLen} rows
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <label htmlFor="rows-per-page" className="text-xs">
             Rows per page
           </label>

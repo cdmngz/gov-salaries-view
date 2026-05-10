@@ -53,8 +53,8 @@ export default function ClientView({
         {TEXT_TRANSLATION["stats"][lang]} 📊
       </h1>
 
-      <Tabs defaultValue="map-2d">
-        <TabsList className="flex w-full gap-4 bg-background">
+      <Tabs defaultValue="map-2d" className="space-y-4">
+        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 bg-background p-1 sm:grid-cols-3 sm:gap-3">
           {[
             { tab: "map-2d", label: "World Political Map" },
             { tab: "map-3d", label: "3D World Map" },
@@ -63,14 +63,14 @@ export default function ClientView({
             <TabsTrigger
               key={tab}
               value={tab}
-              className=" cursor-pointer select-none shadow-none data-[state=active]:shadow-none data-[state=active]:bg-card"
+              className="cursor-pointer select-none rounded-md px-3 py-2 text-sm shadow-none data-[state=active]:bg-card data-[state=active]:shadow-none"
             >
               {label}
             </TabsTrigger>
           ))}
         </TabsList>
         <TabsContent value="map-2d" className="flex justify-center">
-          <div className="w-3xl">
+          <div className="w-full max-w-5xl">
             <WorldPoliticalMap
               data={data}
               lang={lang}
@@ -79,7 +79,7 @@ export default function ClientView({
           </div>
         </TabsContent>
         <TabsContent value="map-3d" className="flex justify-center">
-          <div className="w-3xl">
+          <div className="w-full max-w-5xl">
             <GlobeMap3D data={data} lang={lang} legendCounts={legendCounts} />
           </div>
         </TabsContent>
