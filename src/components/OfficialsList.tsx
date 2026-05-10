@@ -112,7 +112,7 @@ function OfficialCard({
 
   return (
     <li className="h-full">
-      <Card className="group h-full border-border/70 bg-background/80 py-0 shadow-sm shadow-black/5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/10 dark:bg-card/80">
+      <Card className="group h-full overflow-hidden border-border/70 bg-linear-to-br from-background/95 via-background/90 to-primary/5 py-0 shadow-sm shadow-black/5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-black/10 dark:from-card/95 dark:to-primary/10">
         <CardContent className="flex h-full flex-col items-center gap-4 p-5 text-center">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary/15 to-transparent blur-xl" />
@@ -375,7 +375,7 @@ export default function OfficialsList({
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 lg:justify-end">
+          <div className="top-2 z-10 flex flex-wrap gap-2 rounded-2xl border border-border/60 bg-background/80 p-1 backdrop-blur supports-[backdrop-filter]:bg-background/65 lg:sticky lg:justify-end">
             <button
               onClick={() => setShowInfo(!showInfo)}
               className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/75 px-4 py-2 text-xs font-medium transition hover:bg-secondary"
