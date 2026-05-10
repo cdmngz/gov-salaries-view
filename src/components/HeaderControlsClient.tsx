@@ -33,7 +33,7 @@ type Props = {
 };
 
 const triggerClassName =
-  "h-11 min-w-[110px] rounded-full border-border/70 bg-background/80 px-4 text-sm shadow-none backdrop-blur-sm";
+  "h-11 w-full rounded-full border-border/70 bg-background/80 px-4 text-sm shadow-none backdrop-blur-sm sm:min-w-[120px] sm:w-auto";
 
 export default function HeaderControlsClient({
   country,
@@ -159,8 +159,8 @@ export default function HeaderControlsClient({
   );
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 rounded-[28px] border border-border/60 bg-card/70 p-2 shadow-lg shadow-black/5 backdrop-blur-md sm:gap-3">
-      <div className="flex min-w-[200px] items-center gap-2 rounded-full border border-border/60 bg-background/70 px-2 py-1 backdrop-blur-sm">
+    <div className="flex w-full flex-col items-stretch gap-2 rounded-[28px] border border-border/60 bg-card/70 p-2 shadow-lg shadow-black/5 backdrop-blur-md sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3">
+      <div className="flex w-full items-center gap-2 rounded-full border border-border/60 bg-background/70 px-2 py-1 backdrop-blur-sm sm:min-w-[240px] sm:flex-1">
         <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
           <MapPinned className="size-4" />
         </span>
@@ -179,61 +179,69 @@ export default function HeaderControlsClient({
         />
       </div>
 
-      <Select
-        value={currentLang}
-        onValueChange={(val) => updateQuery({ lang: val })}
-      >
-        <SelectTrigger className={triggerClassName}>
-          <Languages className="size-4 text-muted-foreground" />
-          <SelectValue placeholder="Lang" />
-        </SelectTrigger>
-        <SelectContent>
-          {languageOptions.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="w-full sm:w-auto">
+        <Select
+          value={currentLang}
+          onValueChange={(val) => updateQuery({ lang: val })}
+        >
+          <SelectTrigger className={triggerClassName}>
+            <Languages className="size-4 text-muted-foreground" />
+            <SelectValue placeholder="Lang" />
+          </SelectTrigger>
+          <SelectContent>
+            {languageOptions.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-      <Select
-        value={currentCurrency}
-        onValueChange={(val) => updateQuery({ currency: val })}
-      >
-        <SelectTrigger className={triggerClassName}>
-          <Coins className="size-4 text-muted-foreground" />
-          <SelectValue placeholder="Currency" />
-        </SelectTrigger>
-        <SelectContent>
-          {currencyOptions.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="w-full sm:w-auto">
+        <Select
+          value={currentCurrency}
+          onValueChange={(val) => updateQuery({ currency: val })}
+        >
+          <SelectTrigger className={triggerClassName}>
+            <Coins className="size-4 text-muted-foreground" />
+            <SelectValue placeholder="Currency" />
+          </SelectTrigger>
+          <SelectContent>
+            {currencyOptions.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-      <Select
-        value={String(defaultYear)}
-        onValueChange={(val) => {
-          const qs = searchParams?.toString() ?? "";
-          router.push(`/${country}/${val}${qs ? `?${qs}` : ""}`);
-        }}
-      >
-        <SelectTrigger className={triggerClassName}>
-          <CalendarRange className="size-4 text-muted-foreground" />
-          <SelectValue placeholder="Year" />
-        </SelectTrigger>
-        <SelectContent>
-          {yearOptions.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="w-full sm:w-auto">
+        <Select
+          value={String(defaultYear)}
+          onValueChange={(val) => {
+            const qs = searchParams?.toString() ?? "";
+            router.push(`/${country}/${val}${qs ? `?${qs}` : ""}`);
+          }}
+        >
+          <SelectTrigger className={triggerClassName}>
+            <CalendarRange className="size-4 text-muted-foreground" />
+            <SelectValue placeholder="Year" />
+          </SelectTrigger>
+          <SelectContent>
+            {yearOptions.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-      <ThemeToggle />
+      <div className="flex justify-end sm:justify-start">
+        <ThemeToggle />
+      </div>
     </div>
   );
 }
