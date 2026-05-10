@@ -17,10 +17,10 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description ISO country code (alpha-2). */
-                    code: string;
-                    /** @description Calendar year of the data. */
-                    year: number;
+                    /** @description ISO 3166-1 alpha-2 country code. */
+                    code: components["parameters"]["CountryCodePathParam"];
+                    /** @description Calendar year of the data snapshot. */
+                    year: components["parameters"]["YearPathParam"];
                 };
                 cookie?: never;
             };
@@ -69,10 +69,10 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description ISO country code (alpha-2). */
-                    code: string;
-                    /** @description Calendar year of the data. */
-                    year: number;
+                    /** @description ISO 3166-1 alpha-2 country code. */
+                    code: components["parameters"]["CountryCodePathParam"];
+                    /** @description Calendar year of the data snapshot. */
+                    year: components["parameters"]["YearPathParam"];
                 };
                 cookie?: never;
             };
@@ -121,8 +121,8 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description ISO country code (alpha-2). */
-                    code: string;
+                    /** @description ISO 3166-1 alpha-2 country code. */
+                    code: components["parameters"]["CountryCodePathParam"];
                 };
                 cookie?: never;
             };
@@ -253,8 +253,8 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description Calendar year of the data. */
-                    year: number;
+                    /** @description Calendar year of the data snapshot. */
+                    year: components["parameters"]["YearPathParam"];
                 };
                 cookie?: never;
             };
@@ -299,8 +299,8 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description Calendar year of the data. */
-                    year: number;
+                    /** @description Calendar year of the data snapshot. */
+                    year: components["parameters"]["YearPathParam"];
                 };
                 cookie?: never;
             };
@@ -710,7 +710,12 @@ export interface components {
         WorldYears: number[];
     };
     responses: never;
-    parameters: never;
+    parameters: {
+        /** @description ISO 3166-1 alpha-2 country code. */
+        CountryCodePathParam: string;
+        /** @description Calendar year of the data snapshot. */
+        YearPathParam: number;
+    };
     requestBodies: never;
     headers: never;
     pathItems: never;
