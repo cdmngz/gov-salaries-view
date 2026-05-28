@@ -77,17 +77,17 @@ export function WingFilterDropdown({
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 bg-card px-3 py-2 text-left shadow-none "
+          className="flex h-9 min-w-0 w-full items-center justify-between gap-2 bg-card px-3 py-2 text-left shadow-none sm:w-auto"
         >
-          <span className="flex items-center gap-2 text-[0.65rem] font-medium uppercase tracking-wide">
+          <span className="flex min-w-0 items-center gap-2 text-[0.65rem] font-medium uppercase tracking-wide">
             <Indicator />
-            {columnLabel}
+            <span className="truncate">{columnLabel}</span>
           </span>
           <ChevronDown className="h-4 w-4 opacity-60" aria-hidden />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-64">
+      <DropdownMenuContent align="end" className="w-[min(22rem,92vw)] sm:w-64">
         <DropdownMenuLabel className="text-xs text-muted-foreground">
           Political alignment
         </DropdownMenuLabel>
