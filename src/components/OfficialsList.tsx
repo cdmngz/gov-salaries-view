@@ -162,9 +162,9 @@ function OfficialCard({
 
           <div className="mt-auto grid w-full gap-2 rounded-2xl border border-border/60 bg-secondary/40 p-3 text-left backdrop-blur-sm">
             {official.salary?.gross && (
-              <div className="flex items-center justify-between gap-3 text-sm">
+              <div className="flex items-start justify-between gap-3 text-sm">
                 <span className="text-muted-foreground">Gross salary</span>
-                <span className="font-semibold tracking-tight">
+                <span className="min-w-0 flex-1 break-words text-right font-semibold tracking-tight leading-tight">
                   {formatCurrency(
                     convert(
                       official.salary.gross,
@@ -179,9 +179,9 @@ function OfficialCard({
             )}
 
             {official.budget && (
-              <div className="flex items-center justify-between gap-3 text-sm">
+              <div className="flex items-start justify-between gap-3 text-sm">
                 <span className="text-muted-foreground">Budget</span>
-                <span className="font-semibold tracking-tight">
+                <span className="min-w-0 flex-1 break-words text-right font-semibold tracking-tight leading-tight">
                   {formatCurrency(
                     convert(official.budget, baseCurrency, currency, rates.rates),
                     currency
