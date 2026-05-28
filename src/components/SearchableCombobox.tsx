@@ -60,14 +60,18 @@ export default function SearchableCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="h-9 w-full justify-between rounded-full border-0 bg-transparent px-3 text-sm shadow-none hover:bg-transparent"
+          className="h-9 w-full min-w-0 justify-between gap-2 rounded-full border-0 bg-transparent px-3 text-sm shadow-none hover:bg-transparent"
         >
           {selected ? (
-            selected.label
+            <span className="min-w-0 flex-1 truncate text-left">
+              {selected.label}
+            </span>
           ) : (
-            <span className="text-muted-foreground">{placeholder}</span>
+            <span className="min-w-0 flex-1 truncate text-left text-muted-foreground">
+              {placeholder}
+            </span>
           )}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
 
