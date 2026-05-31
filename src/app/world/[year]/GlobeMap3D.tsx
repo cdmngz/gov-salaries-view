@@ -60,6 +60,7 @@ export default function GlobeMap3D({
   const [rotation, setRotation] = useState<[number, number, number]>([
     0, -10, 0,
   ]);
+  const [isDragging, setIsDragging] = useState(false);
   const dragging = useRef(false);
   const last = useRef<{ x: number; y: number } | null>(null);
   const lastTap = useRef<{ x: number; y: number; ts: number } | null>(null);
@@ -68,22 +69,24 @@ export default function GlobeMap3D({
   const MIN_SCALE = 140;
   const MAX_SCALE = 800;
 
-  function onPointerDown(e: React.PointerEvent) {
+  function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
     dragging.current = true;
+    setIsDragging(true);
     last.current = { x: e.clientX, y: e.clientY };
-    (e.target as Element).setPointerCapture(e.pointerId);
+    e.currentTarget.setPointerCapture(e.pointerId);
   }
-  function onPointerMove(e: React.PointerEvent) {
+  function onPointerMove(e: React.PointerEvent<SVGSVGElement>) {
     if (!dragging.current || !last.current) return;
     const dx = e.clientX - last.current.x;
     const dy = e.clientY - last.current.y;
     last.current = { x: e.clientX, y: e.clientY };
     setRotation((r) => [r[0] + dx * 0.4, r[1] - dy * 0.4, 0]);
   }
-  function onPointerUp(e: React.PointerEvent) {
+  function onPointerUp(e: React.PointerEvent<SVGSVGElement>) {
     dragging.current = false;
+    setIsDragging(false);
     last.current = null;
-    (e.target as Element).releasePointerCapture(e.pointerId);
+    e.currentTarget.releasePointerCapture(e.pointerId);
 
     if (e.pointerType === "touch") {
       const now = Date.now();
@@ -109,56 +112,100 @@ export default function GlobeMap3D({
     );
   }
 
+  function resetView() {
+    setScale(240);
+    setRotation([0, -10, 0]);
+  }
+
   return (
-    <div className={cn("border-none bg-card p-3 shadow-none ", className)}>
-      <div className="mb-2 flex items-center justify-end gap-2">
-        <Button
-          aria-label="Zoom in"
-          className="bg-card shadow-none"
-          onClick={() => zoomBy(1.2)}
-          size="sm"
-          variant="outline"
-        >
-          +
-        </Button>
-        <Button
-          aria-label="Zoom out"
-          className="bg-card shadow-none"
-          onClick={() => zoomBy(1 / 1.2)}
-          size="sm"
-          variant="outline"
-        >
-          -
-        </Button>
-        <Button
-          aria-label="Reset view"
-          className="bg-card shadow-none"
-          size="sm"
-          onClick={() => {
-            setScale(240);
-            setRotation([0, -10, 0]);
-          }}
-          variant="outline"
-        >
-          Reset
-        </Button>
+    <div
+      className={cn(
+        "overflow-hidden rounded-[2rem] border border-border/70 bg-card/90 p-3 shadow-xl shadow-primary/5 backdrop-blur",
+        className
+      )}
+    >
+      <div className="flex flex-col gap-3 px-1 pb-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-base font-semibold tracking-tight">
+              Interactive 3D globe
+            </h2>
+            <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+              Default view
+            </span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Drag to rotate, double-tap or use the controls to zoom. Hover a
+            country to see its salary range.
+          </p>
+        </div>
+
+        <div className="flex w-full items-center gap-2 rounded-2xl border border-border/70 bg-background/70 p-1.5 sm:w-auto">
+          <Button
+            aria-label="Zoom in"
+            className="flex-1 border-primary/20 bg-card/80 text-base font-semibold shadow-sm hover:bg-primary/10 sm:flex-none"
+            onClick={() => zoomBy(1.2)}
+            size="sm"
+            variant="outline"
+          >
+            +
+          </Button>
+          <Button
+            aria-label="Zoom out"
+            className="flex-1 border-primary/20 bg-card/80 text-base font-semibold shadow-sm hover:bg-primary/10 sm:flex-none"
+            onClick={() => zoomBy(1 / 1.2)}
+            size="sm"
+            variant="outline"
+          >
+            -
+          </Button>
+          <Button
+            aria-label="Reset view"
+            className="flex-1 border-primary/20 bg-card/80 shadow-sm hover:bg-primary/10 sm:flex-none"
+            size="sm"
+            onClick={resetView}
+            variant="outline"
+          >
+            Reset
+          </Button>
+        </div>
       </div>
-      <TooltipProvider delayDuration={150}>
-        <ComposableMap
-          projection="geoOrthographic"
-          projectionConfig={{ rotate: rotation, scale }}
-          style={{ width: "100%", height: "auto", touchAction: "none" }}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-        >
-          <Sphere
-            id="globe-sphere"
-            fill={ocean}
-            stroke="#0ea5e9"
-            strokeWidth={0}
-          />
-          <Graticule stroke="#93c5fd" strokeOpacity={0.35} />
+
+      <div className="relative overflow-hidden rounded-3xl border border-sky-200/50 bg-[radial-gradient(circle_at_50%_18%,rgba(125,211,252,0.28),transparent_32%),linear-gradient(180deg,rgba(14,165,233,0.10),rgba(99,102,241,0.06))] p-2 sm:p-4 dark:border-sky-400/20">
+        <div className="pointer-events-none absolute inset-x-8 top-6 h-24 rounded-full bg-white/20 blur-3xl dark:bg-sky-300/10" />
+        <TooltipProvider delayDuration={150}>
+          <ComposableMap
+            projection="geoOrthographic"
+            projectionConfig={{ rotate: rotation, scale }}
+            className={cn(
+              "relative z-10 drop-shadow-2xl",
+              isDragging ? "cursor-grabbing" : "cursor-grab"
+            )}
+            style={{ width: "100%", height: "auto", touchAction: "none" }}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={() => {
+              dragging.current = false;
+              setIsDragging(false);
+              last.current = null;
+            }}
+          >
+            <defs>
+              <radialGradient id="globe-ocean-gradient" cx="35%" cy="25%" r="75%">
+                <stop offset="0%" stopColor="#bae6fd" />
+                <stop offset="48%" stopColor={ocean} />
+                <stop offset="100%" stopColor="#1e3a8a" />
+              </radialGradient>
+            </defs>
+            <Sphere
+              id="globe-sphere"
+              fill="url(#globe-ocean-gradient)"
+              stroke="#38bdf8"
+              strokeOpacity={0.45}
+              strokeWidth={1.2}
+            />
+            <Graticule stroke="#dbeafe" strokeOpacity={0.42} />
 
           <Geographies geography={GEO_URL}>
             {({ geographies }: { geographies: CountryFeature[] }) => (
@@ -188,7 +235,7 @@ export default function GlobeMap3D({
                               fill,
                               stroke: "none",
                               outline: "none",
-                              cursor: "grab",
+                              cursor: isDragging ? "grabbing" : "grab",
                             },
                             hover: {
                               fill: fill.startsWith("#")
@@ -260,8 +307,12 @@ export default function GlobeMap3D({
             )}
           </Geographies>
         </ComposableMap>
-      </TooltipProvider>
-      <MapLegend counts={legendCounts} />
+        </TooltipProvider>
+      </div>
+
+      <div className="px-1 pt-1">
+        <MapLegend counts={legendCounts} />
+      </div>
     </div>
   );
 }
