@@ -33,7 +33,7 @@ type Props = {
 };
 
 const triggerClassName =
-  "h-11 w-full rounded-full border-border/70 bg-background/80 px-4 text-sm shadow-none backdrop-blur-sm sm:min-w-[120px] sm:w-auto";
+  "h-10 w-full rounded-full border-0 bg-muted/55 px-4 text-sm shadow-none transition hover:bg-muted/80 sm:min-w-[116px] sm:w-auto";
 
 export default function HeaderControlsClient({
   country,
@@ -159,9 +159,9 @@ export default function HeaderControlsClient({
   );
 
   return (
-    <div className="flex w-full flex-col items-stretch gap-2 rounded-[28px] border border-border/60 bg-card/70 p-2 shadow-lg shadow-black/5 backdrop-blur-md sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3">
-      <div className="flex w-full items-center gap-2 rounded-full border border-border/60 bg-background/70 px-2 py-1 backdrop-blur-sm sm:min-w-[240px] sm:flex-1">
-        <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+    <div className="flex w-full flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
+      <div className="flex w-full items-center gap-2 rounded-full bg-muted/55 px-2 py-1 transition hover:bg-muted/80 sm:min-w-[240px] sm:flex-1 lg:flex-none">
+        <span className="flex size-8 items-center justify-center rounded-full text-muted-foreground">
           <MapPinned className="size-4" />
         </span>
         <SearchableCombobox
