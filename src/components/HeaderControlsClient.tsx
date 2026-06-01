@@ -33,7 +33,7 @@ type Props = {
 };
 
 const triggerClassName =
-  "h-10 w-full rounded-full border-0 bg-muted/55 px-4 text-sm shadow-none transition hover:bg-muted/80 sm:min-w-[116px] sm:w-auto";
+  "h-9 w-full rounded-full border-0 bg-muted/55 px-3.5 text-sm shadow-none transition hover:bg-muted/80 sm:min-w-[112px] sm:w-auto [&>svg:first-child]:mr-1 [&>svg:last-child]:ml-2";
 
 export default function HeaderControlsClient({
   country,
@@ -160,8 +160,8 @@ export default function HeaderControlsClient({
 
   return (
     <div className="flex w-full flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
-      <div className="flex w-full items-center gap-2 rounded-full bg-muted/55 px-2 py-1 transition hover:bg-muted/80 sm:min-w-[240px] sm:flex-1 lg:flex-none">
-        <span className="flex size-8 items-center justify-center rounded-full text-muted-foreground">
+      <div className="flex h-9 w-full items-center gap-1.5 rounded-full bg-muted/55 py-1 pl-2 pr-1 transition hover:bg-muted/80 sm:w-[210px] sm:flex-none lg:w-[220px]">
+        <span className="flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground">
           <MapPinned className="size-4" />
         </span>
         <SearchableCombobox
@@ -176,6 +176,8 @@ export default function HeaderControlsClient({
             placeholder: "Search countries",
             emptyMessage: "No countries found",
           }}
+          triggerClassName="h-8 px-2 pr-2"
+          contentClassName="w-[220px]"
         />
       </div>
 
