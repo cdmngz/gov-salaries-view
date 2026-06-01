@@ -37,6 +37,8 @@ type Props = {
   placeholder: string;
   options: Option[];
   searchConfig?: SearchConfig;
+  triggerClassName?: string;
+  contentClassName?: string;
 };
 
 export default function SearchableCombobox({
@@ -45,6 +47,8 @@ export default function SearchableCombobox({
   placeholder,
   options,
   searchConfig,
+  triggerClassName,
+  contentClassName,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -60,7 +64,10 @@ export default function SearchableCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="h-9 w-full min-w-0 justify-between gap-2 rounded-full border-0 bg-transparent px-3 text-sm shadow-none hover:bg-transparent"
+          className={cn(
+            "h-9 w-full min-w-0 justify-between gap-2 rounded-full border-0 bg-transparent px-3 text-sm shadow-none hover:bg-transparent",
+            triggerClassName
+          )}
         >
           {selected ? (
             <span className="min-w-0 flex-1 truncate text-left">
@@ -71,11 +78,16 @@ export default function SearchableCombobox({
               {placeholder}
             </span>
           )}
-          <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-1 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[240px] rounded-2xl border-border/70 p-0 max-h-96 overflow-y-auto shadow-xl">
+      <PopoverContent
+        className={cn(
+          "max-h-96 w-[240px] overflow-y-auto rounded-2xl border-border/70 p-0 shadow-xl",
+          contentClassName
+        )}
+      >
         <Command>
           <CommandInput placeholder={searchConfig?.placeholder ?? "Search"} />
           <CommandEmpty>
@@ -93,7 +105,7 @@ export default function SearchableCombobox({
               >
                 <Check
                   className={cn(
-                    "mr-2 h-4 w-4",
+                    "mr-2 size-4 shrink-0",
                     opt.value === value ? "opacity-100" : "opacity-0"
                   )}
                 />
