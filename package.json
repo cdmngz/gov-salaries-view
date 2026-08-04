@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "cross-env NEXT_PUBLIC_GIT_VERSION=$(git describe --tags --abbrev=0) next build",
+    "build": "cross-env NEXT_PUBLIC_GIT_VERSION=$(git describe --tags --always --dirty) next build",
     "generate:types": "openapi-typescript https://raw.githubusercontent.com/cdmngz/gov-salaries-data/main/openapi/openapi.yaml -o src/types/openapi.d.ts",
     "start": "next start",
     "lint": "eslint .",
@@ -75,7 +75,6 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.61.1",
     "vite": "^8.0.16",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.9"
   },
   "packageManager": "pnpm@10.25.0"

@@ -30,10 +30,10 @@ export async function generateMetadata({
     return {};
   }
 
-  const first = [...periods].sort((a, b) => a - b)[0];
+  const latest = Math.max(...periods);
   const seoDetails = buildCountrySeo({
     country,
-    year: String(first),
+    year: String(latest),
     lang: DEFAULT_LANG,
   });
 
@@ -83,6 +83,6 @@ export default async function CountryIndex({
     notFound();
   }
 
-  const first = [...periods].sort((a, b) => a - b)[0];
-  redirect(`/${country}/${first}`);
+  const latest = Math.max(...periods);
+  redirect(`/${country}/${latest}`);
 }
