@@ -73,21 +73,21 @@ export default function ClientView({
   const [before = "", after = ""] = FOOTER_MESSAGE[lang].split("data");
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
       <Card className="overflow-hidden border-border/70 bg-linear-to-br from-background via-background to-primary/5 py-0 shadow-xl shadow-black/5">
-        <CardContent className="relative p-6 sm:p-8 lg:p-10">
+        <CardContent className="relative p-5 sm:p-6 lg:p-8">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-linear-to-r from-primary/12 via-transparent to-sky-500/10 blur-3xl" />
-          <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl space-y-4">
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl space-y-3">
               <div className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-medium text-primary">
                 <Sparkles className="size-3.5" />
                 Modernized salary explorer
               </div>
               <div className="space-y-3">
-                <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
                   {TITLE_PREFIX[lang]} {countryName}
                 </h1>
-                <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+                <p className="max-w-2xl text-xs leading-5 text-muted-foreground sm:text-sm">
                   Browse public compensation data in a cleaner, more visual view
                   with faster scanning, clearer party filters, and denser cards.
                 </p>
@@ -107,28 +107,28 @@ export default function ClientView({
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[420px]">
-              <div className="rounded-2xl border border-border/60 bg-background/80 p-4 backdrop-blur-sm">
+              <div className="rounded-2xl border border-border/60 bg-background/80 p-3 backdrop-blur-sm">
                 <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
                   <Layers3 className="size-3.5" />
                   Sections
                 </div>
-                <p className="text-2xl font-semibold tracking-tight">{sections.length}</p>
+                <p className="text-xl font-semibold tracking-tight">{sections.length}</p>
               </div>
-              <div className="rounded-2xl border border-border/60 bg-background/80 p-4 backdrop-blur-sm">
+              <div className="rounded-2xl border border-border/60 bg-background/80 p-3 backdrop-blur-sm">
                 <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
                   <Globe2 className="size-3.5" />
                   Currency views
                 </div>
-                <p className="text-2xl font-semibold tracking-tight">
+                <p className="text-xl font-semibold tracking-tight">
                   {availableCurrencies.length}
                 </p>
               </div>
-              <div className="rounded-2xl border border-border/60 bg-background/80 p-4 backdrop-blur-sm">
+              <div className="rounded-2xl border border-border/60 bg-background/80 p-3 backdrop-blur-sm">
                 <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
                   <Wallet className="size-3.5" />
                   Total entries
                 </div>
-                <p className="text-2xl font-semibold tracking-tight">{totalOfficials}</p>
+                <p className="text-xl font-semibold tracking-tight">{totalOfficials}</p>
               </div>
             </div>
           </div>

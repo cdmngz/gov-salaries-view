@@ -112,8 +112,8 @@ function OfficialCard({
 
   return (
     <li className="h-full">
-      <Card className="group h-full overflow-hidden border-border/70 bg-linear-to-br from-background/95 via-background/90 to-primary/5 py-0 shadow-sm shadow-black/5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-black/10 dark:from-card/95 dark:to-primary/10">
-        <CardContent className="flex h-full flex-col items-center gap-4 p-5 text-center">
+      <Card className="group h-full overflow-hidden border-border/70 bg-linear-to-br from-background/95 via-background/90 to-primary/5 py-0 shadow-sm shadow-black/5 backdrop-blur-sm transition-all duration-300 hover:border-primary/20 hover:bg-primary/5 dark:from-card/95 dark:to-primary/10">
+        <CardContent className="flex h-full flex-col items-center gap-3 p-4 text-center">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary/15 to-transparent blur-xl" />
             <Portrait official={official} parties={parties} />
@@ -121,14 +121,14 @@ function OfficialCard({
 
           <div className="space-y-2">
             <div className="flex items-center justify-center gap-2">
-              <span className="max-w-56 text-sm font-semibold tracking-tight sm:text-base">
+              <span className="max-w-52 text-xs font-semibold tracking-tight sm:text-sm">
                 {official.name}
               </span>
               <SourcesButton sources={official.sources} />
             </div>
 
             {official.role && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {ROLE_TRANSLATIONS[official.role]?.[lang] ?? official.role}
               </p>
             )}
@@ -136,14 +136,14 @@ function OfficialCard({
 
           <div className="flex flex-wrap justify-center gap-2">
             {official.district && (
-              <span className="rounded-full border border-border/70 bg-secondary/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm">
+              <span className="rounded-full border border-border/70 bg-secondary/70 px-2.5 py-0.5 text-[11px] text-muted-foreground backdrop-blur-sm">
                 {official.district}
               </span>
             )}
 
             {official.party && partyMeta && (
               <span
-                className="rounded-full px-3 py-1 text-xs font-medium text-white shadow-sm"
+                className="rounded-full px-2.5 py-0.5 text-[11px] font-medium text-white shadow-sm"
                 style={{ backgroundColor: partyMeta.color }}
               >
                 {official.party} {rangeIcon ? `· ${rangeIcon}` : ""}
@@ -160,11 +160,11 @@ function OfficialCard({
             </div>
           )}
 
-          <div className="mt-auto grid w-full gap-2 rounded-2xl border border-border/60 bg-secondary/40 p-3 text-left backdrop-blur-sm">
+          <div className="mt-auto grid w-full min-w-0 gap-2 rounded-2xl border border-border/60 bg-secondary/35 p-2.5 text-left backdrop-blur-sm">
             {official.salary?.gross && (
-              <div className="flex items-start justify-between gap-3 text-sm">
+              <div className="grid min-w-0 grid-cols-[auto,minmax(0,1fr)] items-start gap-2 text-xs">
                 <span className="text-muted-foreground">Gross salary</span>
-                <span className="min-w-0 flex-1 break-words text-right font-semibold tracking-tight leading-tight">
+                <span className="min-w-0 overflow-hidden break-words text-right font-semibold leading-tight tracking-tight tabular-nums [overflow-wrap:anywhere]">
                   {formatCurrency(
                     convert(
                       official.salary.gross,
@@ -179,9 +179,9 @@ function OfficialCard({
             )}
 
             {official.budget && (
-              <div className="flex items-start justify-between gap-3 text-sm">
+              <div className="grid min-w-0 grid-cols-[auto,minmax(0,1fr)] items-start gap-2 text-xs">
                 <span className="text-muted-foreground">Budget</span>
-                <span className="min-w-0 flex-1 break-words text-right font-semibold tracking-tight leading-tight">
+                <span className="min-w-0 overflow-hidden break-words text-right font-semibold leading-tight tracking-tight tabular-nums [overflow-wrap:anywhere]">
                   {formatCurrency(
                     convert(official.budget, baseCurrency, currency, rates.rates),
                     currency
@@ -357,18 +357,18 @@ export default function OfficialsList({
 
   return (
     <Card className="w-full border-border/70 bg-card/75 py-0 shadow-lg shadow-black/5 backdrop-blur-md">
-      <CardContent className="space-y-6 p-5 sm:p-6 lg:p-8">
+      <CardContent className="space-y-5 p-4 sm:p-5 lg:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-3">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-medium text-primary">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-2.5 py-0.5 text-[11px] font-medium text-primary">
               <Landmark className="size-3.5" />
               {title}
             </div>
             <div>
-              <h3 className="text-2xl font-semibold tracking-tight">
+              <h3 className="text-xl font-semibold tracking-tight">
                 {officials.length} officials in this section
               </h3>
-              <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+              <p className="mt-1 max-w-2xl text-xs text-muted-foreground">
                 Explore current salaries, roles, parties, and district details in
                 a denser, easier-to-scan layout.
               </p>
@@ -396,30 +396,30 @@ export default function OfficialsList({
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-4 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border/60 bg-background/70 p-3 backdrop-blur-sm">
             <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
               <Users className="size-3.5" />
               Visible cards
             </div>
-            <p className="text-2xl font-semibold tracking-tight">
+            <p className="text-xl font-semibold tracking-tight">
               {visibleOfficials.length}
             </p>
           </div>
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-4 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border/60 bg-background/70 p-3 backdrop-blur-sm">
             <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
               <Sparkles className="size-3.5" />
               With party data
             </div>
-            <p className="text-2xl font-semibold tracking-tight">
+            <p className="text-xl font-semibold tracking-tight">
               {stats.withParty}
             </p>
           </div>
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-4 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border/60 bg-background/70 p-3 backdrop-blur-sm">
             <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
               <Sparkles className="size-3.5" />
               With salary data
             </div>
-            <p className="text-2xl font-semibold tracking-tight">
+            <p className="text-xl font-semibold tracking-tight">
               {stats.withSalary}
             </p>
           </div>
@@ -439,7 +439,7 @@ export default function OfficialsList({
                   >
                     <div className="mb-3 flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-sm font-semibold tracking-tight">
+                        <p className="text-xs font-semibold tracking-tight">
                           {group.label}
                         </p>
                         <p className="mt-1 text-xs text-muted-foreground">

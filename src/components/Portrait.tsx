@@ -37,6 +37,18 @@ function ribbonAccessory() {
   return <path d="M18 48 Q35 38 52 48" stroke="#cf2f2f" strokeWidth="3" fill="none" />;
 }
 
+const genderPalette = (gender?: string) => {
+  if (gender === "F") {
+    return { hair: "#4a2a1a", skin: "#ffd9bf", accent: "#c85a7b" };
+  }
+
+  if (gender === "M") {
+    return { hair: "#151515", skin: "#f3c7a6", accent: "#4361a8" };
+  }
+
+  return { hair: "#2f241f", skin: "#ffe0bd", accent: "#6b7280" };
+};
+
 const generateAvatar = (official: Official, color = "#333"): AvatarDefinition => {
   if (official.name === "Javier Milei" && official.party === "LLA") {
     return {
@@ -46,13 +58,14 @@ const generateAvatar = (official: Official, color = "#333"): AvatarDefinition =>
   }
 
   const isFemale = official.gender === "F";
+  const palette = genderPalette(official.gender);
   const roleType = roleTag(official.role);
 
   const hairVariant = (() => {
     if (roleType === "royalty") return isFemale ? "hair3" : "hair4";
     if (roleType === "deputy") return isFemale ? "hair3" : "hair5";
     if (roleType === "head") return isFemale ? "hair3" : "hair6";
-    if (isFemale) return "hair3";
+    if (isFemale) return "hair4";
     if (official.gender === "M") return "hair5";
     return "hair6";
   })();
@@ -60,7 +73,7 @@ const generateAvatar = (official: Official, color = "#333"): AvatarDefinition =>
   const suitColor = (() => {
     if (roleType === "royalty") return "#5a3d0f";
     if (roleType === "deputy") return "#3c4b63";
-    return color;
+    return isFemale ? palette.accent : color;
   })();
 
   const accessory = (() => {
@@ -70,14 +83,16 @@ const generateAvatar = (official: Official, color = "#333"): AvatarDefinition =>
   })();
 
   return {
-    hair: (props) => hairVariants[hairVariant]({ ...props, fill: "#121212" }),
+    hair: (props) => hairVariants[hairVariant]({ ...props, fill: palette.hair }),
     clothes: (props) => clothesVariants["clothes-formal"]({ ...props, fill: suitColor }),
     accessory,
   };
 };
 
 export default function Portrait({ official, parties }: { official: Official; parties?: components["schemas"]["Parties"] }) {
-  const size = 28;
+  const size = 30;
+  const palette = genderPalette(official.gender);
+  const isFemale = official.gender === "F";
 
   const { hair: Hair, clothes: Clothes, accessory: Accessory } = generateAvatar(
     official,
@@ -94,7 +109,16 @@ export default function Portrait({ official, parties }: { official: Official; pa
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
     >
-      <circle cx="35" cy="30" r="25" fill="#ffe0bd" />
+      <circle cx="35" cy="30" r="25" fill={palette.skin} />
+      {isFemale ? (
+        <>
+          <circle cx="18" cy="34" r="2" fill={palette.accent} />
+          <circle cx="52" cy="34" r="2" fill={palette.accent} />
+          <path d="M28 46 Q35 50 42 46" stroke={palette.accent} strokeWidth="2" fill="none" />
+        </>
+      ) : (
+        <path d="M27 43 Q35 46 43 43" stroke="#7a4a36" strokeWidth="1.5" fill="none" />
+      )}
       {Accessory ? <Accessory /> : null}
       <Hair />
       <Clothes />
