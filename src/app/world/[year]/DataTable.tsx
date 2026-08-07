@@ -3,6 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -65,6 +66,8 @@ export function DataTable({
   });
 
   const filteredLen = table.getFilteredRowModel().rows.length;
+  const countryFilter =
+    (table.getColumn("countryName")?.getFilterValue() as string) ?? "";
 
   useEffect(() => {
     const size = pageSizeChoice === "all" ? filteredLen : pageSizeChoice;
@@ -75,17 +78,33 @@ export function DataTable({
   return (
     <div className="space-y-3 overflow-x-auto rounded-xl bg-card p-3 sm:p-6 lg:p-8">
       <div className="flex flex-col items-stretch gap-2 lg:flex-row lg:items-center">
-        <Input
-          className="w-full sm:max-w-xs"
-          placeholder="Filter countries"
-          value={
-            (table.getColumn("countryName")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(e) =>
-            table.getColumn("countryName")?.setFilterValue(e.target.value)
-          }
-          aria-label="Filter countries"
-        />
+        <div className="relative w-full sm:max-w-xs">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <Input
+            className="w-full pl-9 pr-9"
+            placeholder="Filter countries"
+            value={countryFilter}
+            onChange={(e) =>
+              table.getColumn("countryName")?.setFilterValue(e.target.value)
+            }
+            aria-label="Filter countries"
+          />
+          {countryFilter && (
+            <button
+              type="button"
+              onClick={() =>
+                table.getColumn("countryName")?.setFilterValue("")
+              }
+              className="absolute right-2 top-1/2 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              aria-label="Clear country filter"
+            >
+              <X className="size-3.5" aria-hidden="true" />
+            </button>
+          )}
+        </div>
 
         <div className="flex w-full flex-wrap items-center gap-2 lg:justify-end">
           <div className="flex flex-wrap gap-4">
@@ -175,7 +194,8 @@ export function DataTable({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="text-xs text-muted-foreground">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount() || 1} • {filteredLen} rows
+          {table.getPageCount() || 1} • {filteredLen}{" "}
+          {filteredLen === 1 ? "row" : "rows"}
         </div>
 
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
