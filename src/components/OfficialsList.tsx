@@ -2,7 +2,13 @@
 
 "use client";
 
-import { Filter, Layers3, Landmark, Sparkles, Users } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Landmark,
+  Sparkles,
+  Users,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 
 import Portrait from "@/components/Portrait";
@@ -20,6 +26,7 @@ type Parties = components["schemas"]["Parties"];
 type Rates = components["schemas"]["WorldRates"];
 type Party = components["schemas"]["Official"]["party"];
 type RangeGroupId = (typeof rangeGroups)[number]["id"];
+type DataFilter = "party" | "salary";
 
 const NO_PARTY_KEY = "__NO_PARTY__";
 const NO_PARTY_LABEL = "No party";
@@ -30,24 +37,21 @@ const rangeGroups = [
     label: "Left",
     summary: "Progressive and center-left parties",
     inGroup: (r: number) => r >= 1 && r <= 2,
-    className:
-      "border-rose-200/70 bg-linear-to-br from-rose-500/10 via-background to-rose-50/60 dark:border-rose-500/20 dark:from-rose-500/15 dark:to-rose-950/30",
+    className: "border-rose-200/70 bg-rose-500/5 dark:border-rose-500/20",
   },
   {
     id: "3",
     label: "Center",
     summary: "Centrist, independent, and uncategorized",
     inGroup: (r: number) => r === 3,
-    className:
-      "border-amber-200/70 bg-linear-to-br from-amber-400/10 via-background to-amber-50/60 dark:border-amber-500/20 dark:from-amber-400/10 dark:to-amber-950/30",
+    className: "border-amber-200/70 bg-amber-400/5 dark:border-amber-500/20",
   },
   {
     id: "4-5",
     label: "Right",
     summary: "Center-right and conservative parties",
     inGroup: (r: number) => r >= 4 && r <= 5,
-    className:
-      "border-sky-200/70 bg-linear-to-br from-sky-500/10 via-background to-sky-50/60 dark:border-sky-500/20 dark:from-sky-500/15 dark:to-sky-950/30",
+    className: "border-sky-200/70 bg-sky-500/5 dark:border-sky-500/20",
   },
 ] as const;
 
@@ -68,7 +72,7 @@ function getPartyRange(party: Party, parties?: Parties): number | null {
 function filterByRangeId(
   officials: Official[],
   parties: Parties | undefined,
-  rangeId: RangeGroupId
+  rangeId: RangeGroupId,
 ) {
   const group = rangeGroups.find((g) => g.id === rangeId);
   if (!group) return [];
@@ -81,7 +85,7 @@ function filterByRangeId(
 function filterByRangeIdAllowNull(
   officials: Official[],
   parties: Parties | undefined,
-  rangeId: RangeGroupId
+  rangeId: RangeGroupId,
 ) {
   const group = rangeGroups.find((g) => g.id === rangeId);
   if (!group) return [];
@@ -112,12 +116,9 @@ function OfficialCard({
 
   return (
     <li className="h-full">
-      <Card className="group h-full overflow-hidden border-border/70 bg-linear-to-br from-background/95 via-background/90 to-primary/5 py-0 shadow-none backdrop-blur-sm transition-colors duration-300 hover:border-primary/20 hover:bg-primary/5 hover:shadow-none dark:from-card/95 dark:to-primary/10">
+      <Card className="group h-full overflow-hidden py-0 shadow-none transition-colors hover:border-primary/30">
         <CardContent className="flex h-full flex-col items-center gap-3 p-4 text-center">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary/15 to-transparent blur-xl" />
-            <Portrait official={official} parties={parties} />
-          </div>
+          <Portrait official={official} parties={parties} />
 
           <div className="space-y-2">
             <div className="flex items-center justify-center gap-2">
@@ -160,19 +161,21 @@ function OfficialCard({
             </div>
           )}
 
-          <div className="mt-auto grid w-full min-w-0 gap-2 rounded-2xl border border-border/60 bg-secondary/35 p-2.5 text-left backdrop-blur-sm">
+          <div className="mt-auto grid w-full min-w-0 gap-2 rounded-lg bg-secondary/50 p-2.5 text-left">
             {official.salary?.gross && (
               <div className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-2 gap-y-1 text-xs">
-                <span className="shrink-0 text-muted-foreground">Gross salary</span>
+                <span className="shrink-0 text-muted-foreground">
+                  Gross salary
+                </span>
                 <span className="min-w-0 max-w-full break-words text-right font-semibold leading-tight tracking-tight tabular-nums [overflow-wrap:anywhere]">
                   {formatCurrency(
                     convert(
                       official.salary.gross,
                       baseCurrency,
                       currency,
-                      rates.rates
+                      rates.rates,
                     ),
-                    currency
+                    currency,
                   )}
                 </span>
               </div>
@@ -183,8 +186,13 @@ function OfficialCard({
                 <span className="shrink-0 text-muted-foreground">Budget</span>
                 <span className="min-w-0 max-w-full break-words text-right font-semibold leading-tight tracking-tight tabular-nums [overflow-wrap:anywhere]">
                   {formatCurrency(
-                    convert(official.budget, baseCurrency, currency, rates.rates),
-                    currency
+                    convert(
+                      official.budget,
+                      baseCurrency,
+                      currency,
+                      rates.rates,
+                    ),
+                    currency,
                   )}
                 </span>
               </div>
@@ -212,7 +220,7 @@ function PartyChipsMulti({
           "rounded-full border px-3 py-1.5 text-xs font-medium transition-all duration-200",
           allSelected
             ? "border-primary/80 bg-primary text-primary-foreground shadow-sm"
-            : "border-border/80 bg-background/70 text-foreground/80 hover:border-foreground/30 hover:bg-secondary"
+            : "border-border/80 bg-background/70 text-foreground/80 hover:border-foreground/30 hover:bg-secondary",
         )}
       >
         Show all parties
@@ -263,7 +271,7 @@ function PartyButtons({
               "rounded-full border px-3 py-1.5 text-xs font-medium text-nowrap transition-all duration-200",
               isActive
                 ? "border-transparent text-white shadow-md"
-                : "border-border/70 bg-background/75 hover:border-foreground/15 hover:bg-background"
+                : "border-border/70 bg-background/75 hover:border-foreground/15 hover:bg-background",
             )}
             style={
               isActive && party?.color
@@ -298,21 +306,21 @@ export default function OfficialsList({
   sectionKey: SectionKey;
   title: string;
 }) {
-  const showFilterButton =
+  const showPartyFilters =
     sectionKey !== "royalty" && sectionKey !== "executive";
 
   const [selectedParties, setSelectedParties] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
-  const [showFilters, setShowFilters] = useState(true);
   const [showInfo, setShowInfo] = useState(true);
+  const [dataFilters, setDataFilters] = useState<Set<DataFilter>>(new Set());
 
   const stats = useMemo(
     () => ({
       withParty: officials.filter((official) => official.party).length,
       withSalary: officials.filter((official) => official.salary?.gross).length,
     }),
-    [officials]
+    [officials],
   );
 
   const partyDistribution = useMemo(
@@ -333,7 +341,7 @@ export default function OfficialsList({
         data: filterByRangeId(officials, parties, "4-5"),
       },
     ],
-    [officials, parties]
+    [officials, parties],
   );
 
   const toggleParty = (p: string) => {
@@ -348,15 +356,36 @@ export default function OfficialsList({
     });
   };
 
+  const toggleDataFilter = (filter: DataFilter) => {
+    setDataFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(filter)) {
+        next.delete(filter);
+      } else {
+        next.add(filter);
+      }
+      return next;
+    });
+  };
+
   const visibleOfficials = useMemo(() => {
-    if (selectedParties.size === 0) return officials;
-    return officials.filter((o) =>
-      o.party ? selectedParties.has(o.party) : selectedParties.has(NO_PARTY_KEY)
-    );
-  }, [officials, selectedParties]);
+    return officials.filter((official) => {
+      const matchesPartySelection =
+        selectedParties.size === 0 ||
+        (official.party
+          ? selectedParties.has(official.party)
+          : selectedParties.has(NO_PARTY_KEY));
+      const matchesPartyData =
+        !dataFilters.has("party") || Boolean(official.party);
+      const matchesSalaryData =
+        !dataFilters.has("salary") || Boolean(official.salary?.gross);
+
+      return matchesPartySelection && matchesPartyData && matchesSalaryData;
+    });
+  }, [dataFilters, officials, selectedParties]);
 
   return (
-    <Card className="w-full border-border/70 bg-card/75 py-0 shadow-lg shadow-black/5 backdrop-blur-md">
+    <Card className="w-full py-0 shadow-none">
       <CardContent className="space-y-5 p-4 sm:p-5 lg:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-3">
@@ -369,43 +398,47 @@ export default function OfficialsList({
                 {officials.length} officials in this section
               </h3>
               <p className="mt-1 max-w-2xl text-xs text-muted-foreground">
-                Explore current salaries, roles, parties, and district details in
-                a denser, easier-to-scan layout.
+                Explore current salaries, roles, parties, and district details
+                in a denser, easier-to-scan layout.
               </p>
             </div>
           </div>
 
-          <div className="top-2 z-10 flex flex-wrap gap-2 rounded-2xl border border-border/60 bg-background/80 p-1 backdrop-blur supports-[backdrop-filter]:bg-background/65 lg:sticky lg:justify-end">
-            <button
-              onClick={() => setShowInfo(!showInfo)}
-              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/75 px-4 py-2 text-xs font-medium transition hover:bg-secondary"
-            >
-              <Layers3 className="size-3.5" />
-              {showInfo ? "Collapse section" : "Expand section"}
-            </button>
-            {showFilterButton && (
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/75 px-4 py-2 text-xs font-medium transition hover:bg-secondary"
-              >
-                <Filter className="size-3.5" />
-                {showFilters ? "Hide filters" : "Show filters"}
-              </button>
+          <button
+            type="button"
+            onClick={() => setShowInfo(!showInfo)}
+            className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            aria-expanded={showInfo}
+            aria-label={showInfo ? "Collapse section" : "Expand section"}
+            title={showInfo ? "Collapse section" : "Expand section"}
+          >
+            {showInfo ? (
+              <ChevronUp className="size-4" />
+            ) : (
+              <ChevronDown className="size-4" />
             )}
-          </div>
+          </button>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-3 backdrop-blur-sm">
+          <div className="rounded-lg border border-border/60 p-3">
             <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
               <Users className="size-3.5" />
-              Visible cards
+              Total Officials
             </div>
             <p className="text-xl font-semibold tracking-tight">
-              {visibleOfficials.length}
+              {officials.length}
             </p>
           </div>
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-3 backdrop-blur-sm">
+          <button
+            type="button"
+            onClick={() => toggleDataFilter("party")}
+            aria-pressed={dataFilters.has("party")}
+            className={cn(
+              "rounded-lg border border-border/60 p-3 text-left transition-colors hover:bg-secondary/60",
+              dataFilters.has("party") && "border-primary bg-primary/8",
+            )}
+          >
             <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
               <Sparkles className="size-3.5" />
               With party data
@@ -413,8 +446,16 @@ export default function OfficialsList({
             <p className="text-xl font-semibold tracking-tight">
               {stats.withParty}
             </p>
-          </div>
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-3 backdrop-blur-sm">
+          </button>
+          <button
+            type="button"
+            onClick={() => toggleDataFilter("salary")}
+            aria-pressed={dataFilters.has("salary")}
+            className={cn(
+              "rounded-lg border border-border/60 p-3 text-left transition-colors hover:bg-secondary/60",
+              dataFilters.has("salary") && "border-primary bg-primary/8",
+            )}
+          >
             <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
               <Sparkles className="size-3.5" />
               With salary data
@@ -422,20 +463,17 @@ export default function OfficialsList({
             <p className="text-xl font-semibold tracking-tight">
               {stats.withSalary}
             </p>
-          </div>
+          </button>
         </div>
 
         {showInfo && (
           <>
-            {showFilters && showFilterButton && (
+            {showPartyFilters && (
               <div className="grid gap-3 xl:grid-cols-3">
                 {partyDistribution.map((group) => (
                   <div
                     key={group.id}
-                    className={cn(
-                      "rounded-2xl border p-4 shadow-sm shadow-black/5 backdrop-blur-sm",
-                      group.className
-                    )}
+                    className={cn("rounded-lg border p-4", group.className)}
                   >
                     <div className="mb-3 flex items-start justify-between gap-3">
                       <div>
@@ -453,8 +491,7 @@ export default function OfficialsList({
 
                     <PartyButtons
                       className={cn(
-                        group.id === "4-5" &&
-                          "justify-start xl:justify-end"
+                        group.id === "4-5" && "justify-start xl:justify-end",
                       )}
                       data={group.data}
                       onToggle={toggleParty}
@@ -466,7 +503,7 @@ export default function OfficialsList({
               </div>
             )}
 
-            {showFilters && showFilterButton && (
+            {showPartyFilters && (
               <PartyChipsMulti
                 selected={selectedParties}
                 onReset={() => setSelectedParties(new Set())}
