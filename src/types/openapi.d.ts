@@ -485,13 +485,13 @@ export interface components {
              * @example USD
              */
             baseCurrency: string;
-            royalty?: components["schemas"]["Official"][];
-            executive?: components["schemas"]["Official"][];
-            ministers?: components["schemas"]["Official"][];
-            deputies?: components["schemas"]["Official"][];
-            senate?: components["schemas"]["Official"][];
-            officials?: components["schemas"]["Official"][];
-            parties?: components["schemas"]["Parties"];
+            royalty: components["schemas"]["Official"][];
+            executive: components["schemas"]["Official"][];
+            ministers: components["schemas"]["Official"][];
+            deputies: components["schemas"]["Official"][];
+            senate: components["schemas"]["Official"][];
+            officials: components["schemas"]["Official"][];
+            parties: components["schemas"]["Parties"];
         };
         /** @enum {string} */
         CoreCurrencyCode: "USD" | "EUR" | "GBP" | "JPY" | "CNY" | "AED" | "RUB" | "SEK" | "MXN" | "BRL" | "BTC" | "ETH";
