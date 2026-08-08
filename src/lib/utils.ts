@@ -31,12 +31,45 @@ export function formatCurrency(
   currency: string
 ): string {
   if (!amount) return "";
+
+  const compactSuffixes = ["", "K", "M", "B", "T", "Q"];
+  const absoluteAmount = Math.abs(amount);
+  let magnitude = Math.min(
+    Math.floor(Math.log10(absoluteAmount) / 3),
+    compactSuffixes.length - 1
+  );
+  let displayedAmount = amount;
+
+  if (magnitude > 0) {
+    displayedAmount = Math.round(amount / 1000 ** magnitude);
+
+    // Promote values that round to the next group (for example, 999,999 to 1M).
+    if (
+      Math.abs(displayedAmount) === 1000 &&
+      magnitude < compactSuffixes.length - 1
+    ) {
+      magnitude += 1;
+      displayedAmount = Math.round(amount / 1000 ** magnitude);
+    }
+  }
+
   const formatter = new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: currency ?? DEFAULT_CURRENCY,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: magnitude > 0 ? 0 : 2,
   });
-  return formatter.format(amount);
+  const suffix = compactSuffixes[magnitude];
+
+  if (!suffix) return formatter.format(displayedAmount);
+
+  const parts = formatter.formatToParts(displayedAmount);
+  const lastNumberPart = parts.findLastIndex((part) =>
+    ["integer", "group", "decimal", "fraction"].includes(part.type)
+  );
+
+  return parts
+    .map((part, index) => `${part.value}${index === lastNumberPart ? suffix : ""}`)
+    .join("");
 }
 
 export function sortBy<T>(array: T[], key: keyof T, locale = "en"): T[] {
