@@ -112,7 +112,7 @@ function OfficialCard({
 
   return (
     <li className="h-full">
-      <Card className="group h-full overflow-hidden border-border/70 bg-linear-to-br from-background/95 via-background/90 to-primary/5 py-0 shadow-sm shadow-black/5 backdrop-blur-sm transition-all duration-300 hover:border-primary/20 hover:bg-primary/5 dark:from-card/95 dark:to-primary/10">
+      <Card className="group h-full overflow-hidden border-border/70 bg-linear-to-br from-background/95 via-background/90 to-primary/5 py-0 shadow-none backdrop-blur-sm transition-colors duration-300 hover:border-primary/20 hover:bg-primary/5 hover:shadow-none dark:from-card/95 dark:to-primary/10">
         <CardContent className="flex h-full flex-col items-center gap-3 p-4 text-center">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary/15 to-transparent blur-xl" />
@@ -162,9 +162,9 @@ function OfficialCard({
 
           <div className="mt-auto grid w-full min-w-0 gap-2 rounded-2xl border border-border/60 bg-secondary/35 p-2.5 text-left backdrop-blur-sm">
             {official.salary?.gross && (
-              <div className="grid min-w-0 grid-cols-[auto,minmax(0,1fr)] items-start gap-2 text-xs">
-                <span className="text-muted-foreground">Gross salary</span>
-                <span className="min-w-0 overflow-hidden break-words text-right font-semibold leading-tight tracking-tight tabular-nums [overflow-wrap:anywhere]">
+              <div className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-2 gap-y-1 text-xs">
+                <span className="shrink-0 text-muted-foreground">Gross salary</span>
+                <span className="min-w-0 max-w-full break-words text-right font-semibold leading-tight tracking-tight tabular-nums [overflow-wrap:anywhere]">
                   {formatCurrency(
                     convert(
                       official.salary.gross,
@@ -179,9 +179,9 @@ function OfficialCard({
             )}
 
             {official.budget && (
-              <div className="grid min-w-0 grid-cols-[auto,minmax(0,1fr)] items-start gap-2 text-xs">
-                <span className="text-muted-foreground">Budget</span>
-                <span className="min-w-0 overflow-hidden break-words text-right font-semibold leading-tight tracking-tight tabular-nums [overflow-wrap:anywhere]">
+              <div className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-2 gap-y-1 text-xs">
+                <span className="shrink-0 text-muted-foreground">Budget</span>
+                <span className="min-w-0 max-w-full break-words text-right font-semibold leading-tight tracking-tight tabular-nums [overflow-wrap:anywhere]">
                   {formatCurrency(
                     convert(official.budget, baseCurrency, currency, rates.rates),
                     currency
