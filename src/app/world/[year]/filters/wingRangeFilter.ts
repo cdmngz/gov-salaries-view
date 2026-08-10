@@ -1,4 +1,4 @@
-import type { FilterFn } from "@tanstack/react-table";
+import type { FilterFn, StockFeatures } from "@tanstack/react-table";
 import {
   WING_FILTER_VALUE_TO_RANGE,
   isRangeValue,
@@ -15,7 +15,11 @@ const isWingFilterSelection = (v: unknown): v is WingFilterSelection =>
       typeof x === "string" && x in WING_FILTER_VALUE_TO_RANGE
   );
 
-export const wingRangeFilter: FilterFn<Row> = (row, columnId, filterValue) => {
+export const wingRangeFilter: FilterFn<StockFeatures, Row> = (
+  row,
+  columnId,
+  filterValue
+) => {
   if (!isWingFilterSelection(filterValue) || filterValue.length === 0)
     return true;
 

@@ -21,7 +21,7 @@ import {
   type WingFilterValue,
   type Row,
 } from "@/app/world/[year]/table/types";
-import type { Column } from "@tanstack/react-table";
+import type { LegacyColumn as Column } from "@tanstack/react-table/legacy";
 
 interface WingFilterDropdownProps {
   column: Column<Row, unknown> | undefined;

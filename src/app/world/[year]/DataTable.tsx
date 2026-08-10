@@ -15,17 +15,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
+  type ColumnFiltersState,
+  type ColumnVisibilityState,
+  type SortingState,
+} from "@tanstack/react-table";
+import {
+  type LegacyColumnDef as ColumnDef,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+  useLegacyTable,
+} from "@tanstack/react-table/legacy";
 import { cn } from "@/lib/utils";
 import { RangeLegend, type LegendCounts } from "./parts/RangeLegend";
 import { WingFilterDropdown } from "./filters/WingFilterDropdown";
@@ -44,10 +46,11 @@ export function DataTable({
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({});
   const [pageSizeChoice, setPageSizeChoice] = useState<number | "all">(25);
 
-  const table = useReactTable({
+  const table = useLegacyTable({
     data,
     columns,
     state: { sorting, columnFilters, columnVisibility },
@@ -60,7 +63,7 @@ export function DataTable({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     initialState: {
-      pagination: { pageSize: 25 },
+      pagination: { pageIndex: 0, pageSize: 25 },
       sorting: [{ id: "total", desc: true }],
     },
   });
