@@ -45,6 +45,12 @@ export default function ClientView({
   );
   const legendCounts = useMemo(() => rangeCounts(data), [data]);
 
+  const selectedView = ["map-3d", "map-2d", "table"].includes(
+    searchParams.get("view") ?? ""
+  )
+    ? searchParams.get("view")!
+    : "map-3d";
+
   const openCountry = ({ iso_a2 }: { iso_a2?: string }) => {
     if (!iso_a2) return;
 
@@ -57,23 +63,31 @@ export default function ClientView({
   const viewTabs = [
     {
       tab: "map-3d",
-      label: "3D World Map",
-      description: "Interactive globe",
+      label: "Globe",
       Icon: Globe2,
     },
     {
       tab: "map-2d",
-      label: "World Political Map",
-      description: "Flat country view",
+      label: "Map",
       Icon: MapPinned,
     },
     {
       tab: "table",
-      label: "Stats Table",
-      description: "Sortable records",
+      label: "Table",
       Icon: Table2,
     },
   ];
+
+  const selectView = (view: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (view === "map-3d") params.delete("view");
+    else params.set("view", view);
+
+    const query = params.toString();
+    router.replace(`${window.location.pathname}${query ? `?${query}` : ""}`, {
+      scroll: false,
+    });
+  };
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-4">
@@ -88,29 +102,21 @@ export default function ClientView({
           {countriesJson["world"].flag} {countriesJson["world"].names[lang]} -{" "}
           {TEXT_TRANSLATION["stats"][lang]} 📊
         </h1>
-        <p className="text-sm text-muted-foreground">
-          Start with the interactive globe, then switch to the political map or
-          table when you need more detail.
-        </p>
       </div>
 
-      <Tabs defaultValue="map-3d" className="space-y-5">
-        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-2xl border border-border/70 bg-card/80 p-1.5 shadow-sm shadow-primary/5 backdrop-blur sm:grid-cols-3">
-          {viewTabs.map(({ tab, label, description, Icon }) => (
+      <Tabs value={selectedView} onValueChange={selectView} className="space-y-5">
+        <TabsList
+          className="mx-auto grid h-10 w-full max-w-sm grid-cols-3 rounded-full bg-muted/60 p-1"
+          aria-label="Choose a data view"
+        >
+          {viewTabs.map(({ tab, label, Icon }) => (
             <TabsTrigger
               key={tab}
               value={tab}
-              className="group flex h-full cursor-pointer select-none items-center justify-start gap-3 rounded-xl border border-transparent px-4 py-3 text-left shadow-none transition-all hover:border-primary/20 hover:bg-primary/5 data-[state=active]:border-primary/25 data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-sm"
+              className="flex cursor-pointer select-none items-center justify-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground shadow-none transition-colors hover:text-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
             >
-              <span className="rounded-lg bg-muted p-2 text-muted-foreground transition-colors group-data-[state=active]:bg-primary group-data-[state=active]:text-primary-foreground">
-                <Icon className="size-4" aria-hidden="true" />
-              </span>
-              <span className="flex min-w-0 flex-col">
-                <span className="truncate text-sm font-semibold">{label}</span>
-                <span className="truncate text-xs font-normal text-muted-foreground group-data-[state=active]:text-primary/80">
-                  {description}
-                </span>
-              </span>
+              <Icon className="size-4" aria-hidden="true" />
+              <span>{label}</span>
             </TabsTrigger>
           ))}
         </TabsList>
