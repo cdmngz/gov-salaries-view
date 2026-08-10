@@ -84,7 +84,12 @@ const generateAvatar = (official: Official, color = "#333"): AvatarDefinition =>
 
   return {
     hair: (props) => hairVariants[hairVariant]({ ...props, fill: palette.hair }),
-    clothes: (props) => clothesVariants["clothes-formal"]({ ...props, fill: suitColor }),
+    clothes: (props) =>
+      clothesVariants[isFemale ? "clothes-blouse" : "clothes-formal"]({
+        ...props,
+        fill: suitColor,
+        accentColor: isFemale ? "#fff7fb" : props.accentColor,
+      }),
     accessory,
   };
 };

@@ -52,5 +52,3 @@ export const hairVariants = {
     />
   ),
 } as const;
-
-export type HairVariant = keyof typeof hairVariants;

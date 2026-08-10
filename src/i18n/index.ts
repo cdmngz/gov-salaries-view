@@ -10,14 +10,6 @@ export const TITLE_PREFIX: Translation = {
   de: "Gehälter der Regierung von",
 };
 
-export const DESCRIPTION_TEMPLATE: Translation = {
-  es: "Listado de sueldos del Gobierno de {{name}}, actualizado a {{date}}",
-  en: "A listing of Government salaries of {{name}}, updated {{date}}",
-  fr: "Liste des salaires du Gouvernement de {{name}}, mise à jour le {{date}}",
-  pt: "Lista de salários do Governo de {{name}}, atualizado em {{date}}",
-  de: "Liste der Gehälter der Regierung von {{name}}, aktualisiert am {{date}}",
-};
-
 // HEADER
 export const LANGUAGE_NAMES: Record<Language, Translation> = {
   en: {

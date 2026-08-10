@@ -25,7 +25,7 @@ type SearchConfig = {
   emptyMessage?: string;
 };
 
-export type Option = {
+type Option = {
   value: string;
   label: React.ReactNode;
   searchText: string;

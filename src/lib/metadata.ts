@@ -21,7 +21,7 @@ function buildPageUrl(path: string): string {
   return `${baseUrl}${path}`;
 }
 
-export function buildKeywordList(
+function buildKeywordList(
   ...extra: Array<string | string[] | null | undefined>
 ): string[] {
   const keywords = new Set<string>(SITE_KEYWORDS);
@@ -212,7 +212,7 @@ type StaticSeoDetails = {
   openGraphAlternateLocales: string[];
 };
 
-export function buildStaticSeo({
+function buildStaticSeo({
   path,
   title,
   description,

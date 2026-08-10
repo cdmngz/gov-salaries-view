@@ -16,8 +16,13 @@ import { SourcesButton } from "@/components/SourcesButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { ROLE_TRANSLATIONS } from "@/i18n/roles";
-import { DEFAULT_LANG } from "@/lib/constants";
 import { cn, convert, formatCurrency } from "@/lib/utils";
 import { SectionKey } from "@/types";
 import { components } from "@/types/openapi";
@@ -27,6 +32,7 @@ type Official = components["schemas"]["Official"];
 type Parties = components["schemas"]["Parties"];
 type Rates = components["schemas"]["WorldRates"];
 type Party = components["schemas"]["Official"]["party"];
+type PartyMetadata = components["schemas"]["Party"];
 type RangeGroupId = (typeof rangeGroups)[number]["id"];
 type DataFilter = "party" | "noParty" | "salary";
 
@@ -115,6 +121,11 @@ function OfficialCard({
   const partyMeta = official.party ? parties?.[official.party] : undefined;
   const r = getPartyRange(official.party, parties);
   const rangeIcon = typeof r === "number" ? rangeIcons[r] : undefined;
+  const localizedPartyName = partyMeta
+    ? ((partyMeta as PartyMetadata & Partial<Record<Language, string>>)[lang] ??
+      partyMeta.name)
+    : undefined;
+  const englishPartyName = partyMeta?.en ?? partyMeta?.name;
 
   return (
     <li className="min-w-56 flex-1 basis-56">
@@ -148,23 +159,41 @@ function OfficialCard({
             )}
 
             {official.party && partyMeta && (
-              <Badge
-                className="rounded-full border-transparent text-[11px] text-white"
-                style={{ backgroundColor: partyMeta.color }}
-              >
-                {official.party} {rangeIcon ? `· ${rangeIcon}` : ""}
-              </Badge>
+              <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge
+                      className="cursor-help rounded-full border-transparent text-[11px] text-white"
+                      style={{ backgroundColor: partyMeta.color }}
+                      tabIndex={0}
+                      aria-label={`${official.party}: ${localizedPartyName}`}
+                    >
+                      {official.party} {rangeIcon ? `· ${rangeIcon}` : ""}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-72 text-xs">
+                    <p className="font-semibold">{official.party}</p>
+                    {englishPartyName && (
+                      <p>
+                        <span className="text-muted-foreground">English:</span>{" "}
+                        {englishPartyName}
+                      </p>
+                    )}
+                    {localizedPartyName &&
+                      (lang !== "en" ||
+                        localizedPartyName !== englishPartyName) && (
+                        <p>
+                          <span className="text-muted-foreground">
+                            {lang.toUpperCase()}:
+                          </span>{" "}
+                          {localizedPartyName}
+                        </p>
+                      )}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </div>
-
-          {(partyMeta?.name || partyMeta?.[DEFAULT_LANG]) && (
-            <div className="space-y-1 text-xs text-muted-foreground">
-              {partyMeta?.name && <p>{partyMeta.name}</p>}
-              {partyMeta?.[DEFAULT_LANG] && (
-                <p className="font-light">{partyMeta[DEFAULT_LANG]}</p>
-              )}
-            </div>
-          )}
 
           <div className="mt-auto grid w-full min-w-0 gap-2 rounded-lg bg-secondary/50 p-2.5 text-left">
             {official.salary?.gross && (
@@ -430,105 +459,88 @@ export default function OfficialsList({
           </Button>
         </div>
 
-        <div className="space-y-3">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Officials
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            <div className="min-w-36 flex-1 rounded-lg border border-border/60 p-3">
-              <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                <Users className="size-3.5" />
-                Total Officials
-              </div>
-              <p className="text-xl font-semibold tracking-tight">
-                {officials.length}
-              </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-border/60 px-3 py-2">
+            <div className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+              <Users className="size-3.5" />
+              Total
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => toggleDataFilter("party")}
-              aria-pressed={dataFilters.has("party")}
-              className={cn(
-                "h-auto min-w-36 flex-1 flex-col items-start rounded-lg p-3 text-left whitespace-normal",
-                dataFilters.has("party") && "border-primary bg-primary/8",
-              )}
-            >
-              <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                <Sparkles className="size-3.5" />
-                With party data
-              </div>
-              <p className="text-xl font-semibold tracking-tight">
-                {stats.withParty}
-              </p>
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => toggleDataFilter("noParty")}
-              aria-pressed={dataFilters.has("noParty")}
-              className={cn(
-                "h-auto min-w-36 flex-1 flex-col items-start rounded-lg p-3 text-left whitespace-normal",
-                dataFilters.has("noParty") && "border-primary bg-primary/8",
-              )}
-            >
-              <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                <Users className="size-3.5" />
-                Without party data
-              </div>
-              <p className="text-xl font-semibold tracking-tight">
-                {stats.withoutParty}
-              </p>
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => toggleDataFilter("salary")}
-              aria-pressed={dataFilters.has("salary")}
-              className={cn(
-                "h-auto min-w-36 flex-1 flex-col items-start rounded-lg p-3 text-left whitespace-normal",
-                dataFilters.has("salary") && "border-primary bg-primary/8",
-              )}
-            >
-              <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                <Sparkles className="size-3.5" />
-                With salary data
-              </div>
-              <p className="text-xl font-semibold tracking-tight">
-                {stats.withSalary}
-              </p>
-            </Button>
+            <span className="text-sm font-semibold tabular-nums">
+              {officials.length}
+            </span>
           </div>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => toggleDataFilter("party")}
+            aria-pressed={dataFilters.has("party")}
+            className={cn(
+              "h-10 gap-2 rounded-lg px-3 text-xs",
+              dataFilters.has("party") && "border-primary bg-primary/8",
+            )}
+          >
+            <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+              <Sparkles className="size-3.5" />
+              Party
+            </span>
+            <span className="font-semibold tabular-nums">{stats.withParty}</span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => toggleDataFilter("noParty")}
+            aria-pressed={dataFilters.has("noParty")}
+            className={cn(
+              "h-10 gap-2 rounded-lg px-3 text-xs",
+              dataFilters.has("noParty") && "border-primary bg-primary/8",
+            )}
+          >
+            <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+              <Users className="size-3.5" />
+              No party
+            </span>
+            <span className="font-semibold tabular-nums">
+              {stats.withoutParty}
+            </span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => toggleDataFilter("salary")}
+            aria-pressed={dataFilters.has("salary")}
+            className={cn(
+              "h-10 gap-2 rounded-lg px-3 text-xs",
+              dataFilters.has("salary") && "border-primary bg-primary/8",
+            )}
+          >
+            <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+              <Sparkles className="size-3.5" />
+              Salary
+            </span>
+            <span className="font-semibold tabular-nums">
+              {stats.withSalary}
+            </span>
+          </Button>
         </div>
 
         {showInfo && (
           <>
             {showPartyFilters && (
-              <div className="space-y-3">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Parties
-                </h3>
-                <div className="flex flex-wrap gap-3">
+              <div className="space-y-2">
+                <div className="grid gap-2 xl:grid-cols-3">
                   {partyDistribution.map((group) => (
                     <div
                       key={group.id}
                       className={cn(
-                        "min-w-60 flex-1 basis-60 rounded-lg border p-4",
+                        "min-w-0 rounded-lg border p-2.5",
                         group.className,
                       )}
                     >
-                      <div className="mb-3 flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-xs font-semibold tracking-tight">
-                            {group.label}
-                          </p>
-                          <p className="mt-1 text-xs text-muted-foreground">
-                            {group.summary}
-                          </p>
-                        </div>
+                      <div className="mb-2 flex items-center justify-between gap-2">
+                        <p className="text-xs font-semibold">{group.label}</p>
                         <Badge
                           variant="outline"
-                          className="rounded-full bg-background"
+                          className="h-5 rounded-full bg-background px-1.5 text-[10px]"
                         >
                           {group.count}
                         </Badge>

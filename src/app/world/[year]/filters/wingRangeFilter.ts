@@ -1,4 +1,5 @@
-import type { FilterFn, StockFeatures } from "@tanstack/react-table";
+import type { FilterFn } from "@tanstack/react-table";
+import type { LegacyFeatures } from "@tanstack/react-table/legacy";
 import {
   WING_FILTER_VALUE_TO_RANGE,
   isRangeValue,
@@ -15,7 +16,7 @@ const isWingFilterSelection = (v: unknown): v is WingFilterSelection =>
       typeof x === "string" && x in WING_FILTER_VALUE_TO_RANGE
   );
 
-export const wingRangeFilter: FilterFn<StockFeatures, Row> = (
+export const wingRangeFilter: FilterFn<LegacyFeatures, Row> = (
   row,
   columnId,
   filterValue

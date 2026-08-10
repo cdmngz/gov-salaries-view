@@ -130,9 +130,6 @@ export default function GlobeMap3D({
             <h2 className="text-base font-semibold tracking-tight">
               Interactive 3D globe
             </h2>
-            <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
-              Default view
-            </span>
           </div>
           <p className="text-sm text-muted-foreground">
             Drag to rotate, double-tap or use the controls to zoom. Hover a

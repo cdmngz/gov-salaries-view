@@ -13,7 +13,7 @@ function isServer(): boolean {
   return typeof window === "undefined";
 }
 
-export function buildFetchPath(parts: string[]): string {
+function buildFetchPath(parts: string[]): string {
   const base = isServer() ? API_BASE_URL : API_PREFIX;
   return [base, ...parts].join("/");
 }
@@ -54,27 +54,8 @@ const fetchCountriesPeriodsMapInternal = cache(async () => {
   ) as Record<CountryCode, number[]>;
 });
 
-export async function fetchAvailableCountries() {
-  const countriesYearsList = await fetchCountriesIndexInternal();
-  return Object.keys(countriesYearsList) as CountryCode[];
-}
-
 export async function fetchCountriesPeriodsMap() {
   return fetchCountriesPeriodsMapInternal();
-}
-
-const fetchCountryPeriodsInternal = cache(async (country: CountryCode) => {
-  const url = buildFetchPath([country, "index.json"]);
-  const raw = await fetchJson<components["schemas"]["CountryYears"]>(
-    url,
-    `fetchCountryPeriods: ${country}`
-  );
-  return normalizeYears(raw);
-});
-
-export async function fetchCountryPeriods(country: CountryCode) {
-  const countriesPeriods = await fetchCountriesPeriodsMapInternal();
-  return countriesPeriods[country] ?? fetchCountryPeriodsInternal(country);
 }
 
 export function buildDataUrls(
@@ -184,10 +165,4 @@ export async function fetchWorldData(year: number): Promise<{
   rates: components["schemas"]["WorldRates"];
 }> {
   return fetchWorldDataInternal(year);
-}
-
-export async function fetchWorldRates(
-  year: number
-): Promise<components["schemas"]["WorldRates"]> {
-  return fetchWorldRatesInternal(year);
 }

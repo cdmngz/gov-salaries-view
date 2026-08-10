@@ -50,7 +50,7 @@ export const RANGE_LABELS: Record<RangeValue, string> = {
   5: "Right",
 };
 
-export function mostExtreme(values?: number[]) {
+function mostExtreme(values?: number[]) {
   if (!values?.length) return undefined;
   let e = values[0],
     dmax = Math.abs(e - 3);
@@ -64,7 +64,7 @@ export function mostExtreme(values?: number[]) {
   return (e >= 1 && e <= 5 ? e : undefined) as RangeValue | undefined;
 }
 
-export function rangeToWing(n?: RangeValue): Wing {
+function rangeToWing(n?: RangeValue): Wing {
   return n === 1
     ? "left"
     : n === 2

@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import { Globe2, MapPinned, Table2 } from "lucide-react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import countriesJson from "@/data/countries.json";
 import { TEXT_TRANSLATION } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
@@ -28,6 +28,7 @@ export default function ClientView({
   rates: components["schemas"]["WorldRates"];
 }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { year } = useParams<{ year: string }>();
   const currency = (
     searchParams.get("currency") ?? DEFAULT_CURRENCY
@@ -43,6 +44,15 @@ export default function ClientView({
     [currency, year, searchParams]
   );
   const legendCounts = useMemo(() => rangeCounts(data), [data]);
+
+  const openCountry = ({ iso_a2 }: { iso_a2?: string }) => {
+    if (!iso_a2) return;
+
+    const query = searchParams.toString();
+    router.push(
+      `/${iso_a2.toLowerCase()}/${year}${query ? `?${query}` : ""}`
+    );
+  };
 
   const viewTabs = [
     {
@@ -106,7 +116,12 @@ export default function ClientView({
         </TabsList>
         <TabsContent value="map-3d" className="flex justify-center">
           <div className="w-full">
-            <GlobeMap3D data={data} lang={lang} legendCounts={legendCounts} />
+            <GlobeMap3D
+              data={data}
+              lang={lang}
+              legendCounts={legendCounts}
+              onCountryClick={openCountry}
+            />
           </div>
         </TabsContent>
         <TabsContent value="map-2d" className="flex justify-center">
@@ -115,6 +130,7 @@ export default function ClientView({
               data={data}
               lang={lang}
               legendCounts={legendCounts}
+              onCountryClick={openCountry}
             />
           </div>
         </TabsContent>
