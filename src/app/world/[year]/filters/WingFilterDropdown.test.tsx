@@ -2,7 +2,7 @@
 
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import type { Column } from "@tanstack/react-table";
+import type { LegacyColumn as Column } from "@tanstack/react-table/legacy";
 import type { Row, WingFilterSelection } from "../table/types";
 import { WingFilterDropdown } from "./WingFilterDropdown";
 

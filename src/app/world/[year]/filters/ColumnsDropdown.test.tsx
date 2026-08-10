@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ColumnsDropdown } from "./ColumnsDropdown";
-import type { Table, Column } from "@tanstack/react-table";
+import type {
+  LegacyTable as Table,
+  LegacyColumn as Column,
+} from "@tanstack/react-table/legacy";
 import type { Row } from "../table/types";
 
 /**

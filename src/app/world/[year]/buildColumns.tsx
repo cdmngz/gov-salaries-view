@@ -1,6 +1,7 @@
 // src/app/world/[year]/buildColumns.tsx
 import Link from "next/link";
-import type { ColumnDef } from "@tanstack/react-table";
+import { sortFn_alphanumeric } from "@tanstack/react-table";
+import type { LegacyColumnDef as ColumnDef } from "@tanstack/react-table/legacy";
 import { formatCurrency } from "@/lib/utils";
 import { RangeDots } from "./parts/RangeDots";
 import type { Row } from "./table/types";
@@ -56,7 +57,7 @@ export function buildColumns(args: {
           </Link>
         );
       },
-      sortingFn: "alphanumeric",
+      sortFn: sortFn_alphanumeric,
     },
     {
       accessorKey: "executiveRange",

@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import type { Table } from "@tanstack/react-table";
+import type { LegacyTable as Table } from "@tanstack/react-table/legacy";
 
 export function ColumnsDropdown({ table }: { table: Table<Row> }) {
   return (
