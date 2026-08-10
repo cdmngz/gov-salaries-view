@@ -13,6 +13,8 @@ import { useMemo, useState } from "react";
 
 import Portrait from "@/components/Portrait";
 import { SourcesButton } from "@/components/SourcesButton";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ROLE_TRANSLATIONS } from "@/i18n/roles";
 import { DEFAULT_LANG } from "@/lib/constants";
@@ -26,7 +28,7 @@ type Parties = components["schemas"]["Parties"];
 type Rates = components["schemas"]["WorldRates"];
 type Party = components["schemas"]["Official"]["party"];
 type RangeGroupId = (typeof rangeGroups)[number]["id"];
-type DataFilter = "party" | "salary";
+type DataFilter = "party" | "noParty" | "salary";
 
 const NO_PARTY_KEY = "__NO_PARTY__";
 const NO_PARTY_LABEL = "No party";
@@ -115,7 +117,7 @@ function OfficialCard({
   const rangeIcon = typeof r === "number" ? rangeIcons[r] : undefined;
 
   return (
-    <li className="h-full">
+    <li className="min-w-56 flex-1 basis-56">
       <Card className="group h-full overflow-hidden py-0 shadow-none transition-colors hover:border-primary/30">
         <CardContent className="flex h-full flex-col items-center gap-3 p-4 text-center">
           <Portrait official={official} parties={parties} />
@@ -137,18 +139,21 @@ function OfficialCard({
 
           <div className="flex flex-wrap justify-center gap-2">
             {official.district && (
-              <span className="rounded-full border border-border/70 bg-secondary/70 px-2.5 py-0.5 text-[11px] text-muted-foreground backdrop-blur-sm">
+              <Badge
+                variant="secondary"
+                className="rounded-full text-[11px] font-normal text-muted-foreground"
+              >
                 {official.district}
-              </span>
+              </Badge>
             )}
 
             {official.party && partyMeta && (
-              <span
-                className="rounded-full px-2.5 py-0.5 text-[11px] font-medium text-white shadow-sm"
+              <Badge
+                className="rounded-full border-transparent text-[11px] text-white"
                 style={{ backgroundColor: partyMeta.color }}
               >
                 {official.party} {rangeIcon ? `· ${rangeIcon}` : ""}
-              </span>
+              </Badge>
             )}
           </div>
 
@@ -214,17 +219,18 @@ function PartyChipsMulti({
   const allSelected = selected.size === 0;
   return (
     <div className="flex flex-wrap gap-2 justify-center">
-      <button
+      <Button
+        type="button"
+        variant={allSelected ? "default" : "outline"}
+        size="sm"
         onClick={onReset}
         className={cn(
-          "rounded-full border px-3 py-1.5 text-xs font-medium transition-all duration-200",
-          allSelected
-            ? "border-primary/80 bg-primary text-primary-foreground shadow-sm"
-            : "border-border/80 bg-background/70 text-foreground/80 hover:border-foreground/30 hover:bg-secondary",
+          "rounded-full text-xs",
+          !allSelected && "text-foreground/80",
         )}
       >
         Show all parties
-      </button>
+      </Button>
     </div>
   );
 }
@@ -264,14 +270,17 @@ function PartyButtons({
             ? rangeIcons[party?.range]
             : undefined;
         return (
-          <button
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
             onClick={() => onToggle(partyKey)}
             key={partyKey}
             className={cn(
-              "rounded-full border px-3 py-1.5 text-xs font-medium text-nowrap transition-all duration-200",
+              "rounded-full text-xs",
               isActive
-                ? "border-transparent text-white shadow-md"
-                : "border-border/70 bg-background/75 hover:border-foreground/15 hover:bg-background",
+                ? "border-transparent text-white hover:text-white"
+                : "bg-background text-foreground",
             )}
             style={
               isActive && party?.color
@@ -280,7 +289,7 @@ function PartyButtons({
             }
           >
             {label} ({counts[partyKey]}) {rangeIcon}
-          </button>
+          </Button>
         );
       })}
     </div>
@@ -318,6 +327,7 @@ export default function OfficialsList({
   const stats = useMemo(
     () => ({
       withParty: officials.filter((official) => official.party).length,
+      withoutParty: officials.filter((official) => !official.party).length,
       withSalary: officials.filter((official) => official.salary?.gross).length,
     }),
     [officials],
@@ -362,6 +372,8 @@ export default function OfficialsList({
       if (next.has(filter)) {
         next.delete(filter);
       } else {
+        if (filter === "party") next.delete("noParty");
+        if (filter === "noParty") next.delete("party");
         next.add(filter);
       }
       return next;
@@ -377,37 +389,35 @@ export default function OfficialsList({
           : selectedParties.has(NO_PARTY_KEY));
       const matchesPartyData =
         !dataFilters.has("party") || Boolean(official.party);
+      const matchesMissingPartyData =
+        !dataFilters.has("noParty") || !official.party;
       const matchesSalaryData =
         !dataFilters.has("salary") || Boolean(official.salary?.gross);
 
-      return matchesPartySelection && matchesPartyData && matchesSalaryData;
+      return (
+        matchesPartySelection &&
+        matchesPartyData &&
+        matchesMissingPartyData &&
+        matchesSalaryData
+      );
     });
   }, [dataFilters, officials, selectedParties]);
 
   return (
     <Card className="w-full py-0 shadow-none">
       <CardContent className="space-y-5 p-4 sm:p-5 lg:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div className="space-y-3">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-2.5 py-0.5 text-[11px] font-medium text-primary">
-              <Landmark className="size-3.5" />
-              {title}
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold tracking-tight">
-                {officials.length} officials in this section
-              </h3>
-              <p className="mt-1 max-w-2xl text-xs text-muted-foreground">
-                Explore current salaries, roles, parties, and district details
-                in a denser, easier-to-scan layout.
-              </p>
-            </div>
-          </div>
+        <div className="flex items-start justify-between gap-4">
+          <h2 className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight">
+            <Landmark className="size-4 text-primary" />
+            {title}
+          </h2>
 
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             onClick={() => setShowInfo(!showInfo)}
-            className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground"
             aria-expanded={showInfo}
             aria-label={showInfo ? "Collapse section" : "Expand section"}
             title={showInfo ? "Collapse section" : "Expand section"}
@@ -417,89 +427,125 @@ export default function OfficialsList({
             ) : (
               <ChevronDown className="size-4" />
             )}
-          </button>
+          </Button>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded-lg border border-border/60 p-3">
-            <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <Users className="size-3.5" />
-              Total Officials
+        <div className="space-y-3">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Officials
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            <div className="min-w-36 flex-1 rounded-lg border border-border/60 p-3">
+              <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                <Users className="size-3.5" />
+                Total Officials
+              </div>
+              <p className="text-xl font-semibold tracking-tight">
+                {officials.length}
+              </p>
             </div>
-            <p className="text-xl font-semibold tracking-tight">
-              {officials.length}
-            </p>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => toggleDataFilter("party")}
+              aria-pressed={dataFilters.has("party")}
+              className={cn(
+                "h-auto min-w-36 flex-1 flex-col items-start rounded-lg p-3 text-left whitespace-normal",
+                dataFilters.has("party") && "border-primary bg-primary/8",
+              )}
+            >
+              <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                <Sparkles className="size-3.5" />
+                With party data
+              </div>
+              <p className="text-xl font-semibold tracking-tight">
+                {stats.withParty}
+              </p>
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => toggleDataFilter("noParty")}
+              aria-pressed={dataFilters.has("noParty")}
+              className={cn(
+                "h-auto min-w-36 flex-1 flex-col items-start rounded-lg p-3 text-left whitespace-normal",
+                dataFilters.has("noParty") && "border-primary bg-primary/8",
+              )}
+            >
+              <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                <Users className="size-3.5" />
+                Without party data
+              </div>
+              <p className="text-xl font-semibold tracking-tight">
+                {stats.withoutParty}
+              </p>
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => toggleDataFilter("salary")}
+              aria-pressed={dataFilters.has("salary")}
+              className={cn(
+                "h-auto min-w-36 flex-1 flex-col items-start rounded-lg p-3 text-left whitespace-normal",
+                dataFilters.has("salary") && "border-primary bg-primary/8",
+              )}
+            >
+              <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                <Sparkles className="size-3.5" />
+                With salary data
+              </div>
+              <p className="text-xl font-semibold tracking-tight">
+                {stats.withSalary}
+              </p>
+            </Button>
           </div>
-          <button
-            type="button"
-            onClick={() => toggleDataFilter("party")}
-            aria-pressed={dataFilters.has("party")}
-            className={cn(
-              "rounded-lg border border-border/60 p-3 text-left transition-colors hover:bg-secondary/60",
-              dataFilters.has("party") && "border-primary bg-primary/8",
-            )}
-          >
-            <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <Sparkles className="size-3.5" />
-              With party data
-            </div>
-            <p className="text-xl font-semibold tracking-tight">
-              {stats.withParty}
-            </p>
-          </button>
-          <button
-            type="button"
-            onClick={() => toggleDataFilter("salary")}
-            aria-pressed={dataFilters.has("salary")}
-            className={cn(
-              "rounded-lg border border-border/60 p-3 text-left transition-colors hover:bg-secondary/60",
-              dataFilters.has("salary") && "border-primary bg-primary/8",
-            )}
-          >
-            <div className="mb-2 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <Sparkles className="size-3.5" />
-              With salary data
-            </div>
-            <p className="text-xl font-semibold tracking-tight">
-              {stats.withSalary}
-            </p>
-          </button>
         </div>
 
         {showInfo && (
           <>
             {showPartyFilters && (
-              <div className="grid gap-3 xl:grid-cols-3">
-                {partyDistribution.map((group) => (
-                  <div
-                    key={group.id}
-                    className={cn("rounded-lg border p-4", group.className)}
-                  >
-                    <div className="mb-3 flex items-start justify-between gap-3">
-                      <div>
-                        <p className="text-xs font-semibold tracking-tight">
-                          {group.label}
-                        </p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {group.summary}
-                        </p>
-                      </div>
-                      <span className="rounded-full border border-border/60 bg-background/80 px-2.5 py-1 text-xs font-medium">
-                        {group.count}
-                      </span>
-                    </div>
-
-                    <PartyButtons
+              <div className="space-y-3">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Parties
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {partyDistribution.map((group) => (
+                    <div
+                      key={group.id}
                       className={cn(
-                        group.id === "4-5" && "justify-start xl:justify-end",
+                        "min-w-60 flex-1 basis-60 rounded-lg border p-4",
+                        group.className,
                       )}
-                      data={group.data}
-                      onToggle={toggleParty}
-                      parties={parties}
-                      selected={selectedParties}
-                    />
-                  </div>
-                ))}
+                    >
+                      <div className="mb-3 flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-xs font-semibold tracking-tight">
+                            {group.label}
+                          </p>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            {group.summary}
+                          </p>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className="rounded-full bg-background"
+                        >
+                          {group.count}
+                        </Badge>
+                      </div>
+
+                      <PartyButtons
+                        className={cn(
+                          group.id === "4-5" && "justify-start xl:justify-end",
+                        )}
+                        data={group.data}
+                        onToggle={toggleParty}
+                        parties={parties}
+                        selected={selectedParties}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -510,7 +556,7 @@ export default function OfficialsList({
               />
             )}
 
-            <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <ul className="flex flex-wrap gap-4">
               {visibleOfficials.map((o) => (
                 <OfficialCard
                   key={`${o.name}-${o.role}`}
@@ -523,6 +569,11 @@ export default function OfficialsList({
                 />
               ))}
             </ul>
+            {visibleOfficials.length === 0 && (
+              <p className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+                No officials match the selected filters.
+              </p>
+            )}
           </>
         )}
       </CardContent>

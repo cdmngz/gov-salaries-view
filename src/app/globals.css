@@ -139,10 +139,6 @@
   body {
     @apply min-h-screen bg-background text-foreground;
     font-family: var(--font-open-sans), Arial, sans-serif;
-    background-image:
-      radial-gradient(circle at top, color-mix(in oklab, var(--color-primary) 12%, transparent) 0, transparent 36%),
-      linear-gradient(180deg, color-mix(in oklab, var(--color-background) 98%, white 2%) 0%, var(--color-background) 100%);
-    background-attachment: fixed;
   }
 
   ::selection {
@@ -152,6 +148,6 @@
 
 @layer components {
   .surface-glass {
-    @apply border border-border/60 bg-background/70 backdrop-blur-md;
+    @apply border border-border/60 bg-background;
   }
 }
