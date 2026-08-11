@@ -49,6 +49,23 @@ const genderPalette = (gender?: string) => {
   return { hair: "#2f241f", skin: "#ffe0bd", accent: "#6b7280" };
 };
 
+type HairVariant = keyof typeof hairVariants;
+
+const pickHairVariant = (official: Official): HairVariant => {
+  const variants: HairVariant[] =
+    official.gender === "F"
+      ? ["hair2", "hair3", "hair4"]
+      : official.gender === "M"
+        ? ["hair1", "hair5", "hair6"]
+        : ["hair1", "hair2", "hair3", "hair4", "hair5", "hair6"];
+  const seed = Array.from(official.name ?? "").reduce(
+    (total, character) => total + (character.codePointAt(0) ?? 0),
+    0
+  );
+
+  return variants[seed % variants.length];
+};
+
 const generateAvatar = (official: Official, color = "#333"): AvatarDefinition => {
   if (official.name === "Javier Milei" && official.party === "LLA") {
     return {
@@ -60,15 +77,7 @@ const generateAvatar = (official: Official, color = "#333"): AvatarDefinition =>
   const isFemale = official.gender === "F";
   const palette = genderPalette(official.gender);
   const roleType = roleTag(official.role);
-
-  const hairVariant = (() => {
-    if (roleType === "royalty") return isFemale ? "hair3" : "hair4";
-    if (roleType === "deputy") return isFemale ? "hair3" : "hair5";
-    if (roleType === "head") return isFemale ? "hair3" : "hair6";
-    if (isFemale) return "hair4";
-    if (official.gender === "M") return "hair5";
-    return "hair6";
-  })();
+  const hairVariant = pickHairVariant(official);
 
   const suitColor = (() => {
     if (roleType === "royalty") return "#5a3d0f";
