@@ -34,7 +34,7 @@ type Rates = components["schemas"]["WorldRates"];
 type Party = components["schemas"]["Official"]["party"];
 type PartyMetadata = components["schemas"]["Party"];
 type RangeGroupId = (typeof rangeGroups)[number]["id"];
-type DataFilter = "party" | "noParty" | "salary";
+type DataFilter = "party" | "noParty" | "salary" | "noSalary";
 
 const NO_PARTY_KEY = "__NO_PARTY__";
 const NO_PARTY_LABEL = "No party";
@@ -358,6 +358,8 @@ export default function OfficialsList({
       withParty: officials.filter((official) => official.party).length,
       withoutParty: officials.filter((official) => !official.party).length,
       withSalary: officials.filter((official) => official.salary?.gross).length,
+      withoutSalary: officials.filter((official) => !official.salary?.gross)
+        .length,
     }),
     [officials],
   );
@@ -403,6 +405,8 @@ export default function OfficialsList({
       } else {
         if (filter === "party") next.delete("noParty");
         if (filter === "noParty") next.delete("party");
+        if (filter === "salary") next.delete("noSalary");
+        if (filter === "noSalary") next.delete("salary");
         next.add(filter);
       }
       return next;
@@ -422,12 +426,15 @@ export default function OfficialsList({
         !dataFilters.has("noParty") || !official.party;
       const matchesSalaryData =
         !dataFilters.has("salary") || Boolean(official.salary?.gross);
+      const matchesMissingSalaryData =
+        !dataFilters.has("noSalary") || !official.salary?.gross;
 
       return (
         matchesPartySelection &&
         matchesPartyData &&
         matchesMissingPartyData &&
-        matchesSalaryData
+        matchesSalaryData &&
+        matchesMissingSalaryData
       );
     });
   }, [dataFilters, officials, selectedParties]);
@@ -519,6 +526,24 @@ export default function OfficialsList({
             </span>
             <span className="font-semibold tabular-nums">
               {stats.withSalary}
+            </span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => toggleDataFilter("noSalary")}
+            aria-pressed={dataFilters.has("noSalary")}
+            className={cn(
+              "h-10 gap-2 rounded-lg px-3 text-xs",
+              dataFilters.has("noSalary") && "border-primary bg-primary/8",
+            )}
+          >
+            <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+              <Users className="size-3.5" />
+              No salary
+            </span>
+            <span className="font-semibold tabular-nums">
+              {stats.withoutSalary}
             </span>
           </Button>
         </div>

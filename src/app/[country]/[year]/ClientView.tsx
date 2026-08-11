@@ -6,6 +6,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
 import OfficialsList from "@/components/OfficialsList";
+import PartiesOverview from "@/components/PartiesOverview";
 import countriesJson from "@/data/countries.json";
 import { SECTION_TITLES, TITLE_PREFIX } from "@/i18n";
 import { DEFAULT_CURRENCY } from "@/lib/constants";
@@ -13,11 +14,13 @@ import type { CountryCode, SectionKey } from "@/types";
 import { components } from "@/types/openapi";
 import { parseLang, type Language } from "@/validators/lang";
 
-const sectionGroups: SectionKey[][] = [
-  ["executive", "royalty"],
-  ["ministers"],
-  ["senate", "deputies"],
-  ["officials"],
+const sections: SectionKey[] = [
+  "executive",
+  "royalty",
+  "ministers",
+  "senate",
+  "deputies",
+  "officials",
 ];
 
 export default function ClientView({
@@ -60,40 +63,34 @@ export default function ClientView({
         {TITLE_PREFIX[lang]} {countryName}
       </h1>
 
-      <div className="flex flex-col gap-6">
-        {sectionGroups.map((group, i) => {
-          const visibleGroup = group.filter(
-            (sectionKey) => json[sectionKey]?.length,
-          );
-          if (!visibleGroup.length) return null;
+      <div className="columns-1 gap-6 xl:columns-2">
+        {sections.map((sectionKey) => {
+          const list = json[sectionKey];
+          if (!list?.length) return null;
 
           return (
-            <div key={i} className="flex flex-wrap gap-6">
-              {visibleGroup.map((sectionKey) => {
-                const list = json[sectionKey];
-                if (!list?.length) return null;
-
-                return (
-                  <section
-                    key={sectionKey}
-                    className="flex min-w-0 flex-1 basis-[34rem]"
-                  >
-                    <OfficialsList
-                      baseCurrency={baseCurrency}
-                      currency={currency}
-                      lang={lang}
-                      officials={list}
-                      parties={json.parties}
-                      rates={rates}
-                      sectionKey={sectionKey}
-                      title={SECTION_TITLES[sectionKey][lang]}
-                    />
-                  </section>
-                );
-              })}
-            </div>
+            <section
+              key={sectionKey}
+              className="mb-6 inline-block w-full break-inside-avoid align-top"
+            >
+              <OfficialsList
+                baseCurrency={baseCurrency}
+                currency={currency}
+                lang={lang}
+                officials={list}
+                parties={json.parties}
+                rates={rates}
+                sectionKey={sectionKey}
+                title={SECTION_TITLES[sectionKey][lang]}
+              />
+            </section>
           );
         })}
+        {json.parties && Object.keys(json.parties).length > 0 && (
+          <section className="mb-6 inline-block w-full break-inside-avoid align-top">
+            <PartiesOverview lang={lang} parties={json.parties} />
+          </section>
+        )}
       </div>
     </div>
   );
