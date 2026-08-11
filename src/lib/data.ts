@@ -3,6 +3,7 @@
 import { cache } from "react";
 
 import { serverEnv } from "@/lib/env";
+import { fetchJson } from "@/lib/fetch-json";
 import type { CountryCode } from "@/types";
 import { components } from "@/types/openapi";
 
@@ -16,12 +17,6 @@ function isServer(): boolean {
 function buildFetchPath(parts: string[]): string {
   const base = isServer() ? API_BASE_URL : API_PREFIX;
   return [base, ...parts].join("/");
-}
-
-async function fetchJson<T>(url: string, errorContext: string): Promise<T> {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${errorContext} (${res.status})`);
-  return (await res.json()) as T;
 }
 
 function normalizeYears(input: unknown): number[] {
