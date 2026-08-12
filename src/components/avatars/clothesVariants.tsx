@@ -35,4 +35,27 @@ export const clothesVariants = {
       <circle cx="35" cy="73" r="1.4" fill={accentColor} />
     </g>
   ),
+  "clothes-royal": ({
+    fill = "#6f1d45",
+    accentColor = "#f4c430",
+  }: ClothesProps) => (
+    <g>
+      <path
+        d="M6 90V58Q6 44 23 39L35 51 47 39Q64 44 64 58V90Z"
+        fill={fill}
+      />
+      <path
+        d="M23 39Q25 51 35 57Q45 51 47 39L41 38 35 47 29 38Z"
+        fill="#fff8e7"
+      />
+      <path
+        d="M10 58Q20 50 26 43M60 58Q50 50 44 43M35 57V90"
+        fill="none"
+        stroke={accentColor}
+        strokeWidth="2.5"
+      />
+      <circle cx="35" cy="65" r="1.8" fill={accentColor} />
+      <circle cx="35" cy="74" r="1.8" fill={accentColor} />
+    </g>
+  ),
 } as const;
