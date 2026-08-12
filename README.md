@@ -34,3 +34,16 @@ cd gov-salaries-view
 npm install
 npm run dev
 ```
+
+## Resilient production builds
+
+`pnpm run build` retries the complete Next.js build when prerendering fails because
+of a transient upstream HTTP or network error. This prevents a short-lived data
+API outage (for example, a `503` response) from immediately failing deployment.
+Application errors and permanent HTTP failures such as `404` are not retried.
+
+The build makes up to three attempts, waiting 15 seconds between attempts. CI can
+override those defaults with `BUILD_RETRIES` (the number of retries after the
+first attempt) and `BUILD_RETRY_DELAY_MS`, or disable retries with
+`BUILD_RETRIES=0`. Use `pnpm run build:next` to invoke Next.js once without the
+wrapper.

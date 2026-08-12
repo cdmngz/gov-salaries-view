@@ -7,7 +7,9 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "cross-env NEXT_PUBLIC_GIT_VERSION=$(git describe --tags --always --dirty) next build",
+    "build": "node scripts/build-with-retry.mjs",
+    "build:next": "cross-env NEXT_PUBLIC_GIT_VERSION=$(git describe --tags --always --dirty) next build",
+    "test:build-retry": "node --test scripts/build-with-retry.test.mjs",
     "generate:types": "openapi-typescript https://raw.githubusercontent.com/cdmngz/gov-salaries-data/main/openapi/openapi.yaml -o src/types/openapi.d.ts",
     "start": "next start",
     "lint": "eslint .",
