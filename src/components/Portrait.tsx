@@ -22,13 +22,27 @@ function roleTag(role?: string): "royalty" | "head" | "deputy" | "minister" | "d
   return "default";
 }
 
-function crownAccessory() {
+function kingCrownAccessory() {
   return (
     <g>
-      <path d="M15 14 L23 6 L35 15 L47 6 L55 14 L52 22 L18 22 Z" fill="#f4c430" />
+      <path d="M15 14 23 6 35 15 47 6 55 14 52 22H18Z" fill="#f4c430" />
       <circle cx="23" cy="8" r="2" fill="#f7e08b" />
       <circle cx="35" cy="10" r="2" fill="#f7e08b" />
       <circle cx="47" cy="8" r="2" fill="#f7e08b" />
+    </g>
+  );
+}
+
+function tiaraAccessory() {
+  return (
+    <g>
+      <path
+        d="M18 20 23 10 30 17 35 7 40 17 47 10 52 20Z"
+        fill="#f4c430"
+      />
+      <circle cx="35" cy="10" r="2.5" fill="#d9f2ff" />
+      <circle cx="23" cy="12" r="1.5" fill="#fff0f5" />
+      <circle cx="47" cy="12" r="1.5" fill="#fff0f5" />
     </g>
   );
 }
@@ -66,11 +80,15 @@ const pickHairVariant = (official: Official): HairVariant => {
   return variants[seed % variants.length];
 };
 
-const generateAvatar = (official: Official, color = "#333"): AvatarDefinition => {
+const generateAvatar = (official: Official, color?: string): AvatarDefinition => {
   if (official.name === "Javier Milei" && official.party === "LLA") {
     return {
       hair: (props) => hairVariants["hair6"]({ ...props }),
-      clothes: (props) => clothesVariants["clothes-formal"]({ ...props, fill: color }),
+      clothes: (props) =>
+        clothesVariants["clothes-formal"]({
+          ...props,
+          fill: color ?? "#333",
+        }),
     };
   }
 
@@ -79,14 +97,19 @@ const generateAvatar = (official: Official, color = "#333"): AvatarDefinition =>
   const roleType = roleTag(official.role);
   const hairVariant = pickHairVariant(official);
 
+  const partyColor = color || undefined;
   const suitColor = (() => {
-    if (roleType === "royalty") return "#5a3d0f";
+    // Party colors apply to every female outfit, including royal gowns.
+    if (isFemale) return partyColor ?? palette.accent;
+    if (roleType === "royalty") return partyColor ?? "#6f1d45";
     if (roleType === "deputy") return "#3c4b63";
-    return isFemale ? palette.accent : color;
+    return partyColor ?? "#333";
   })();
 
   const accessory = (() => {
-    if (roleType === "royalty") return crownAccessory;
+    if (roleType === "royalty") {
+      return isFemale ? tiaraAccessory : kingCrownAccessory;
+    }
     if (roleType === "deputy") return ribbonAccessory;
     return undefined;
   })();
@@ -94,7 +117,13 @@ const generateAvatar = (official: Official, color = "#333"): AvatarDefinition =>
   return {
     hair: (props) => hairVariants[hairVariant]({ ...props, fill: palette.hair }),
     clothes: (props) =>
-      clothesVariants[isFemale ? "clothes-blouse" : "clothes-formal"]({
+      clothesVariants[
+        roleType === "royalty"
+          ? "clothes-royal"
+          : isFemale
+            ? "clothes-blouse"
+            : "clothes-formal"
+      ]({
         ...props,
         fill: suitColor,
         accentColor: isFemale ? "#fff7fb" : props.accentColor,
@@ -103,8 +132,14 @@ const generateAvatar = (official: Official, color = "#333"): AvatarDefinition =>
   };
 };
 
-export default function Portrait({ official, parties }: { official: Official; parties?: components["schemas"]["Parties"] }) {
-  const size = 30;
+export default function Portrait({
+  official,
+  parties,
+}: {
+  official: Official;
+  parties?: components["schemas"]["Parties"];
+}) {
+  const size = 24;
   const palette = genderPalette(official.gender);
   const isFemale = official.gender === "F";
 
@@ -119,7 +154,7 @@ export default function Portrait({ official, parties }: { official: Official; pa
       width={size}
       height={size}
       role="img"
-      aria-label="Custom portrait"
+      aria-label={`${official.name} avatar`}
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
     >
