@@ -1,6 +1,7 @@
 // src/components/Portrait.tsx
 
 import React, { ReactNode } from "react";
+import { accessoryVariants } from "./avatars/accessoryVariants";
 import { clothesVariants } from "./avatars/clothesVariants";
 import { hairVariants } from "./avatars/hairVariants";
 import { components } from "@/types/openapi";
@@ -13,42 +14,29 @@ type AvatarDefinition = {
   accessory?: () => ReactNode;
 };
 
-function roleTag(role?: string): "royalty" | "head" | "deputy" | "minister" | "default" {
+function roleTag(
+  role?: string,
+): "royalty" | "head" | "deputy" | "minister" | "default" {
   const normalized = (role ?? "").toLowerCase();
-  if (/(king|queen|monarch|royal|prince|princess)/.test(normalized)) return "royalty";
-  if (/(president|prime minister|chancellor|governor)/.test(normalized)) return "head";
-  if (/(deputy|vice|speaker|spokesperson)/.test(normalized)) return "deputy";
-  if (/minister/.test(normalized)) return "minister";
+  if (/\b(king|queen|monarch|royal|prince|princess)\b/.test(normalized))
+    return "royalty";
+  if (/\b(president|prime minister|chancellor|governor)\b/.test(normalized))
+    return "head";
+  if (/\b(deputy|vice|speaker|spokesperson)\b/.test(normalized))
+    return "deputy";
+  if (/\bminister\b/.test(normalized)) return "minister";
   return "default";
 }
 
-function kingCrownAccessory() {
-  return (
-    <g>
-      <path d="M15 14 23 6 35 15 47 6 55 14 52 22H18Z" fill="#f4c430" />
-      <circle cx="23" cy="8" r="2" fill="#f7e08b" />
-      <circle cx="35" cy="10" r="2" fill="#f7e08b" />
-      <circle cx="47" cy="8" r="2" fill="#f7e08b" />
-    </g>
-  );
-}
-
-function tiaraAccessory() {
-  return (
-    <g>
-      <path
-        d="M18 20 23 10 30 17 35 7 40 17 47 10 52 20Z"
-        fill="#f4c430"
-      />
-      <circle cx="35" cy="10" r="2.5" fill="#d9f2ff" />
-      <circle cx="23" cy="12" r="1.5" fill="#fff0f5" />
-      <circle cx="47" cy="12" r="1.5" fill="#fff0f5" />
-    </g>
-  );
-}
-
 function ribbonAccessory() {
-  return <path d="M18 48 Q35 38 52 48" stroke="#cf2f2f" strokeWidth="3" fill="none" />;
+  return (
+    <path
+      d="M18 48 Q35 38 52 48"
+      stroke="#cf2f2f"
+      strokeWidth="3"
+      fill="none"
+    />
+  );
 }
 
 const genderPalette = (gender?: string) => {
@@ -74,13 +62,16 @@ const pickHairVariant = (official: Official): HairVariant => {
         : ["hair1", "hair2", "hair3", "hair4", "hair5", "hair6"];
   const seed = Array.from(official.name ?? "").reduce(
     (total, character) => total + (character.codePointAt(0) ?? 0),
-    0
+    0,
   );
 
   return variants[seed % variants.length];
 };
 
-const generateAvatar = (official: Official, color?: string): AvatarDefinition => {
+const generateAvatar = (
+  official: Official,
+  color?: string,
+): AvatarDefinition => {
   if (official.name === "Javier Milei" && official.party === "LLA") {
     return {
       hair: (props) => hairVariants["hair6"]({ ...props }),
@@ -108,14 +99,17 @@ const generateAvatar = (official: Official, color?: string): AvatarDefinition =>
 
   const accessory = (() => {
     if (roleType === "royalty") {
-      return isFemale ? tiaraAccessory : kingCrownAccessory;
+      return isFemale
+        ? accessoryVariants["princess-tiara"]
+        : accessoryVariants["king-crown"];
     }
     if (roleType === "deputy") return ribbonAccessory;
     return undefined;
   })();
 
   return {
-    hair: (props) => hairVariants[hairVariant]({ ...props, fill: palette.hair }),
+    hair: (props) =>
+      hairVariants[hairVariant]({ ...props, fill: palette.hair }),
     clothes: (props) =>
       clothesVariants[
         roleType === "royalty"
@@ -143,10 +137,11 @@ export default function Portrait({
   const palette = genderPalette(official.gender);
   const isFemale = official.gender === "F";
 
-  const { hair: Hair, clothes: Clothes, accessory: Accessory } = generateAvatar(
-    official,
-    parties?.[official.party ?? ""]?.color
-  );
+  const {
+    hair: Hair,
+    clothes: Clothes,
+    accessory: Accessory,
+  } = generateAvatar(official, parties?.[official.party ?? ""]?.color);
 
   return (
     <svg
@@ -163,13 +158,23 @@ export default function Portrait({
         <>
           <circle cx="18" cy="34" r="2" fill={palette.accent} />
           <circle cx="52" cy="34" r="2" fill={palette.accent} />
-          <path d="M28 46 Q35 50 42 46" stroke={palette.accent} strokeWidth="2" fill="none" />
+          <path
+            d="M28 46 Q35 50 42 46"
+            stroke={palette.accent}
+            strokeWidth="2"
+            fill="none"
+          />
         </>
       ) : (
-        <path d="M27 43 Q35 46 43 43" stroke="#7a4a36" strokeWidth="1.5" fill="none" />
+        <path
+          d="M27 43 Q35 46 43 43"
+          stroke="#7a4a36"
+          strokeWidth="1.5"
+          fill="none"
+        />
       )}
-      {Accessory ? <Accessory /> : null}
       <Hair />
+      {Accessory ? <Accessory /> : null}
       <Clothes />
     </svg>
   );
