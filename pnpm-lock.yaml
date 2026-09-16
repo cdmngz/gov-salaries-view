@@ -63,14 +63,14 @@ importers:
         specifier: 19.3.0
         version: 19.3.0(react@19.3.0)
       react-simple-maps:
-        specifier: ^5.0.3
-        version: 5.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        specifier: ^5.0.5
+        version: 5.0.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       tailwind-merge:
-        specifier: ^3.6.0
-        version: 3.6.0
+        specifier: ^3.7.0
+        version: 3.7.0
       zod:
-        specifier: ^4.6.2
-        version: 4.6.2
+        specifier: ^4.6.3
+        version: 4.6.3
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -3359,8 +3359,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-simple-maps@5.0.3:
-    resolution: {integrity: sha512-ww+FmrkINuOJUkwkez8af0q4S68y0JxOqby2fpaFpmK01/bySisv9r8rDa+bzHlB5kKrIggwZqhbGYjsCiIaTA==}
+  react-simple-maps@5.0.5:
+    resolution: {integrity: sha512-I8fROu8ESwUOnmYOwqr9IBV6DDuAIXDrTZOqaRv5IuxIKUI3qawmCeiSxGFB5szY25LzZcflzb1LHRqGW+estA==}
     peerDependencies:
       react: ^16.8.0 || 17.x || 18.x || 19.x
       react-dom: ^16.8.0 || 17.x || 18.x || 19.x
@@ -3564,8 +3564,8 @@ packages:
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
 
-  tailwind-merge@3.6.0:
-    resolution: {integrity: sha512-uxL7qAVQriqRQPAyK3pj66VqskWqoZ37PW94jwOTwNfq/z9oyu1V+eqrZqtR2+fCiXdYOZe/Modt8GtvqNzu+w==}
+  tailwind-merge@3.7.0:
+    resolution: {integrity: sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==}
 
   tailwindcss@4.3.3:
     resolution: {integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==}
@@ -3895,8 +3895,8 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  zod@4.6.2:
-    resolution: {integrity: sha512-lh5RCAGFa1Cm2hjtNwLQhSs/AsqdWnTQaBER9fEwN/88pSh7KOtJavtBx/0VlkN/uFd61SwYmljLMDAsHlvzBQ==}
+  zod@4.6.3:
+    resolution: {integrity: sha512-qTMC0QXIpf4iH+G0rCJl6ZjKiFpqAU9++JDN8tqts3KP58MWeJU/in9tDccsHqlOolCIrBKsiPXR8vCLhe4QhA==}
 
 snapshots:
 
@@ -6005,8 +6005,8 @@ snapshots:
       '@babel/parser': 7.29.8
       eslint: 10.10.0(jiti@2.7.0)
       hermes-parser: 0.25.1
-      zod: 4.6.2
-      zod-validation-error: 4.0.2(zod@4.6.2)
+      zod: 4.6.3
+      zod-validation-error: 4.0.2(zod@4.6.3)
     transitivePeerDependencies:
       - supports-color
 
@@ -6499,7 +6499,7 @@ snapshots:
       tinyglobby: 0.2.17
       unbash: 4.0.11
       yaml: 2.9.1
-      zod: 4.6.2
+      zod: 4.6.3
 
   levn@0.4.1:
     dependencies:
@@ -6922,7 +6922,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.3.0
 
-  react-simple-maps@5.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  react-simple-maps@5.0.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
       '@types/d3-geo': 3.1.1
       '@types/d3-zoom': 3.0.8
@@ -7216,7 +7216,7 @@ snapshots:
 
   symbol-tree@3.2.4: {}
 
-  tailwind-merge@3.6.0: {}
+  tailwind-merge@3.7.0: {}
 
   tailwindcss@4.3.3: {}
 
@@ -7522,8 +7522,8 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-validation-error@4.0.2(zod@4.6.2):
+  zod-validation-error@4.0.2(zod@4.6.3):
     dependencies:
-      zod: 4.6.2
+      zod: 4.6.3
 
-  zod@4.6.2: {}
+  zod@4.6.3: {}
