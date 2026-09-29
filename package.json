@@ -54,12 +54,12 @@
     "@testing-library/react": "^16.3.3",
     "@types/geojson": "^7946.0.16",
     "@types/jsdom": "^30.0.0",
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/react-simple-maps": "^3.0.6",
     "@vitejs/plugin-react": "^6.1.1",
-    "@vitest/ui": "^5.0.1",
+    "@vitest/ui": "^5.0.2",
     "cross-env": "^10.1.0",
     "eslint": "^10.11.0",
     "eslint-plugin-react": "^7.37.5",
@@ -73,7 +73,7 @@
     "typescript": "^7.0.2",
     "typescript-eslint": "^8.70.1",
     "vite": "^8.3.1",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.2"
   },
   "packageManager": "pnpm@10.28.1"
 }
